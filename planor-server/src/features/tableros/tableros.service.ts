@@ -43,12 +43,12 @@ export class TablerosService {
         nombreTablero: crearTableroDto.nombreTablero,
         propietario: { idUsuario: idPropietario },
       },
-      relations: ['propietario'],
     });
     if (tableroExistente) {
       throw new BadRequestException('Ya existe un tablero con ese nombre');
     }
 
+    // Crear el nuevo tablero
     const nuevoTablero = this.tablerosRepository.create(crearTableroDto);
     nuevoTablero.propietario = propietario;
     return await this.tablerosRepository.save(nuevoTablero);

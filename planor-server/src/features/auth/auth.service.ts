@@ -4,6 +4,7 @@ import { UsuariosService } from '../usuarios/usuarios.service';
 import * as bcrypt from 'bcrypt';
 import { RespuestaLoginDto } from './dto/respuesta-login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,15 +15,15 @@ export class AuthService {
 
   /* =============== LOGIN DE USUARIO =============== */
   /**
-   * @param {string} email - Email del usuario que intenta iniciar sesión.
-   * @param {string} contrasena - Contraseña del usuario que intenta iniciar sesión.
+   * @param {string} loginDto.email - Email del usuario que intenta iniciar sesión.
+   * @param {string} loginDto.contrasena - Contraseña del usuario que intenta iniciar sesión.
    * @returns {Promise<RespuestaLoginDto>} - Promesa que resuelve con los datos del usuario si el login es exitoso, o lanza una excepción si falla.
    */
-  async login(email: string, contrasena: string): Promise<RespuestaLoginDto> {
-    //const { email, contrasena } = loginDto;
+  async login(loginDto: LoginDto): Promise<RespuestaLoginDto> {
     // Buscar el usuario por su email desde la base de datos utilizando el servicio de usuarios
-    const usuarioLogin =
-      await this.usuariosService.obtenerUsuarioPorEmail(email);
+    const usuarioLogin = await this.usuariosService.obtenerUsuarioPorEmail(
+      loginDto.email,
+    );
     if (!usuarioLogin) {
       throw new UnauthorizedException('Usuario no encontrado');
     }
@@ -32,7 +33,7 @@ export class AuthService {
 
     // Comparar la contraseña proporcionada con la contraseña almacenada en la base de datos utilizando bcrypt
     const contrasenaCorrecta = await bcrypt.compare(
-      contrasena,
+      loginDto.contrasena,
       usuarioLogin.contrasena,
     );
     if (!contrasenaCorrecta) {

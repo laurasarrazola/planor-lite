@@ -41,6 +41,6 @@ export class AuthController {
   })
   @Post('login')
   async login(@Body() loginDto: LoginDto): Promise<RespuestaLoginDto> {
-    return this.authService.login(loginDto.email, loginDto.contrasena);
+    return this.authService.login(loginDto);
   }
 }

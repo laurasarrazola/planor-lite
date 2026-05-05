@@ -16,6 +16,7 @@ import { UsuariosModule } from './features/usuarios/usuarios.module';
 // import { TablerosModule } from './features/tableros/tableros.module';
 import { AuthModule } from './features/auth/auth.module';
 import { TablerosModule } from './features/tableros/tableros.module';
+import { GuardsModule } from './guards/guards.module';
 
 /* El decorador @Module() marca una clase como módulo de NestJS y declara su metadato principal: imports, controllers, providers y exports. Sirve para agrupar funcionalidad, definir el alcance del contenedor de inyección de dependencias y exponer servicios entre módulos. */
 @Module({
@@ -64,7 +65,7 @@ import { TablerosModule } from './features/tableros/tableros.module';
       /* inject especifica los servicios que se inyectarán en la función useFactory */
       inject: [ConfigService],
     }),
-    /* Importaciones de UsuariosModule y TablerosModule se cargan automáticamente los módulos creados con NestJS CLI */
+    GuardsModule,
     UsuariosModule,
     TablerosModule,
     AuthModule,

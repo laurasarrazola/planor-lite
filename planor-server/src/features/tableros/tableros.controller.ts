@@ -1,4 +1,11 @@
-import { Controller, Post, Body, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpStatus,
+  UseGuards,
+  Get,
+} from '@nestjs/common';
 import { TablerosService } from './tableros.service';
 import { CrearTableroDto } from './dto/crear-tablero.dto';
 //import { ActualizarTableroDto } from './dto/actualizar-tablero.dto';
@@ -10,6 +17,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Tableros } from './entities/tablero.entity';
+import { AuthGuard } from '../../guards/auth/auth.guard';
 
 @ApiTags('tableros')
 @Controller('tableros')
@@ -41,13 +49,26 @@ export class TablerosController {
     },
   })
   @Post()
+  @UseGuards(AuthGuard)
   async crearTablero(
     @Body() crearTableroDto: CrearTableroDto,
   ): Promise<Tableros> {
-    const idPropietario = crearTableroDto.idPropietario;
-    return await this.tablerosService.crearTablero(
-      crearTableroDto,
-      idPropietario,
-    );
+    return await this.tablerosService.crearTablero(crearTableroDto);
+  }
+
+  /* ========== OBTENER TABLEROS ========== */
+  @ApiOperation({
+    summary: 'Obtener todos los tableros',
+    description: 'Obtiene una lista de todos los tableros en el sistema',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Lista de tableros obtenida exitosamente',
+  })
+  @Get()
+  // @UseGuards(AuthGuard)
+  async obtenerTableros(): Promise<Tableros[]> {
+    console.log('Obteniendo tableros...');
+    return await this.tablerosService.obtenerTableros();
   }
 }

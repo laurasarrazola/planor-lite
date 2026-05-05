@@ -25,13 +25,10 @@ export class TablerosService {
    * @returns {Promise<Tableros>}  - Promesa que se resuelve con el tablero creado.
    */
 
-  async crearTablero(
-    crearTableroDto: CrearTableroDto,
-    idPropietario: number,
-  ): Promise<Tableros> {
+  async crearTablero(crearTableroDto: CrearTableroDto): Promise<Tableros> {
     // Validar que el propietario exista
     const propietario = await this.usuariosRepository.findOneBy({
-      idUsuario: idPropietario,
+      idUsuario: crearTableroDto.idPropietario,
     });
     if (!propietario) {
       throw new NotFoundException('Propietario no encontrado');
@@ -41,7 +38,7 @@ export class TablerosService {
     const tableroExistente = await this.tablerosRepository.findOne({
       where: {
         nombreTablero: crearTableroDto.nombreTablero,
-        propietario: { idUsuario: idPropietario },
+        propietario: { idUsuario: crearTableroDto.idPropietario },
       },
     });
     if (tableroExistente) {
@@ -52,5 +49,10 @@ export class TablerosService {
     const nuevoTablero = this.tablerosRepository.create(crearTableroDto);
     nuevoTablero.propietario = propietario;
     return await this.tablerosRepository.save(nuevoTablero);
+  }
+
+  // obtener todos los tableros
+  async obtenerTableros(): Promise<Tableros[]> {
+    return await this.tablerosRepository.find({ relations: ['propietario'] });
   }
 }

@@ -5,7 +5,10 @@ import {
   HttpStatus,
   UseGuards,
   Get,
+  Request,
+  UnauthorizedException,
 } from '@nestjs/common';
+import type { Request as ExpressRequest } from 'express';
 import { TablerosService } from './tableros.service';
 import { CrearTableroDto } from './dto/crear-tablero.dto';
 //import { ActualizarTableroDto } from './dto/actualizar-tablero.dto';
@@ -18,6 +21,16 @@ import {
 } from '@nestjs/swagger';
 import { Tableros } from './entities/tablero.entity';
 import { AuthGuard } from '../../guards/auth/auth.guard';
+interface PayloadJwt {
+  email: string;
+  sub: number;
+  iat?: number;
+  exp?: number;
+}
+
+interface RequestConUsuario extends ExpressRequest {
+  user?: PayloadJwt;
+}
 
 @ApiTags('tableros')
 @Controller('tableros')
@@ -50,10 +63,19 @@ export class TablerosController {
   })
   @Post()
   @UseGuards(AuthGuard)
-  async crearTablero(
+  public async crearTablero(
+    @Request() req: ExpressRequest,
     @Body() crearTableroDto: CrearTableroDto,
   ): Promise<Tableros> {
-    return await this.tablerosService.crearTablero(crearTableroDto);
+    const reqConUsuario: RequestConUsuario = req as RequestConUsuario;
+    if (!reqConUsuario.user || typeof reqConUsuario.user.sub !== 'number') {
+      throw new UnauthorizedException('Usuario no autenticado');
+    }
+    const idUsuarioAutenticado: number = reqConUsuario.user.sub;
+    return await this.tablerosService.crearTablero(
+      crearTableroDto,
+      idUsuarioAutenticado,
+    );
   }
 
   /* ========== OBTENER TABLEROS ========== */
@@ -68,7 +90,6 @@ export class TablerosController {
   @Get()
   // @UseGuards(AuthGuard)
   async obtenerTableros(): Promise<Tableros[]> {
-    console.log('Obteniendo tableros...');
     return await this.tablerosService.obtenerTableros();
   }
 }

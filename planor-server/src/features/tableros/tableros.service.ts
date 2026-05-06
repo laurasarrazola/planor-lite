@@ -24,33 +24,38 @@ export class TablerosService {
    *  @param {crearTableroDto} crearTableroDto - información del tablero.
    * @returns {Promise<Tableros>}  - Promesa que se resuelve con el tablero creado.
    */
-
-  async crearTablero(crearTableroDto: CrearTableroDto): Promise<Tableros> {
-    // Validar que el propietario exista
-    const propietario = await this.usuariosRepository.findOneBy({
-      idUsuario: crearTableroDto.idPropietario,
-    });
-    if (!propietario) {
-      throw new NotFoundException('Propietario no encontrado');
+  public async crearTablero(
+    crearTableroDto: CrearTableroDto,
+    idSolicitante: number,
+  ): Promise<Tableros> {
+    const propietarioEncontrado: Usuarios | null =
+      await this.usuariosRepository.findOneBy({ idUsuario: idSolicitante });
+    if (!propietarioEncontrado) {
+      throw new NotFoundException(
+        'Propietario (usuario autenticado) no encontrado',
+      );
     }
 
-    //Validar si ya existe un tablero con el mismo nombre para el mismo usuario propietario
-    const tableroExistente = await this.tablerosRepository.findOne({
-      where: {
-        nombreTablero: crearTableroDto.nombreTablero,
-        propietario: { idUsuario: crearTableroDto.idPropietario },
-      },
-    });
+    const tableroExistente: Tableros | null =
+      await this.tablerosRepository.findOne({
+        where: {
+          nombreTablero: crearTableroDto.nombreTablero,
+          propietario: { idUsuario: idSolicitante },
+        },
+      });
     if (tableroExistente) {
-      throw new BadRequestException('Ya existe un tablero con ese nombre');
+      throw new BadRequestException(
+        'Ya existe un tablero con ese nombre para este usuario',
+      );
     }
 
-    // Crear el nuevo tablero
-    const nuevoTablero = this.tablerosRepository.create(crearTableroDto);
-    nuevoTablero.propietario = propietario;
+    const nuevoTablero: Tableros =
+      this.tablerosRepository.create(crearTableroDto);
+    nuevoTablero.propietario = propietarioEncontrado;
     return await this.tablerosRepository.save(nuevoTablero);
   }
 
+  /* ========== OBTENER TABLEROS ========== */
   // obtener todos los tableros
   async obtenerTableros(): Promise<Tableros[]> {
     return await this.tablerosRepository.find({ relations: ['propietario'] });

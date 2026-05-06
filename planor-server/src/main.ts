@@ -8,7 +8,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 // La función bootstrap() es la función principal que se ejecuta al iniciar la aplicación.
 async function bootstrap() {
-  console.log('Iniciando la aplicación NestJS...');
   // Crea una instancia de la aplicación Nest utilizando el módulo raíz AppModule (automaticamente generado por Nest CLI).
   const app = await NestFactory.create(AppModule, {
     logger: ['log', 'debug', 'error', 'warn', 'verbose'],

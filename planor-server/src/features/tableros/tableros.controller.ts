@@ -64,17 +64,18 @@ export class TablerosController {
     },
   })
   @Post()
-  // @UseGuards(AuthGuard) hace que esta ruta requiera autenticación. El AuthGuard se encargará de verificar el token JWT y extraer la información del usuario autenticado.
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard) // @UseGuards(AuthGuard) hace que la ruta requiera autenticación y verifica el JWT para extraer la información del usuario autenticado.
   public async crearTablero(
-    @Request() req: ExpressRequest,
+    @Request() req: RequestConUsuario,
     @Body() crearTableroDto: CrearTableroDto,
   ): Promise<Tableros> {
-    const reqConUsuario: RequestConUsuario = req as RequestConUsuario;
-    if (!reqConUsuario.user) {
+    if (!req.user) {
       throw new UnauthorizedException('Usuario no autenticado');
     }
-    const idUsuarioAutenticado: number = reqConUsuario.user.sub;
+    if (typeof req.user.sub !== 'number') {
+      throw new UnauthorizedException('Token inválido: sub no numérico');
+    }
+    const idUsuarioAutenticado: number = req.user.sub;
     return await this.tablerosService.crearTablero(
       crearTableroDto,
       idUsuarioAutenticado,

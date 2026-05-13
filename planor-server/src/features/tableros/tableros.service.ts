@@ -24,7 +24,7 @@ export class TablerosService {
    *  @param {crearTableroDto} crearTableroDto - información del tablero.
    * @returns {Promise<Tableros>}  - Promesa que se resuelve con el tablero creado.
    */
-  public async crearTablero(
+  async crearTablero(
     crearTableroDto: CrearTableroDto,
     idSolicitante: number,
   ): Promise<Tableros> {
@@ -62,5 +62,17 @@ export class TablerosService {
    */
   async obtenerTableros(): Promise<Tableros[]> {
     return await this.tablerosRepository.find({ relations: ['propietario'] });
+  }
+
+  /* ========== OBTENER TABLERO POR PROPIETARIO ========== */
+  /**
+   * @param {number} idPropietario - ID del propietario de los tableros obtenido desde el token de autenticación.
+   * @return {Promise<Tableros>} - Promesa que se resuelve con el tablero encontrado.
+   */
+  async obtenerTablerosUsuario(idPropietario: number): Promise<Tableros[]> {
+    return await this.tablerosRepository.find({
+      where: { propietario: { idUsuario: idPropietario } },
+      relations: ['propietario', 'invitados'],
+    });
   }
 }

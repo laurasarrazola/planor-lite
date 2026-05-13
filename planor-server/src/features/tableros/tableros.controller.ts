@@ -57,8 +57,6 @@ export class TablerosController {
     @GetUser() usuario: Usuarios,
     @Body() crearTableroDto: CrearTableroDto,
   ): Promise<Tableros> {
-    // Ya no necesitas validar manualmente req.user, el Guard y el Decorador lo hacen por ti
-    console.log('Usuario autenticado:', usuario); // Puedes usar esta información para depuración o lógica adicional
     return await this.tablerosService.crearTablero(
       crearTableroDto,
       usuario.idUsuario,
@@ -74,8 +72,34 @@ export class TablerosController {
     status: HttpStatus.OK,
     description: 'Lista de tableros obtenida exitosamente',
   })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Error al obtener los tableros',
+  })
   @Get()
   async obtenerTableros(): Promise<Tableros[]> {
     return await this.tablerosService.obtenerTableros();
+  }
+
+  /* ========== OBTENER TABLERO POR USUARIO ========== */
+  @ApiOperation({
+    summary: 'Obtener tableros de un usuario autenticado',
+    description:
+      'Devuelve solo los tableros del usuario identificado por el token de autenticación',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Lista de tableros obtenida exitosamente',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Error al obtener los tableros',
+  })
+  @UseGuards(AuthGuard)
+  @Get('usuario')
+  async obtenerTablerosUsuario(
+    @GetUser() usuario: Usuarios,
+  ): Promise<Tableros[]> {
+    return await this.tablerosService.obtenerTablerosUsuario(usuario.idUsuario);
   }
 }

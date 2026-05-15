@@ -6,6 +6,7 @@ import {
   UseGuards,
   Get,
   Param,
+  Patch,
 } from '@nestjs/common';
 import { TablerosService } from './tableros.service';
 import { CrearTableroDto } from './dto/crear-tablero.dto';
@@ -21,6 +22,7 @@ import { Tableros } from './entities/tablero.entity';
 import { AuthGuard } from '../../guards/auth/auth.guard';
 import { GetUser } from '../../common/decorators/get-user.decorator';
 import { Usuarios } from '../usuarios/entity/usuario.entity';
+import { ActualizarTableroDto } from './dto/actualizar-tablero.dto';
 
 @ApiTags('tableros')
 @Controller('tableros')
@@ -127,6 +129,34 @@ export class TablerosController {
   ): Promise<Tableros> {
     return await this.tablerosService.obtenerDetallesTablero(
       idTablero,
+      usuario.idUsuario,
+    );
+  }
+
+  /* ========== EDITAR UN TABLERO ========== */
+  @ApiOperation({
+    summary: 'Editar un tablero propio',
+    description: 'Permite la edición de un tablero propio',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Edición del tablero exitoso',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Error al editar tablero',
+  })
+  @Patch(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  async editarTablero(
+    @GetUser() usuario: Usuarios,
+    @Param('id') idTablero: number,
+    @Body() actualizarTableroDto: ActualizarTableroDto,
+  ): Promise<Tableros> {
+    return await this.tablerosService.editarTablero(
+      idTablero,
+      actualizarTableroDto,
       usuario.idUsuario,
     );
   }

@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Tableros } from './entities/tablero.entity';
 import { Repository } from 'typeorm';
 import { Usuarios } from '../usuarios/entity/usuario.entity';
+import { ActualizarTableroDto } from './dto/actualizar-tablero.dto';
 
 @Injectable()
 export class TablerosService {
@@ -100,5 +101,41 @@ export class TablerosService {
 
     // existe pero no es propietario
     throw new ForbiddenException('No tienes permiso para ver este tablero');
+  }
+
+  /* ========== EDITAR UN TABLERO ========== */
+  /**
+   * @param {number} idTablero - ID del tablero a editar.
+   * @param {ActualizarTableroDto} actualizarTableroDto - Información actualizada del tablero.
+   * @returns {Promise<Tableros>} - Promesa que se resuelve con el tablero actualizado.
+   */
+  async editarTablero(
+    idTablero: number,
+    actualizarTableroDto: ActualizarTableroDto,
+    idUsuario: number,
+  ): Promise<Tableros> {
+    const tableroPropio = await this.tablerosRepository.findOne({
+      where: { idTablero, propietario: { idUsuario } },
+      relations: ['propietario'],
+    });
+    if (!tableroPropio)
+      throw new ForbiddenException(
+        'Sólo es posible modificar tableros propios',
+      );
+
+    if (actualizarTableroDto.nombreTablero !== undefined) {
+      tableroPropio.nombreTablero = actualizarTableroDto.nombreTablero;
+    }
+    if (actualizarTableroDto.descripcionTablero !== undefined) {
+      tableroPropio.descripcionTablero =
+        actualizarTableroDto.descripcionTablero;
+    }
+
+    const cambios = {
+      nombreTablero: actualizarTableroDto.nombreTablero,
+      descripcionTablero: actualizarTableroDto.descripcionTablero,
+    };
+    await this.tablerosRepository.update(idTablero, cambios);
+    return this.obtenerDetallesTablero(idTablero, idUsuario);
   }
 }

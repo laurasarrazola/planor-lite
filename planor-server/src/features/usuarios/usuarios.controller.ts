@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -164,23 +165,6 @@ export class UsuariosController {
     );
   }
 
-  /* ========== ACTUALIZAR USUARIO POR ADMIN ========== */
-  @UseGuards(RoleGuard)
-  @Patch(':id')
-  async actualizarUsuarioPorId(
-    @Param('id') id: number,
-    @Body() actualizarUsuarioDto: ActualizarUsuarioDto,
-    @GetUser('idUsuario') idUsuarioSolicitante: number,
-    @GetUser('rolSistema') rolUsuarioSolicitante: 'admin' | 'usuario',
-  ): Promise<Usuarios> {
-    return this.usuariosService.actualizarUsuario(
-      id,
-      actualizarUsuarioDto,
-      idUsuarioSolicitante,
-      rolUsuarioSolicitante,
-    );
-  }
-
   /* ========== CAMBIAR CONTRASEÑA DE USUARIO (PATCH) ========== */
   @ApiOperation({
     summary: 'Cambiar contraseña de usuario',
@@ -205,14 +189,36 @@ export class UsuariosController {
       },
     },
   })
-  @Patch(':id/contrasena')
+  @UseGuards(AuthGuard)
+  @Patch('contrasena')
   async cambiarContrasena(
-    @Param('id') id: number,
+    @GetUser('idUsuario') idUsuarioSolicitante: number,
     @Body() cambiarContrasenaDto: CambiarContrasenaDto,
   ) {
+    console.log(idUsuarioSolicitante, cambiarContrasenaDto);
+    if (!cambiarContrasenaDto || !cambiarContrasenaDto.contrasenaActual) {
+      throw new BadRequestException('contrasenaActual es requerida');
+    }
     return await this.usuariosService.cambiarContrasena(
-      id,
+      idUsuarioSolicitante,
       cambiarContrasenaDto,
+    );
+  }
+
+  /* ========== ACTUALIZAR USUARIO POR ADMIN ========== */
+  @UseGuards(RoleGuard)
+  @Patch(':id')
+  async actualizarUsuarioPorId(
+    @Param('id') id: number,
+    @Body() actualizarUsuarioDto: ActualizarUsuarioDto,
+    @GetUser('idUsuario') idUsuarioSolicitante: number,
+    @GetUser('rolSistema') rolUsuarioSolicitante: 'admin' | 'usuario',
+  ): Promise<Usuarios> {
+    return this.usuariosService.actualizarUsuario(
+      id,
+      actualizarUsuarioDto,
+      idUsuarioSolicitante,
+      rolUsuarioSolicitante,
     );
   }
 
@@ -265,5 +271,5 @@ OK GET /usuarios/me — requiere AuthGuard (usuario autenticado).
 OK GET /usuarios/:id — opcional pública; si pública, devolver sólo campos no sensibles; si privada, requiere AuthGuard.
 OK PATCH /usuarios/me — requiere AuthGuard (usar token para identificar y autorizar). NO recibir :id.
 OK PATCH /usuarios/:id — solo para admins (usar RoleGuard).
-NO DELETE /usuarios/me — requiere AuthGuard y confirmación (por ejemplo contraseña en body).
+OK DELETE /usuarios/me — requiere AuthGuard y confirmación (por ejemplo contraseña en body).
  */

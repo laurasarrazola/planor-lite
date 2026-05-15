@@ -243,7 +243,7 @@ export class UsuariosService {
     //findOne es un método de TypeORM que busca un registro específico. where filtra un usuario cuyo campo idUsuario sea igual a id y select especifica que campos del usuario se deben devolver.
     const usuarioActualizarContrasena = await this.usuariosRepository.findOne({
       where: { idUsuario: id },
-      select: ['idUsuario', 'contrasena'],
+      select: ['idUsuario', 'contrasena', 'usuarioActivo'],
     });
     // Manejo si no se encuentra el usuario con la id proporcionada.
     if (!usuarioActualizarContrasena) {
@@ -254,6 +254,10 @@ export class UsuariosService {
       throw new BadRequestException(
         'No hay contraseña almacenada para este usuario',
       );
+    }
+    //Manejo si el usuario está inactivo
+    if (usuarioActualizarContrasena.usuarioActivo === false) {
+      throw new ForbiddenException('usuario desactivado');
     }
     // bcrypt.compare() compara la contraseña actual (dto.contrasenaActual) con el hash almacenado en la base de datos (usuario.contrasena) y maneja el error.
     const coincide = await bcrypt.compare(

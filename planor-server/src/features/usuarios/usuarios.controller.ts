@@ -218,8 +218,9 @@ export class UsuariosController {
 
   /* ========== ELIMINAR USUARIO (DELETE) ========== */
   @ApiOperation({
-    summary: 'Eliminar usuario',
-    description: 'ELiminar logicamente un usuario',
+    summary: 'Eliminar usuario (soft delete)',
+    description:
+      'Eliminar lógicamente el perfil del usuario autenticado. Requiere contraseña actual.',
   })
   @ApiResponse({
     status: status.OK,
@@ -238,11 +239,31 @@ export class UsuariosController {
       },
     },
   })
-  @Delete(':id/eliminarUsuario')
+  @UseGuards(AuthGuard)
+  @Delete('me')
   async eliminarUsuario(
-    @Param('id') id: number,
+    @GetUser('idUsuario') idUsuarioSolicitante: number,
     @Body() eliminarUsuarioDto: EliminarUsuarioDto,
   ) {
-    return await this.usuariosService.eliminarUsuario(id, eliminarUsuarioDto);
+    return await this.usuariosService.eliminarUsuario(
+      idUsuarioSolicitante,
+      eliminarUsuarioDto,
+    );
   }
 }
+
+/*
+Endpoints propuestos y requisito de token:
+OK POST /auth/register — no JWT (registro público).
+OK POST /auth/login — no JWT (retorna accessToken + refreshToken).
+NO POST /auth/refresh — no JWT (usa refreshToken o cookie httpOnly; devuelve nuevo access token).
+NO POST /auth/logout — requiere refreshToken (o JWT) para revocar/invalidar refresh en servidor; opcional @UseGuards(AuthGuard) si quieres que solo usuario autenticado lo invoque.
+NO POST /auth/recover — no JWT (envía token de un solo uso por email).
+NO POST /auth/reset — no JWT (recibe token de correo + nueva contraseña).
+NO POST /auth/social — no JWT (oauth flow), al final emitir JWT local.
+OK GET /usuarios/me — requiere AuthGuard (usuario autenticado).
+OK GET /usuarios/:id — opcional pública; si pública, devolver sólo campos no sensibles; si privada, requiere AuthGuard.
+OK PATCH /usuarios/me — requiere AuthGuard (usar token para identificar y autorizar). NO recibir :id.
+OK PATCH /usuarios/:id — solo para admins (usar RoleGuard).
+NO DELETE /usuarios/me — requiere AuthGuard y confirmación (por ejemplo contraseña en body).
+ */

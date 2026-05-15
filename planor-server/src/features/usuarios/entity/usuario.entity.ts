@@ -5,7 +5,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { TablerosUsuarios } from '../../tableros/entities/tableros-usuarios.entity';
+import { Tableros } from '../../tableros/entities/tablero.entity';
 
 // El decorador `@Entity()` marca la clase `Usuarios` como una entidad de TypeORM. En este caso, se especifica que la tabla se llamará 'Usuarios'.
 @Entity({ name: 'usuarios' })
@@ -77,4 +80,12 @@ export class Usuarios {
     nullable: true,
   })
   fechaActualizacion?: Date | null;
+
+  // Tableros que este usuario ha creado (inversa de Tableros.propietario)
+  @OneToMany(() => Tableros, (tablero: Tableros) => tablero.propietario)
+  tablerosCreados!: Tableros[];
+
+  // Relación join-entity para membresías (atributos adicionales)
+  @OneToMany(() => TablerosUsuarios, (tu: TablerosUsuarios) => tu.usuario)
+  tablerosUsuarios!: TablerosUsuarios[];
 }

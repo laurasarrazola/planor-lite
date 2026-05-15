@@ -8,6 +8,7 @@ import {
   Post,
   Query,
   HttpStatus as status,
+  UseGuards,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto';
@@ -23,6 +24,9 @@ import { ObtenerUsuariosDto } from './dto/obtener-usuarios.dto';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
 import { CambiarContrasenaDto } from './dto/cambiar-contrasena.dto';
 import { EliminarUsuarioDto } from './dto/eliminar-usuario.dto';
+import { GetUser } from '../../common/decorators/get-user.decorator';
+import { AuthGuard } from '../../guards/auth/auth.guard';
+import { RoleGuard } from '../../guards/role/role.guard';
 
 //@ApiTags agrupa los endpoints relacionados bajo la etiqueta 'usuarios' en la documentación Swagger.
 @ApiTags('usuarios')
@@ -141,12 +145,40 @@ export class UsuariosController {
       },
     },
   })
-  @Patch(':id')
+  @UseGuards(AuthGuard)
+  @Patch('me')
   async actualizarUsuario(
+    // @Param('id') id: number,
+    @Body() actualizarUsuarioDto: ActualizarUsuarioDto,
+    @GetUser('idUsuario') idUsuarioSolicitante: number,
+    @GetUser('rolSistema') rolUsuarioSolicitante: 'admin' | 'usuario',
+  ): Promise<Usuarios> {
+    // el target es el propio usuario extraído del token
+    const idUsuarioObjetivo: number = idUsuarioSolicitante;
+    return this.usuariosService.actualizarUsuario(
+      // id,
+      idUsuarioObjetivo,
+      actualizarUsuarioDto,
+      idUsuarioSolicitante,
+      rolUsuarioSolicitante,
+    );
+  }
+
+  /* ========== ACTUALIZAR USUARIO POR ADMIN ========== */
+  @UseGuards(RoleGuard)
+  @Patch(':id')
+  async actualizarUsuarioPorId(
     @Param('id') id: number,
     @Body() actualizarUsuarioDto: ActualizarUsuarioDto,
-  ) {
-    return this.usuariosService.actualizarUsuario(id, actualizarUsuarioDto);
+    @GetUser('idUsuario') idUsuarioSolicitante: number,
+    @GetUser('rolSistema') rolUsuarioSolicitante: 'admin' | 'usuario',
+  ): Promise<Usuarios> {
+    return this.usuariosService.actualizarUsuario(
+      id,
+      actualizarUsuarioDto,
+      idUsuarioSolicitante,
+      rolUsuarioSolicitante,
+    );
   }
 
   /* ========== CAMBIAR CONTRASEÑA DE USUARIO (PATCH) ========== */

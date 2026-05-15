@@ -2,6 +2,7 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -68,6 +69,8 @@ export class UsuariosService {
       fechaRegistro: usuarioGuardado.fechaRegistro,
       usuarioActivo: usuarioGuardado.usuarioActivo,
       rolSistema: usuarioGuardado.rolSistema,
+      tablerosCreados: usuarioGuardado.tablerosCreados,
+      tablerosUsuarios: usuarioGuardado.tablerosUsuarios,
     };
 
     //si se quisiera incluir la contraseña en la respuesta, se devolvería el usuario guardado completo sin desestructurar.
@@ -201,21 +204,27 @@ export class UsuariosService {
   async actualizarUsuario(
     id: number,
     actualizarUsuarioDto: ActualizarUsuarioDto,
+    idUsuarioSolicitante: number,
+    rolUsuarioSolicitante: 'admin' | 'usuario',
   ): Promise<Usuarios> {
-    // Busca el usuario por ID con findOneBy(). Si no se encuentra, lanza NotFoundException.
+    if (id !== idUsuarioSolicitante && rolUsuarioSolicitante !== 'admin') {
+      throw new ForbiddenException('No autorizado para modificar otro usuario');
+    }
+
     const usuarioAActualizar = await this.usuariosRepository.findOneBy({
       idUsuario: id,
     });
-    if (!usuarioAActualizar)
+    if (!usuarioAActualizar) {
       throw new NotFoundException('Usuario no encontrado');
+    }
 
-    // Prepara un objeto con los cambios a actualizar
     const cambios = {
       nombreUsuario: actualizarUsuarioDto.nombreUsuario,
       apellidoUsuario: actualizarUsuarioDto.apellidoUsuario,
     };
-    // Actualiza con update() y luego obtiene el usuario actualizado para devolverlo.
+
     await this.usuariosRepository.update(id, cambios);
+
     return this.obtenerUsuarioPorId(id);
   }
 
@@ -277,6 +286,8 @@ export class UsuariosService {
       fechaRegistro: contrasenaActualizada.fechaRegistro,
       usuarioActivo: contrasenaActualizada.usuarioActivo,
       rolSistema: contrasenaActualizada.rolSistema,
+      tablerosCreados: contrasenaActualizada.tablerosCreados,
+      tablerosUsuarios: contrasenaActualizada.tablerosUsuarios,
     };
   }
 

@@ -258,6 +258,8 @@ export class TablerosService {
     return invitacionCreada;
   }
 
+  /* ========== GESTIONAR INVITACIONES A TABLEROS ========== */
+
   /* Permitir al propietario de un tablero gestionar sus integrantes mediante: Invitar usuarios registrados al tablero. Asignarles un rol de acceso (edicionTotal, crearEliminarYMover, soloMover). Eliminar usuarios del tablero (revocar acceso).
 La eliminación únicamente revoca el acceso al tablero; no debe eliminar ni modificar tareas ni registros históricos asociados al usuario. La gestión de usuarios es exclusiva del rol propietario.
  Comprobación de validez de las entradas	●	Usuario autenticado mediante JWT válido.

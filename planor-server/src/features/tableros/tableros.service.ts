@@ -193,7 +193,7 @@ export class TablerosService {
     if (tablero.tableroActivo === false)
       throw new BadRequestException('Tablero inactivo');
 
-    // comprobar rol del solicitante en el tablero
+    // comprobar rol del solicitante en el tablero (es propietario o edicionTotal)
     const miembroSolicitante = await this.tablerosUsuariosRepository.findOne({
       where: { tablero: { idTablero }, usuario: { idUsuario: idSolicitante } },
     });
@@ -254,7 +254,7 @@ export class TablerosService {
       },
     );
 
-    // devolver la invitación creada (201 lo maneja el controller)
+    // devolver la invitación creada
     return invitacionCreada;
   }
 

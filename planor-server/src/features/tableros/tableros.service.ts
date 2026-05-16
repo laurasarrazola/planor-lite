@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -8,7 +9,7 @@ import { CrearTableroDto } from './dto/crear-tablero.dto';
 //import { ActualizarTableroDto } from './dto/actualizar-tablero.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tableros } from './entities/tablero.entity';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Usuarios } from '../usuarios/entity/usuario.entity';
 import { ActualizarTableroDto } from './dto/actualizar-tablero.dto';
 import { DataSource } from 'typeorm';
@@ -16,6 +17,11 @@ import {
   RolEnTablero,
   TablerosUsuarios,
 } from './entities/tableros-usuarios.entity';
+import { InvitarUsuarioDto } from './dto/invitar-usuario.dto';
+import {
+  InvitacionesTableros,
+  EstadoInvitacion,
+} from './entities/invitaciones-tableros.entity';
 
 @Injectable()
 export class TablerosService {
@@ -167,7 +173,91 @@ export class TablerosService {
     return this.obtenerDetallesTablero(idTablero, idUsuario);
   }
 
-  /* ========== GESTIONAR USUARIOS DE UN TABLERO ========== */
+  /* ========== INVITAR USUARIOS A UN TABLERO ========== */
+  /**
+   * @param {number} idTablero - ID del tablero al que se desea invitar al usuario.
+   * @param {InvitarUsuarioDto} invitarUsuarioDto - Información del usuario a invitar (email y rol).
+   * @returns {Promise<void>} - Promesa que se resuelve cuando la invitación ha sido enviada exitosamente.
+   */
+
+  async invitarUsuario(
+    idTablero: number,
+    dto: InvitarUsuarioDto,
+    idSolicitante: number,
+  ): Promise<InvitacionesTableros> {
+    // comprobar que el tablero existe y está activo
+    const tablero = await this.tablerosRepository.findOne({
+      where: { idTablero },
+    });
+    if (!tablero) throw new NotFoundException('Tablero no encontrado');
+    if (tablero.tableroActivo === false)
+      throw new BadRequestException('Tablero inactivo');
+
+    // comprobar rol del solicitante en el tablero
+    const miembroSolicitante = await this.tablerosUsuariosRepository.findOne({
+      where: { tablero: { idTablero }, usuario: { idUsuario: idSolicitante } },
+    });
+    if (!miembroSolicitante)
+      throw new ForbiddenException('No eres miembro del tablero');
+    if (
+      miembroSolicitante.rolEnTablero !== RolEnTablero.PROPIETARIO &&
+      miembroSolicitante.rolEnTablero !== RolEnTablero.EDICION_TOTAL
+    ) {
+      throw new ForbiddenException('No tienes permisos para invitar usuarios');
+    }
+
+    // buscar usuario invitado por email
+    const invitado = await this.usuariosRepository.findOne({
+      where: { email: dto.emailInvitado },
+    });
+    if (!invitado) throw new NotFoundException('Email no registrado');
+
+    // comprobar que no sea ya miembro
+    const yaEsMiembro = await this.tablerosUsuariosRepository.findOne({
+      where: {
+        tablero: { idTablero },
+        usuario: { idUsuario: invitado.idUsuario },
+      },
+    });
+    if (yaEsMiembro)
+      throw new ConflictException('Usuario ya pertenece al tablero');
+
+    // crear invitación en transacción y comprobar invitación pendiente
+    const invitacionCreada = await this.dataSource.transaction(
+      async (manager: EntityManager) => {
+        const invitRepo = manager.getRepository(InvitacionesTableros);
+
+        const pendiente = await invitRepo.findOne({
+          where: {
+            tablero: { idTablero },
+            usuarioInvitado: { idUsuario: invitado.idUsuario },
+            estadoInvitacion: EstadoInvitacion.PENDIENTE,
+          },
+        });
+        if (pendiente)
+          throw new ConflictException('Invitación pendiente ya existente');
+
+        const invitador = await this.usuariosRepository.findOneBy({
+          idUsuario: idSolicitante,
+        });
+        if (!invitador)
+          throw new NotFoundException('Usuario solicitante no encontrado');
+
+        const nueva = invitRepo.create({
+          tablero,
+          usuarioInvitado: invitado,
+          invitadoPor: invitador,
+          rolInvitado: dto.rolInvitado,
+          estadoInvitacion: EstadoInvitacion.PENDIENTE,
+        });
+        return await invitRepo.save(nueva);
+      },
+    );
+
+    // devolver la invitación creada (201 lo maneja el controller)
+    return invitacionCreada;
+  }
+
   /* Permitir al propietario de un tablero gestionar sus integrantes mediante: Invitar usuarios registrados al tablero. Asignarles un rol de acceso (edicionTotal, crearEliminarYMover, soloMover). Eliminar usuarios del tablero (revocar acceso).
 La eliminación únicamente revoca el acceso al tablero; no debe eliminar ni modificar tareas ni registros históricos asociados al usuario. La gestión de usuarios es exclusiva del rol propietario.
  Comprobación de validez de las entradas	●	Usuario autenticado mediante JWT válido.

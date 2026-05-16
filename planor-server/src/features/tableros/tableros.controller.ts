@@ -23,6 +23,8 @@ import { AuthGuard } from '../../guards/auth/auth.guard';
 import { GetUser } from '../../common/decorators/get-user.decorator';
 import { Usuarios } from '../usuarios/entity/usuario.entity';
 import { ActualizarTableroDto } from './dto/actualizar-tablero.dto';
+import { InvitacionesTableros } from './entities/invitaciones-tableros.entity';
+import { InvitarUsuarioDto } from './dto/invitar-usuario.dto';
 
 @ApiTags('tableros')
 @Controller('tableros')
@@ -157,6 +159,34 @@ export class TablerosController {
     return await this.tablerosService.editarTablero(
       idTablero,
       actualizarTableroDto,
+      usuario.idUsuario,
+    );
+  }
+
+  /* ========== INVITAR USUARIOS A UN TABLERO ========== */
+  @ApiOperation({
+    summary: 'Invitar usuarios a un tablero',
+    description: 'Permite invitar a otros usuarios a colaborar en un tablero',
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Invitación creada exitosamente',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Error al crear la invitación',
+  })
+  @Post(':id/invitaciones')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  async invitarUsuario(
+    @GetUser() usuario: Usuarios,
+    @Param('id') idTablero: number,
+    @Body() dto: InvitarUsuarioDto,
+  ): Promise<InvitacionesTableros> {
+    return await this.tablerosService.invitarUsuario(
+      idTablero,
+      dto,
       usuario.idUsuario,
     );
   }

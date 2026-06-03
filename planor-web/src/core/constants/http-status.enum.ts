@@ -1,12 +1,12 @@
-
+//objeto con claves en mayúsculas y valores numéricos representando los códigos de estado HTTP
 export const HttpStatus = {
-  // Success
+  // Éxito
   OK: 200,
   CREATED: 201,
   ACCEPTED: 202,
   NO_CONTENT: 204,
 
-  // Client Errors
+  // Errores del cliente
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
@@ -16,11 +16,11 @@ export const HttpStatus = {
   UNPROCESSABLE_ENTITY: 422,
   TOO_MANY_REQUESTS: 429,
 
-  // Server Errors
+  // Errores del servidor
   INTERNAL_SERVER_ERROR: 500,
   BAD_GATEWAY: 502,
   SERVICE_UNAVAILABLE: 503,
   GATEWAY_TIMEOUT: 504,
 } as const
-
+//tipo que representa los valores de los códigos de estado HTTP definidos en el objeto HttpStatus
 export type HttpStatus = typeof HttpStatus[keyof typeof HttpStatus]

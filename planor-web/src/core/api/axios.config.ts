@@ -3,22 +3,24 @@ import { env } from '@/core/config'
 import { authStorageService } from '@/core/services'
 
 /**
- * Axios client instance configured with base settings
- * @constant {AxiosInstance} apiClient - Pre-configured axios instance for API requests
+ * Instancia del cliente Axios con configuración base
+ * @constant {AxiosInstance} apiClient - Instancia de Axios preconfigurada para las peticiones a la API
  */
+// Creamos una instancia de Axios con la configuración base para las peticiones a la API, incluyendo la URL base, el tiempo de espera y los encabezados por defecto. También habilitamos el envío de cookies con `withCredentials` para manejar la autenticación basada en cookies.
 export const apiClient: AxiosInstance = axios.create({
+  //usa la URL base definida en la configuración de entorno (permite cambiar entre dev/prod sin tocar código).
   baseURL: env.API_URL,
+  // El tiempo de espera para las peticiones, también configurable desde el entorno.
   timeout: env.API_TIMEOUT,
+  // Encabezados por defecto para todas las peticiones, indicando que el contenido es JSON.
   headers: {
     'Content-Type': 'application/json',
   },
+  // Habilitamos el envío de cookies en las peticiones para manejar la autenticación basada en cookies.
   withCredentials: true,
 })
 
-/**
- * Response interceptor to handle unauthorized access
- * Clears storage and redirects to login on 401/403
- */
+// Interceptor para manejar respuestas de la API y errores de autenticación
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {

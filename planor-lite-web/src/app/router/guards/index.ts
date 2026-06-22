@@ -1,5 +1,5 @@
 /**
- * Route guards module exports
+ * Exportaciones del módulo de protecciones de rutas
  * @module app/router/guards
  */
 

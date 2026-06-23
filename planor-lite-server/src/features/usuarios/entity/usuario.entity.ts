@@ -15,6 +15,7 @@ import { Tableros } from '../../tableros/entities/tablero.entity';
 export class Usuarios {
   //  Cada propiedad de la clase representa una columna en la tabla (las propiedades son: idUsuario, nombreUsuario, apellidoUsuario, email, etc. que son asignadas con name: 'propiedad '). Los decoradores asociados a cada propiedad definen el tipo de dato (como @PrimaryGeneratedColumn, @Column, @CreateDateColumn, @UpdateDateColumn), y se definen las restricciones y otras características.
 
+  //PrimaryGeneratedColumn indica que esta columna es una clave primaria
   @PrimaryGeneratedColumn({
     type: 'int',
     name: 'idUsuario',
@@ -22,6 +23,7 @@ export class Usuarios {
   })
   idUsuario!: number;
 
+  // OneToMany establece una relación de uno a muchos entre la entidad `Usuarios` y la entidad `Tableros`. Esto significa que un usuario puede tener múltiples tableros asociados. La propiedad `tablerosCreados` es un arreglo que contendrá los tableros creados por el usuario.
   @OneToMany(() => Tableros, (t) => t.propietario)
   tablerosCreados?: Tableros[];
 

@@ -7,8 +7,10 @@ import {
   ManyToOne,
   JoinColumn,
   RelationId,
+  OneToMany,
 } from 'typeorm';
 import { Usuarios } from '../../usuarios/entity/usuario.entity';
+import { EstadosKanban } from '../../estados/entities/estado.entity';
 
 @Entity({ name: 'tableros' })
 export class Tableros {
@@ -27,6 +29,9 @@ export class Tableros {
 
   @RelationId((tablero: Tableros) => tablero.propietario)
   idPropietario!: number;
+
+  @OneToMany(() => EstadosKanban, (estado) => estado.tablero)
+  estados?: EstadosKanban[];
 
   @Column({
     name: 'nombreTablero',

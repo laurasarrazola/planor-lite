@@ -14,7 +14,7 @@ export const typeormConfig = (
     username: configService.get<string>('DB_USER', 'root'),
     //password: '',
     password: configService.get<string>('DB_PASSWORD', ''),
-    database: configService.get<string>('DB_NAME', 'planor'),
+    database: configService.get<string>('DB_NAME', 'planor_lite'),
     synchronize: configService.get<boolean>('DB_SYNCHRONIZE', false),
     logging: configService.get<boolean>('DB_LOGGING', true),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],

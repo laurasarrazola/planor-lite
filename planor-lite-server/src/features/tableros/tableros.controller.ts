@@ -7,12 +7,9 @@ import {
   Get,
   Param,
   Patch,
+  Delete,
 } from '@nestjs/common';
-import {
-  RespuestaInvitacionListadoDto,
-  RespuestaAccionInvitacionDto,
-  TablerosService,
-} from './tableros.service';
+import { TablerosService } from './tableros.service';
 import { CrearTableroDto } from './dto/crear-tablero.dto';
 import {
   ApiBearerAuth,
@@ -27,9 +24,6 @@ import { AuthGuard } from '../../guards/auth/auth.guard';
 import { GetUser } from '../../common/decorators/get-user.decorator';
 import { Usuarios } from '../usuarios/entity/usuario.entity';
 import { ActualizarTableroDto } from './dto/actualizar-tablero.dto';
-import { InvitacionesTableros } from './entities/invitaciones-tableros.entity';
-import { InvitarUsuarioDto } from './dto/invitar-usuario.dto';
-import { ResponderInvitacionDto } from './dto/responder-invitacion.dto';
 
 @ApiTags('tableros')
 @Controller('tableros')
@@ -114,30 +108,6 @@ export class TablerosController {
     return await this.tablerosService.obtenerTablerosUsuario(usuario.idUsuario);
   }
 
-  /* ========== LISTAR INVITACIONES PENDIENTES ========== */
-  @ApiOperation({
-    summary: 'Listar invitaciones pendientes',
-    description: 'Obtiene una lista de las invitaciones pendientes del usuario',
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Lista de invitaciones obtenida exitosamente',
-  })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Error al obtener las invitaciones',
-  })
-  @Get('invitaciones')
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth()
-  async listarInvitaciones(
-    @GetUser() usuario: Usuarios,
-  ): Promise<RespuestaInvitacionListadoDto[]> {
-    return await this.tablerosService.listarInvitacionesPendientes(
-      usuario.idUsuario,
-    );
-  }
-
   /* ========== OBTENER DETALLES DE UN TABLERO ========== */
   @ApiOperation({
     summary: 'Obtener detalles de un tablero',
@@ -192,59 +162,26 @@ export class TablerosController {
     );
   }
 
-  /* ========== INVITAR USUARIOS A UN TABLERO ========== */
+  /* ========== ELIMINAR UN TABLERO ========== */
   @ApiOperation({
-    summary: 'Invitar usuarios a un tablero',
-    description: 'Permite invitar a otros usuarios a colaborar en un tablero',
-  })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'Invitación creada exitosamente',
-  })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Error al crear la invitación',
-  })
-  @Post(':id/invitaciones')
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth()
-  async invitarUsuario(
-    @GetUser() usuario: Usuarios,
-    @Param('id') idTablero: number,
-    @Body() dto: InvitarUsuarioDto,
-  ): Promise<InvitacionesTableros> {
-    return await this.tablerosService.invitarUsuario(
-      idTablero,
-      dto,
-      usuario.idUsuario,
-    );
-  }
-
-  /* ========== RESPONDER INVITACIÓN ========== */
-  @ApiOperation({
-    summary: 'Responder a una invitación',
-    description: 'Permite aceptar o rechazar una invitación a un tablero',
+    summary: 'Eliminar un tablero propio',
+    description: 'Permite la eliminación de un tablero propio',
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Respuesta a la invitación procesada exitosamente',
+    description: 'Eliminación del tablero exitosa',
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
-    description: 'Error al procesar la respuesta a la invitación',
+    description: 'Error al eliminar el tablero',
   })
-  @Patch('invitaciones/:id')
+  @Delete(':id')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  async responderInvitacion(
+  async eliminarTablero(
     @GetUser() usuario: Usuarios,
-    @Param('id') idInvitacion: number,
-    @Body() dto: ResponderInvitacionDto,
-  ): Promise<RespuestaAccionInvitacionDto> {
-    return await this.tablerosService.responderInvitacion(
-      idInvitacion,
-      dto,
-      usuario.idUsuario,
-    );
+    @Param('id') idTablero: number,
+  ): Promise<{ message: string }> {
+    return this.tablerosService.eliminarTablero(idTablero, usuario.idUsuario);
   }
 }

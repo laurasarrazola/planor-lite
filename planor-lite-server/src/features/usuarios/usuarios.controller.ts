@@ -264,7 +264,7 @@ export class UsuariosController {
     },
   })
   @UseGuards(AuthGuard)
-  @Delete('me')
+  @Delete('eliminar')
   async eliminarUsuario(
     @GetUser('idUsuario') idUsuarioSolicitante: number,
     @Body() eliminarUsuarioDto: EliminarUsuarioDto,
@@ -275,20 +275,3 @@ export class UsuariosController {
     );
   }
 }
-
-/*
-Endpoints propuestos y requisito de token:
-OK POST /auth/register: Crea usuario público, hashea contraseña y devuelve datos sin la contraseña.
-OK POST /auth/login: Valida email+contrasena, devuelve token, email, idUsuario.
-NO POST /auth/refresh: No implementado. (Flujo de refresh token faltante.)
-NO POST /auth/logout: No implementado. (Revocación/invalidez de refresh token faltante.)
-NO POST /auth/recover: No implementado. (Recuperación por email no implementada.)
-NO POST /auth/reset: No implementado. (Reset con token de correo no implementado.)
-NO POST /auth/social: No implementado. (OAuth/social login no implementado.)
-NO GET /usuarios/me: No existe exactamente; actualmente hay GET /usuarios/:id — src/features/usuarios/usuarios.controller.ts. GET /usuarios/:id devuelve usuario por id (sin contraseña). Recomendado: añadir GET /usuarios/me protegido que retorne el usuario del token.
-OK GET /usuarios/:id: Implementado — devuelve datos públicos del usuario por id.
-OK PATCH /usuarios/me: Implementado — @Patch('me') protegido por AuthGuard; actualiza el perfil del usuario autenticado (usa @GetUser('idUsuario')).
-OK PATCH /usuarios/contrasena: Implementado — @Patch('contrasena') protegido por AuthGuard; verifica contrasenaActual contra DB y guarda nueva contraseña.
-OK PATCH /usuarios/:id: Implementado — @Patch(':id') protegido por RoleGuard (intended admin). Recomendación: añadir AuthGuard junto a RoleGuard (@UseGuards(AuthGuard, RoleGuard)) para garantizar que request.user exista antes de evaluar rol.
-OK DELETE /usuarios/me: Implementado — @Delete('me') protegido por AuthGuard; realiza soft-delete (usuarioActivo = false) tras verificar contrasenaActual.
- */

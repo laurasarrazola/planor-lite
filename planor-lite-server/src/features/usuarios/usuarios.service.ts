@@ -69,8 +69,6 @@ export class UsuariosService {
       fechaRegistro: usuarioGuardado.fechaRegistro,
       usuarioActivo: usuarioGuardado.usuarioActivo,
       rolSistema: usuarioGuardado.rolSistema,
-      tablerosCreados: usuarioGuardado.tablerosCreados,
-      tablerosUsuarios: usuarioGuardado.tablerosUsuarios,
     };
 
     //si se quisiera incluir la contraseña en la respuesta, se devolvería el usuario guardado completo sin desestructurar.
@@ -290,8 +288,6 @@ export class UsuariosService {
       fechaRegistro: contrasenaActualizada.fechaRegistro,
       usuarioActivo: contrasenaActualizada.usuarioActivo,
       rolSistema: contrasenaActualizada.rolSistema,
-      tablerosCreados: contrasenaActualizada.tablerosCreados,
-      tablerosUsuarios: contrasenaActualizada.tablerosUsuarios,
     };
   }
 

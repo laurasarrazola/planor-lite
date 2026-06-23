@@ -5,12 +5,14 @@ import * as bcrypt from 'bcrypt';
 import { RespuestaLoginDto } from './dto/respuesta-login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
+import { ConfigService } from '@nestjs/config/dist/config.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usuariosService: UsuariosService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   /* =============== LOGIN DE USUARIO =============== */

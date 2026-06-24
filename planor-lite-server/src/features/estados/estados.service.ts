@@ -37,16 +37,6 @@ export class EstadosKanbanService {
     idSolicitante: number,
     idTablero: number,
   ): Promise<EstadosKanban> {
-    //Busca en la BD al usuario que solicita crear el estado
-    const propietario = await this.usuariosRepository.findOneBy({
-      idUsuario: idSolicitante,
-    });
-
-    // Validación: el usuario debe existir y estar activo
-    if (!propietario || propietario.usuarioActivo === false) {
-      throw new NotFoundException('Propietario no encontrado o inactivo');
-    }
-
     return await this.dataSource.transaction(
       async (
         administradorTransaccion: EntityManager,
@@ -54,9 +44,13 @@ export class EstadosKanbanService {
         const repositorioEstados =
           administradorTransaccion.getRepository(EstadosKanban);
 
+        // Obtener el repositorio de Tableros dentro de la transacción
+        const repositorioTableros =
+          administradorTransaccion.getRepository(Tableros);
+
         // Buscar tablero activo del propietario
         const tableroEncontrado: Tableros | null =
-          await this.tablerosRepository.findOne({
+          await repositorioTableros.findOne({
             where: {
               idTablero: idTablero,
               propietario: {
@@ -66,10 +60,9 @@ export class EstadosKanbanService {
             },
           });
 
+        // Validar que el tablero exista y esté activo
         if (!tableroEncontrado) {
-          throw new NotFoundException(
-            'No se encontró un tablero activo para este propietario',
-          );
+          throw new NotFoundException('No se encontró el tablero solicitado');
         }
 
         // Validar nombre único dentro del tablero
@@ -108,13 +101,7 @@ export class EstadosKanbanService {
         }
 
         // Calcular posición automática
-        let posicionEstadoFinal: number;
-
-        if (crearEstadoDto.posicionEstado) {
-          posicionEstadoFinal = crearEstadoDto.posicionEstado;
-        } else {
-          posicionEstadoFinal = cantidadEstadosActivos + 1;
-        }
+        const posicionEstadoFinal: number = cantidadEstadosActivos + 1;
 
         // Crear entidad
         const nuevoEstado: EstadosKanban = repositorioEstados.create({

@@ -1,7 +1,7 @@
 import {
   Controller,
   HttpStatus,
-  // Get,
+  Get,
   Post,
   UseGuards,
   Body,
@@ -67,23 +67,29 @@ export class EstadosKanbanController {
       idTablero,
     );
   }
-  // create(@Body() createEstadoDto: CreateEstadoDto) {
-  //   return this.estadosService.create(createEstadoDto);
-  // }
-  // @Get()
-  // findAll() {
-  //   return this.estadosService.findAll();
-  // }
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.estadosService.findOne(+id);
-  // }
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateEstadoDto: UpdateEstadoDto) {
-  //   return this.estadosService.update(+id, updateEstadoDto);
-  // }
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.estadosService.remove(+id);
-  // }
+
+  /* ========== OBTENER ESTADOS DE UN TABLERO ========== */
+  @ApiOperation({
+    summary: 'Obtener estados de un tablero',
+    description: 'Obtiene todos los estados de un tablero específico',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Estados obtenidos exitosamente',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'No se pudo obtener los estados del tablero',
+  })
+  @Get('/:idTablero')
+  @UseGuards(AuthGuard)
+  async obtenerEstadosTablero(
+    @GetUser() usuario: Usuarios,
+    @Param('idTablero') idTablero: number,
+  ): Promise<EstadosKanban[]> {
+    return await this.estadosKanbanService.obtenerEstadosTablero(
+      idTablero,
+      usuario.idUsuario,
+    );
+  }
 }

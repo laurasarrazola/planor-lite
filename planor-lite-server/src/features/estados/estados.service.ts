@@ -31,7 +31,7 @@ export class EstadosKanbanService {
   /**
    * @param {CrearEstadoDto} crearEstadoDto - información del estado a crear.
    * @returns {Promise<EstadosKanban>} - Promesa que se resuelve con el estado creado.
-   * */
+   **/
   async crearEstado(
     crearEstadoDto: CrearEstadoDto,
     idSolicitante: number,
@@ -115,5 +115,48 @@ export class EstadosKanbanService {
         return await repositorioEstados.save(nuevoEstado);
       },
     );
+  }
+
+  /* ========== OBTENER ESTADOS DE UN TABLERO ========== */
+  /**
+   * @param {number} idTablero - ID del tablero.
+   * @param {number} idSolicitante - ID del usuario solicitante.
+   * @returns {Promise<EstadosKanban[]>} - Promesa que se resuelve con los estados del tablero.
+   **/
+  async obtenerEstadosTablero(
+    idTablero: number,
+    idSolicitante: number,
+  ): Promise<EstadosKanban[]> {
+    // Buscar tablero activo del propietario
+    console.log('idTablero:', idTablero);
+    console.log('hola');
+    const tableroEncontrado: Tableros | null =
+      await this.tablerosRepository.findOne({
+        where: {
+          idTablero: idTablero,
+          propietario: {
+            idUsuario: idSolicitante,
+          },
+          tableroActivo: true,
+        },
+      });
+
+    // Validar que el tablero exista y esté activo
+    if (!tableroEncontrado) {
+      throw new NotFoundException('No se encontró el tablero solicitado');
+    }
+
+    // Obtener los estados del tablero
+    return await this.estadosRepository.find({
+      where: {
+        tablero: {
+          idTablero: tableroEncontrado.idTablero,
+        },
+        estadoActivo: true,
+      },
+      order: {
+        posicionEstado: 'ASC',
+      },
+    });
   }
 }

@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CrearTableroDto } from './dto/crear-tablero.dto';
-//import { ActualizarTableroDto } from './dto/actuali zar-tablero.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tableros } from './entities/tablero.entity';
 import { EntityManager, Repository, DataSource } from 'typeorm';
@@ -74,10 +73,19 @@ export class TablerosService {
         // Guardar el nuevo tablero en la BD (INSERT)
         const saved = await repo.save(nuevo);
 
-        /*****************************P E N D I E N T E**********************************/
-        // TODO: aquí deberíamos crear los 4 estados iniciales (Pendiente, En_ejecucion, Terminado, Aprobado)
-        // para eso necesitamos la entidad de Estados y usar `manager.getRepository(Estados)` para insertarlos
-        // dentro de la misma transacción. Dejamos la tarea pendiente si aún no existe la entidad.
+        //crear los 4 estados iniciales del tablero
+        const estadosIniciales = [
+          { nombreEstado: 'Pendiente', posicionEstado: 0, tablero: saved },
+          { nombreEstado: 'En_ejecucion', posicionEstado: 1, tablero: saved },
+          { nombreEstado: 'Terminado', posicionEstado: 2, tablero: saved },
+          { nombreEstado: 'Aprobado', posicionEstado: 3, tablero: saved },
+        ];
+
+        // Obtener el repositorio de Estados
+        const repoEstados = manager.getRepository('EstadosKanban');
+
+        // Insertar los estados iniciales
+        await repoEstados.save(estadosIniciales);
 
         // Devolver la entidad guardada desde la transacción
         return saved;

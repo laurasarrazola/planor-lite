@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource, EntityManager } from 'typeorm';
 import { Usuarios } from '../usuarios/entity/usuario.entity';
 import { Tableros } from '../tableros/entities/tablero.entity';
+import { EditarEstadoDto } from './dto/editar-estado.dto';
 
 @Injectable()
 export class EstadosKanbanService {
@@ -128,8 +129,6 @@ export class EstadosKanbanService {
     idSolicitante: number,
   ): Promise<EstadosKanban[]> {
     // Buscar tablero activo del propietario
-    console.log('idTablero:', idTablero);
-    console.log('hola');
     const tableroEncontrado: Tableros | null =
       await this.tablerosRepository.findOne({
         where: {
@@ -158,5 +157,142 @@ export class EstadosKanbanService {
         posicionEstado: 'ASC',
       },
     });
+  }
+
+  /* ========== EDITAR ESTADO ========== */
+  /**
+   * @param {number} idEstado - ID del estado.
+   * @param {EditarEstadoDto} editarEstadoDto - Datos a modificar.
+   * @param {number} idSolicitante - Usuario autenticado.
+   * @returns {Promise<EstadosKanban>}
+   */
+
+  async editarEstado(
+    idEstado: number,
+    editarEstadoDto: EditarEstadoDto,
+    idSolicitante: number,
+  ): Promise<EstadosKanban> {
+    // Iniciar transacción para asegurar que todas las operaciones se realicen de manera atómica
+    return await this.dataSource.transaction(
+      // La función de transacción recibe un administrador de transacción que permite realizar operaciones dentro de la transacción
+      async (
+        administradorTransaccion: EntityManager,
+      ): Promise<EstadosKanban> => {
+        const repositorioEstados =
+          administradorTransaccion.getRepository(EstadosKanban);
+
+        // Buscar estado junto con su tablero
+        const estadoEncontrado: EstadosKanban | null =
+          await repositorioEstados.findOne({
+            where: {
+              idEstadoKanban: idEstado,
+              estadoActivo: true,
+              tablero: {
+                propietario: {
+                  idUsuario: idSolicitante,
+                },
+                tableroActivo: true,
+              },
+            },
+            //relations especifica las relaciones que se deben cargar junto con la entidad principal.
+            relations: ['tablero', 'tablero.propietario'],
+          });
+
+        // Validar existencia y propiedad
+        if (!estadoEncontrado) {
+          throw new NotFoundException('No se encontró el estado solicitado');
+        }
+
+        /***** VALIDAR NOMBRE *****/
+        if (editarEstadoDto.nombreEstado !== undefined) {
+          const estadoConMismoNombre: EstadosKanban | null =
+            await repositorioEstados.findOne({
+              where: {
+                nombreEstado: editarEstadoDto.nombreEstado,
+                estadoActivo: true,
+                tablero: {
+                  idTablero: estadoEncontrado.tablero.idTablero,
+                },
+              },
+            });
+
+          if (
+            estadoConMismoNombre &&
+            estadoConMismoNombre.idEstadoKanban !==
+              estadoEncontrado.idEstadoKanban
+          ) {
+            throw new ConflictException(
+              'Ya existe un estado con ese nombre en el tablero',
+            );
+          }
+          estadoEncontrado.nombreEstado = editarEstadoDto.nombreEstado;
+        }
+
+        /***** CAMBIAR POSICIÓN *****/
+        if (editarEstadoDto.posicionEstado !== undefined) {
+          const posicionActual: number = estadoEncontrado.posicionEstado;
+          const nuevaPosicion: number = editarEstadoDto.posicionEstado;
+
+          const cantidadEstados: number = await repositorioEstados.count({
+            where: {
+              estadoActivo: true,
+              tablero: {
+                idTablero: estadoEncontrado.tablero.idTablero,
+              },
+            },
+          });
+
+          if (nuevaPosicion < 1 || nuevaPosicion > cantidadEstados) {
+            throw new BadRequestException('Posición inválida');
+          }
+
+          if (nuevaPosicion !== posicionActual) {
+            // Obtener todos los estados del tablero
+            const estados = await repositorioEstados.find({
+              where: {
+                estadoActivo: true,
+                tablero: {
+                  idTablero: estadoEncontrado.tablero.idTablero,
+                },
+              },
+              order: {
+                posicionEstado: 'ASC',
+              },
+            });
+
+            // PASO 1: Mover TODOS los estados a una zona temporal
+            for (const estado of estados) {
+              await repositorioEstados.update(estado.idEstadoKanban, {
+                posicionEstado: estado.posicionEstado + 100,
+              });
+            }
+
+            // PASO 2: Construir el orden final
+            const estadosReordenados = estados.filter(
+              (estado) =>
+                estado.idEstadoKanban !== estadoEncontrado.idEstadoKanban,
+            );
+
+            estadosReordenados.splice(nuevaPosicion - 1, 0, estadoEncontrado);
+
+            // PASO 3: Asignar posiciones definitivas
+            for (let indice = 0; indice < estadosReordenados.length; indice++) {
+              await repositorioEstados.update(
+                estadosReordenados[indice].idEstadoKanban,
+                {
+                  posicionEstado: indice + 1,
+                },
+              );
+            }
+
+            // Actualizar objeto en memoria
+            estadoEncontrado.posicionEstado = nuevaPosicion;
+          }
+        }
+
+        // Guardar cambios
+        return await repositorioEstados.save(estadoEncontrado);
+      },
+    );
   }
 }

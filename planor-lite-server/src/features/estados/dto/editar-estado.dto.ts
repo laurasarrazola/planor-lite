@@ -1,12 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsInt, IsOptional, IsString, Length, Max, Min } from 'class-validator';
 
 export class EditarEstadoDto {
   /* Validación del nombre del estado */
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Nombre del estado',
-    required: false,
     minLength: 1,
     maxLength: 100,
   })
@@ -16,17 +15,24 @@ export class EditarEstadoDto {
     if (trimmed === '') return undefined;
     return trimmed;
   })
-  @IsString()
   @IsOptional()
+  @IsString()
   @Length(1, 100)
   nombreEstado?: string;
 
   /* Validación de la posición del estado */
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Posición del estado',
-    required: false,
     minimum: 1,
     maximum: 10,
+  })
+  @Transform(({ value }) => {
+    if (value === '' || value === null || value === undefined) {
+      return undefined;
+    }
+
+    const parsed = Number(value);
+    return Number.isNaN(parsed) ? undefined : parsed;
   })
   @IsOptional()
   @IsInt()

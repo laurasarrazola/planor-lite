@@ -5,7 +5,7 @@ import {
   Post,
   UseGuards,
   Body,
-  // Patch,
+  Patch,
   Param,
   // Delete,
 } from '@nestjs/common';
@@ -22,6 +22,7 @@ import { GetUser } from '../../common/decorators/get-user.decorator';
 import { Usuarios } from '../usuarios/entity/usuario.entity';
 import { CrearEstadoDto } from './dto/crear-estado.dto';
 import { EstadosKanban } from './entities/estado.entity';
+import { EditarEstadoDto } from './dto/editar-estado.dto';
 
 // import { EstadosService } from './estados.service';
 // import { CrearEstado } from './dto/create-estado.dto';
@@ -89,6 +90,42 @@ export class EstadosKanbanController {
   ): Promise<EstadosKanban[]> {
     return await this.estadosKanbanService.obtenerEstadosTablero(
       idTablero,
+      usuario.idUsuario,
+    );
+  }
+
+  /* ========== EDITAR UN ESTADO ========== */
+  @ApiOperation({
+    summary: 'Editar un estado',
+    description: 'Permite modificar el nombre o la posición de un estado',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Estado editado exitosamente',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'No se pudo editar el estado',
+  })
+  @ApiConsumes('application/x-www-form-urlencoded')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        nombreEstado: { type: 'string', example: 'Nuevo Nombre' },
+      },
+    },
+  })
+  @Patch(':idEstado')
+  @UseGuards(AuthGuard)
+  async editarEstado(
+    @Param('idEstado') idEstado: number,
+    @Body() editarEstadoDto: EditarEstadoDto,
+    @GetUser() usuario: Usuarios,
+  ): Promise<EstadosKanban> {
+    return await this.estadosKanbanService.editarEstado(
+      idEstado,
+      editarEstadoDto,
       usuario.idUsuario,
     );
   }

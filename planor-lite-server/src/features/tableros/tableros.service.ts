@@ -75,10 +75,10 @@ export class TablerosService {
 
         //crear los 4 estados iniciales del tablero
         const estadosIniciales = [
-          { nombreEstado: 'Pendiente', posicionEstado: 0, tablero: saved },
-          { nombreEstado: 'En_ejecucion', posicionEstado: 1, tablero: saved },
-          { nombreEstado: 'Terminado', posicionEstado: 2, tablero: saved },
-          { nombreEstado: 'Aprobado', posicionEstado: 3, tablero: saved },
+          { nombreEstado: 'Pendiente', posicionEstado: 1, tablero: saved },
+          { nombreEstado: 'En_ejecucion', posicionEstado: 2, tablero: saved },
+          { nombreEstado: 'Terminado', posicionEstado: 3, tablero: saved },
+          { nombreEstado: 'Aprobado', posicionEstado: 4, tablero: saved },
         ];
 
         // Obtener el repositorio de Estados

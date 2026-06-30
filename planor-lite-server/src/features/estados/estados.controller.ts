@@ -7,7 +7,7 @@ import {
   Body,
   Patch,
   Param,
-  // Delete,
+  Delete,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -23,10 +23,7 @@ import { Usuarios } from '../usuarios/entity/usuario.entity';
 import { CrearEstadoDto } from './dto/crear-estado.dto';
 import { EstadosKanban } from './entities/estado.entity';
 import { EditarEstadoDto } from './dto/editar-estado.dto';
-
-// import { EstadosService } from './estados.service';
-// import { CrearEstado } from './dto/create-estado.dto';
-// import { UpdateEstadoDto } from './dto/editar-estado.dto';
+import { EliminarEstadoDto } from './dto/eliminar-estado.dto';
 
 @ApiTags('estados')
 @Controller('estados')
@@ -126,6 +123,39 @@ export class EstadosKanbanController {
     return await this.estadosKanbanService.editarEstado(
       idEstado,
       editarEstadoDto,
+      usuario.idUsuario,
+    );
+  }
+
+  /* ========== ELIMINAR UN ESTADO ========== */
+  @ApiOperation({
+    summary: 'Eliminar un estado propio',
+    description:
+      'Permite eliminar lógicamente un estado del tablero del propietario',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Estado eliminado exitosamente',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Error al eliminar el estado',
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'No se puede eliminar el último estado del tablero',
+  })
+  @Delete(':idEstado')
+  @UseGuards(AuthGuard)
+  //@ApiBearerAuth()
+  async eliminarEstado(
+    @Param('idEstado') idEstado: number,
+    @Body() eliminarEstadoDto: EliminarEstadoDto,
+    @GetUser() usuario: Usuarios,
+  ): Promise<EstadosKanban> {
+    return await this.estadosKanbanService.eliminarEstado(
+      idEstado,
+      eliminarEstadoDto,
       usuario.idUsuario,
     );
   }

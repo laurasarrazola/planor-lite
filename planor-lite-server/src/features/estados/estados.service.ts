@@ -12,6 +12,7 @@ import { Repository, DataSource, EntityManager } from 'typeorm';
 import { Usuarios } from '../usuarios/entity/usuario.entity';
 import { Tableros } from '../tableros/entities/tablero.entity';
 import { EditarEstadoDto } from './dto/editar-estado.dto';
+import { EliminarEstadoDto } from './dto/eliminar-estado.dto';
 
 @Injectable()
 export class EstadosKanbanService {
@@ -84,25 +85,45 @@ export class EstadosKanbanService {
           );
         }
 
-        // Contar estados activos
+        // Contar únicamente los estados activos
         const cantidadEstadosActivos: number = await repositorioEstados.count({
           where: {
+            estadoActivo: true,
             tablero: {
               idTablero: tableroEncontrado.idTablero,
             },
-            estadoActivo: true,
           },
         });
 
-        // Validar límite máximo
+        // Validar límite máximo de estados activos
         if (cantidadEstadosActivos >= 10) {
           throw new BadRequestException(
             'El tablero ya tiene el máximo de 10 estados permitidos',
           );
         }
 
-        // Calcular posición automática
-        const posicionEstadoFinal: number = cantidadEstadosActivos + 1;
+        // Reasigna posiciones de estados tras eliminar uno para evitar huecos en la numeración.
+        const ultimoEstado: EstadosKanban | null =
+          await repositorioEstados.findOne({
+            where: {
+              estadoActivo: true,
+              tablero: {
+                idTablero: tableroEncontrado.idTablero,
+              },
+            },
+            order: {
+              posicionEstado: 'DESC',
+            },
+          });
+
+        // Determinar la posición final del siguiente estado activo.
+        let posicionEstadoFinal: number;
+
+        if (ultimoEstado !== null) {
+          posicionEstadoFinal = ultimoEstado.posicionEstado + 1;
+        } else {
+          posicionEstadoFinal = 1;
+        }
 
         // Crear entidad
         const nuevoEstado: EstadosKanban = repositorioEstados.create({
@@ -292,6 +313,114 @@ export class EstadosKanbanService {
 
         // Guardar cambios
         return await repositorioEstados.save(estadoEncontrado);
+      },
+    );
+  }
+
+  /* ========== ELIMINAR ESTADO ========== */
+  /**
+   * @param {number} idEstado - ID del estado a eliminar.
+   * @param {EliminarEstadoDto} eliminarEstadoDto - Confirmación y posible reasignación.
+   * @param {number} idSolicitante - Usuario autenticado.
+   * @returns {Promise<void>}
+   */
+  async eliminarEstado(
+    idEstado: number,
+    eliminarEstadoDto: EliminarEstadoDto,
+    idSolicitante: number,
+  ): Promise<EstadosKanban> {
+    //Se verifica que el valor de "confirmar" sea true para proceder con la eliminación del estado.
+    if (eliminarEstadoDto.confirmar !== true) {
+      throw new BadRequestException(
+        'Debes confirmar la eliminación para continuar',
+      );
+    }
+
+    // Iniciar transacción para asegurar que todas las operaciones se realicen de manera atómica
+    return await this.dataSource.transaction(
+      // La función de transacción recibe un administrador de transacción que permite realizar operaciones dentro de la transacción
+      async (manager: EntityManager): Promise<EstadosKanban> => {
+        // Obtener el repositorio de EstadosKanban dentro de la transacción
+        const estadosRepo = manager.getRepository(EstadosKanban);
+
+        // Buscar el estado a eliminar junto con su tablero y propietario
+        const estadoEncontrado = await estadosRepo.findOne({
+          where: {
+            idEstadoKanban: idEstado,
+            estadoActivo: true,
+            tablero: {
+              propietario: {
+                idUsuario: idSolicitante,
+              },
+              tableroActivo: true,
+            },
+          },
+          //relations especifica las relaciones que se deben cargar junto con la entidad principal.
+          relations: ['tablero', 'tablero.propietario'],
+        });
+
+        // Validar existencia y propiedad del estado
+        if (!estadoEncontrado) {
+          throw new NotFoundException('No se encontró el estado solicitado');
+        }
+
+        // Contar la cantidad de estados activos en el tablero para asegurarse de que no se elimine el último estado activo
+        const cantidadEstadosActivos = await estadosRepo.count({
+          where: {
+            estadoActivo: true,
+            tablero: {
+              idTablero: estadoEncontrado.tablero.idTablero,
+            },
+          },
+        });
+
+        // Validar que no sea el último estado activo para evitar dejar el tablero sin estados
+        if (cantidadEstadosActivos <= 1) {
+          throw new ConflictException(
+            'No se puede eliminar el último estado del tablero',
+          );
+        }
+
+        //PENDIENTE: Validar si se proporciona un idEstadoDestino para reasignar tareas.
+        if (eliminarEstadoDto.idEstadoDestino !== undefined) {
+          throw new BadRequestException(
+            'La reasignación de tareas aún no está conectada al módulo de tareas',
+          );
+        }
+
+        // Marcar el estado como inactivo en lugar de eliminarlo físicamente
+        estadoEncontrado.estadoActivo = false;
+        await estadosRepo.save(estadoEncontrado);
+
+        // Obtener los estados activos restantes
+        const estadosActivos = await estadosRepo.find({
+          where: {
+            estadoActivo: true,
+            tablero: {
+              idTablero: estadoEncontrado.tablero.idTablero,
+            },
+          },
+          order: {
+            posicionEstado: 'ASC',
+          },
+        });
+
+        // Mover temporalmente las posiciones para evitar conflictos
+        for (const estado of estadosActivos) {
+          await estadosRepo.update(estado.idEstadoKanban, {
+            posicionEstado: estado.posicionEstado + 100,
+          });
+        }
+
+        // Asignar nuevamente posiciones consecutivas de manera que no queden huecos en la numeración de los estados activos
+        for (let i = 0; i < estadosActivos.length; i++) {
+          await estadosRepo.update(estadosActivos[i].idEstadoKanban, {
+            posicionEstado: i + 1,
+          });
+        }
+
+        // Retornar el estado eliminado (inactivo) para confirmar la operación
+        return estadoEncontrado;
       },
     );
   }

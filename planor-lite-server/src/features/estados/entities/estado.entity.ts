@@ -14,7 +14,7 @@ import { Tableros } from '../../tableros/entities/tablero.entity';
 @Entity({ name: 'estadosKanban' })
 @Check(`posicionEstado BETWEEN 1 AND 1000`)
 @Unique('UQ_tablero_nombreEstado', ['tablero', 'nombreEstado'])
-@Unique('UQ_tablero_posicionEstado', ['tablero', 'posicionEstado'])
+//@Unique('UQ_tablero_posicionEstado', ['tablero', 'posicionEstado'])
 export class EstadosKanban {
   @PrimaryGeneratedColumn({
     type: 'int',

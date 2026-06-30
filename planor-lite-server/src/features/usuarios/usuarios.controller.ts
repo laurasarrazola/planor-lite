@@ -213,7 +213,6 @@ export class UsuariosController {
     @GetUser('idUsuario') idUsuarioSolicitante: number,
     @Body() cambiarContrasenaDto: CambiarContrasenaDto,
   ) {
-    console.log(idUsuarioSolicitante, cambiarContrasenaDto);
     if (!cambiarContrasenaDto || !cambiarContrasenaDto.contrasenaActual) {
       throw new BadRequestException('contrasenaActual es requerida');
     }

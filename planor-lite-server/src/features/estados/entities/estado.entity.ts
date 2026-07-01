@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { Tableros } from '../../tableros/entities/tablero.entity';
 
-@Entity({ name: 'estadosKanban' })
+@Entity({ name: 'estados_kanban' })
 @Check(`posicionEstado BETWEEN 1 AND 1000`)
 @Unique('UQ_tablero_nombreEstado', ['tablero', 'nombreEstado'])
 //@Unique('UQ_tablero_posicionEstado', ['tablero', 'posicionEstado'])

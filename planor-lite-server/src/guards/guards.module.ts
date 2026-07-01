@@ -5,11 +5,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 // Guards
 import { AuthGuard } from './auth/auth.guard';
 import { UsuariosModule } from '../features/usuarios/usuarios.module';
+import { SesionesModule } from '../features/sesiones/sesiones.module';
 
 @Global()
 @Module({
   imports: [
     UsuariosModule,
+    SesionesModule,
     //Configura JWT dinámicamente usando .env
     JwtModule.registerAsync({
       imports: [ConfigModule],

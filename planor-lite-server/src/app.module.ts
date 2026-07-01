@@ -18,6 +18,7 @@ import { AuthModule } from './features/auth/auth.module';
 import { TablerosModule } from './features/tableros/tableros.module';
 import { GuardsModule } from './guards/guards.module';
 import { EstadosModule } from './features/estados/estados.module';
+import { SesionesModule } from './features/sesiones/sesiones.module';
 
 /* El decorador @Module() marca una clase como módulo de NestJS y declara su metadato principal: imports, controllers, providers y exports. Sirve para agrupar funcionalidad, definir el alcance del contenedor de inyección de dependencias y exponer servicios entre módulos. */
 @Module({
@@ -71,6 +72,7 @@ import { EstadosModule } from './features/estados/estados.module';
     TablerosModule,
     AuthModule,
     EstadosModule,
+    SesionesModule,
   ],
   /* controllers es un array que declara los controladores que se cargan en este módulo, se crea automáticamente al crear el módulo con NestJS CLI */
   controllers: [AppController],

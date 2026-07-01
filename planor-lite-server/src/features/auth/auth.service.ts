@@ -4,15 +4,25 @@ import { UsuariosService } from '../usuarios/usuarios.service';
 import * as bcrypt from 'bcrypt';
 import { RespuestaLoginDto } from './dto/respuesta-login.dto';
 import { JwtService } from '@nestjs/jwt';
+import type { Request } from 'express';
 import { LoginDto } from './dto/login.dto';
-import { ConfigService } from '@nestjs/config/dist/config.service';
+import { ConfigService } from '@nestjs/config';
+import { SesionesService } from '../sesiones/sesiones.service';
 
+// Se crea la interface para definir la estructura del payload del JWT, que contiene el ID del usuario (sub) y su correo electrónico (email).
+interface PayloadTokenJwt {
+  sub: number;
+  email: string;
+  iat: number;
+  exp: number;
+}
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usuariosService: UsuariosService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly sesionesService: SesionesService,
   ) {}
 
   /* =============== LOGIN DE USUARIO =============== */
@@ -52,6 +62,44 @@ export class AuthService {
       token,
       email: usuarioLogin.email,
       idUsuario: usuarioLogin.idUsuario,
+    };
+  }
+
+  /* =============== LOGOUT DE USUARIO =============== */
+  async cerrarSesion(request: Request): Promise<{ mensaje: string }> {
+    // Obtener el encabezado Authorization
+    const encabezadoAutorizacion: string | undefined =
+      request.headers.authorization;
+
+    if (!encabezadoAutorizacion) {
+      throw new UnauthorizedException('Token no proporcionado');
+    }
+
+    // Separar "Bearer" del token
+    const partesDelEncabezado: string[] = encabezadoAutorizacion.split(' ');
+
+    if (partesDelEncabezado.length !== 2) {
+      throw new UnauthorizedException('Formato del token inválido');
+    }
+
+    const token: string = partesDelEncabezado[1];
+
+    // Leer el contenido del JWT
+    const payloadDecodificado: PayloadTokenJwt | null =
+      this.jwtService.decode(token);
+
+    if (payloadDecodificado === null) {
+      throw new UnauthorizedException('Token inválido');
+    }
+
+    // Obtener fecha de expiración
+    const fechaExpiracion: Date = new Date(payloadDecodificado.exp * 1000);
+
+    // Guardar token en la blacklist
+    await this.sesionesService.guardarTokenInvalidado(token, fechaExpiracion);
+
+    return {
+      mensaje: 'Sesión cerrada correctamente',
     };
   }
 }

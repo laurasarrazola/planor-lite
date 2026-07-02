@@ -18,6 +18,7 @@ export class CrearTareaDto {
     required: true,
     minimum: 1,
   })
+  @Transform(({ value }) => Number(value))
   @IsInt()
   @Min(1, {
     message:
@@ -64,6 +65,9 @@ export class CrearTareaDto {
     required: false,
     enum: ['baja', 'media', 'alta'],
   })
+  @Transform(({ value }: { value: unknown }) =>
+    value === '' || value === null ? undefined : value,
+  )
   @IsOptional()
   @IsEnum(['baja', 'media', 'alta'], {
     message: 'La prioridad debe ser baja, media o alta.',
@@ -77,6 +81,9 @@ export class CrearTareaDto {
     type: String,
     format: 'date-time',
   })
+  @Transform(({ value }: { value: unknown }) =>
+    value === '' || value === null ? undefined : value,
+  )
   @IsOptional()
   @IsDateString(
     {},

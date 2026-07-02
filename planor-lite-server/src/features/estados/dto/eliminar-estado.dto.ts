@@ -1,9 +1,9 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsBoolean, IsInt, IsOptional, Min } from 'class-validator';
 
 export class EliminarEstadoDto {
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: 'Confirmación explícita para eliminar el estado',
     example: true,
   })
@@ -28,6 +28,9 @@ export class EliminarEstadoDto {
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  @Min(1)
+  @Min(1, {
+    message:
+      'El identificador del estado destino debe ser un número entero mayor o igual a 1.',
+  })
   idEstadoDestino?: number;
 }

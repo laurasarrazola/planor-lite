@@ -8,8 +8,10 @@ import {
   RelationId,
   Check,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { Tableros } from '../../tableros/entities/tablero.entity';
+import { Tareas } from '../../tareas/entities/tarea.entity';
 
 @Entity({ name: 'estados_kanban' })
 @Check(`posicionEstado BETWEEN 1 AND 1000`)
@@ -29,6 +31,9 @@ export class EstadosKanban {
   })
   @JoinColumn({ name: 'idTablero' })
   tablero!: Tableros;
+
+  @OneToMany(() => Tareas, (tarea) => tarea.estadoKanban)
+  tareas!: Tareas[];
 
   @RelationId((estado: EstadosKanban) => estado.tablero)
   idTablero!: number;

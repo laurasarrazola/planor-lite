@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Get,
   Body,
   UseGuards,
   Param,
@@ -42,14 +43,8 @@ export class TareasController {
     schema: {
       type: 'object',
       properties: {
-        idEstadoKanban: {
-          type: 'number',
-          example: 1,
-        },
-        titulo: {
-          type: 'string',
-          example: 'Diseñar pantalla de inicio',
-        },
+        idEstadoKanban: { type: 'number', example: 1 },
+        titulo: { type: 'string', example: 'Diseñar pantalla de inicio' },
         descripcion: {
           type: 'string',
           example: 'Crear el diseño inicial de la pantalla principal.',
@@ -76,6 +71,34 @@ export class TareasController {
   ): Promise<Tareas> {
     return await this.tareasService.crearTarea(
       crearTareaDto,
+      usuario.idUsuario,
+      idTablero,
+    );
+  }
+
+  /* ========== VER TAREAS POR ESTADO ========== */
+  @ApiOperation({
+    summary: 'Ver tareas por estado',
+    description:
+      'Obtiene todas las tareas activas dentro de un estado del tablero.',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Tareas obtenidas exitosamente.',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'No se pudieron obtener las tareas.',
+  })
+  @Get('/estado/:idEstadoKanban')
+  @UseGuards(AuthGuard)
+  async verTareasPorEstado(
+    @GetUser() usuario: Usuarios,
+    @Param('idEstadoKanban') idEstadoKanban: number,
+    @Param('idTablero') idTablero: number,
+  ): Promise<Tareas[]> {
+    return await this.tareasService.verTareasPorEstado(
+      idEstadoKanban,
       usuario.idUsuario,
       idTablero,
     );

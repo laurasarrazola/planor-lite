@@ -13,6 +13,7 @@ import { ObtenerUsuariosDto } from './dto/obtener-usuarios.dto';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
 import { CambiarContrasenaDto } from './dto/cambiar-contrasena.dto';
 import { EliminarUsuarioDto } from './dto/eliminar-usuario.dto';
+import { RespuestaUsuarioDto } from './dto/respuesta-usuario.dto';
 
 // @Injectable() marca la clase para la inyección de dependencias, se crea automáticamente con el CLI.
 @Injectable()
@@ -27,15 +28,100 @@ export class UsuariosService {
     private readonly usuariosRepository: Repository<Usuarios>,
   ) {}
 
+  /* =============== MÉTODO REUTILIZABLE PARA OBTENER USUARIO ACTIVO =============== */
+  /**
+   * Obtiene un usuario activo por su ID, permitiendo seleccionar únicamente los campos necesarios.
+   * @param {number} idUsuario - Identificador del usuario.
+   * @param {(keyof Usuarios)[]} [select] - Campos específicos a recuperar.
+   * @returns {Promise<Usuarios>} - Usuario activo encontrado.
+   * @throws {NotFoundException} Cuando el usuario no existe o está inactivo.
+   */
+  private async obtenerUsuarioActivo(
+    idUsuario: number,
+    select?: (keyof Usuarios)[],
+  ): Promise<Usuarios> {
+    const usuarioEncontrado = await this.usuariosRepository.findOne({
+      where: {
+        idUsuario,
+        usuarioActivo: true,
+      },
+      select,
+    });
+
+    if (!usuarioEncontrado) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    return usuarioEncontrado;
+  }
+
+  /* =============== MÉTODO REUTILIZABLE PARA VALIDAR COINCIDENCIA DE CONTRASEÑAS =============== */
+  /**
+   * Valida que una contraseña y su confirmación sean iguales.
+   * @param {string} contrasena - Contraseña a validar.
+   * @param {string} confirmacion - Confirmación de la contraseña.
+   * @param {string} mensaje - Mensaje de error cuando las contraseñas no coinciden.
+   * @returns {void}
+   */
+  private validarCoincidenciaContrasenas(
+    contrasena: string,
+    confirmacion: string,
+    mensaje: string,
+  ): void {
+    if (contrasena !== confirmacion) {
+      throw new BadRequestException(mensaje);
+    }
+  }
+
+  /* =============== MÉTODO REUTILIZABLE PARA VALIDAR CONTRASEÑA DEL USUARIO =============== */
+  /**
+   * Valida que una contraseña ingresada coincida con el hash almacenado.
+   * @param {string} contrasenaIngresada - Contraseña proporcionada por el usuario.
+   * @param {string} hash - Hash de la contraseña almacenado en la base de datos.
+   * @param {string} mensaje - Mensaje de error cuando la contraseña es incorrecta.
+   * @returns {Promise<void>}
+   */
+  private async validarContrasenaUsuario(
+    contrasenaIngresada: string,
+    hash: string,
+    mensaje: string,
+  ): Promise<void> {
+    const coincide = await bcrypt.compare(contrasenaIngresada, hash);
+
+    if (!coincide) {
+      throw new BadRequestException(mensaje);
+    }
+  }
+
+  /* =============== MÉTODO REUTILIZABLE PARA CONSTRUIR LA RESPUESTA DEL USUARIO =============== */
+  /**
+   * Construye un objeto con los datos del usuario, excluyendo información sensible como la contraseña.
+   * @param {Usuarios} usuario - Entidad del usuario obtenida desde la base de datos.
+   * @returns {RespuestaUsuarioDto} Objeto con los datos públicos del usuario.
+   */
+  private construirRespuestaUsuario(usuario: Usuarios): RespuestaUsuarioDto {
+    return {
+      idUsuario: usuario.idUsuario,
+      nombreUsuario: usuario.nombreUsuario,
+      apellidoUsuario: usuario.apellidoUsuario,
+      email: usuario.email,
+      fechaRegistro: usuario.fechaRegistro,
+      usuarioActivo: usuario.usuarioActivo,
+      rolSistema: usuario.rolSistema,
+    };
+  }
+
   /* =============== CREAR USUARIO =============== */
   /**
    * Crea un nuevo usuario en el sistema usando el modelo de datos del DTO.
    * @param {CrearUsuarioDto} crearUsuarioDto - información del usuario
-   * @returns {Promise<Usuarios>} - Promesa que se resuelve con el usuario creado.
+   * @returns {Promise<RespuestaUsuarioDto>} - Promesa que se resuelve con el usuario creado.
    */
 
   //crearUsuario recibe el DTO y devuelve una promesa que se resuelve con el usuario creado.
-  async crearUsuario(crearUsuarioDto: CrearUsuarioDto): Promise<Usuarios> {
+  async crearUsuario(
+    crearUsuarioDto: CrearUsuarioDto,
+  ): Promise<RespuestaUsuarioDto> {
     // Validar que el email no esté previamente registrado
     const usuarioExistente = await this.usuariosRepository.findOneBy({
       email: crearUsuarioDto.email,
@@ -46,12 +132,12 @@ export class UsuariosService {
       );
     }
 
-    // Validar que la contraseña y la confirmación coincidan
-    if (crearUsuarioDto.contrasena !== crearUsuarioDto.confirmarContrasena) {
-      throw new BadRequestException(
-        'La contraseña y la confirmación no coinciden',
-      );
-    }
+    // Validar que la contraseña y la confirmación coincidan mediante el método reutilizable.
+    this.validarCoincidenciaContrasenas(
+      crearUsuarioDto.contrasena,
+      crearUsuarioDto.confirmarContrasena,
+      'La contraseña y la confirmación no coinciden',
+    );
 
     // Hashea la contraseña
     const hashed = await bcrypt.hash(crearUsuarioDto.contrasena, 10);
@@ -59,17 +145,10 @@ export class UsuariosService {
     const usuarioNuevo = this.usuariosRepository.create(crearUsuarioDto);
     usuarioNuevo.contrasena = hashed;
 
-    // Guarda el nuevo usuario en la base de datos con el método save() de TypeORM. Luego, se desestructura el objeto guardado para eliminar la contraseña antes de devolverlo.
+    // Guarda el nuevo usuario en la base de datos con el método save() de TypeORM.
     const usuarioGuardado = await this.usuariosRepository.save(usuarioNuevo);
-    return {
-      idUsuario: usuarioGuardado.idUsuario,
-      nombreUsuario: usuarioGuardado.nombreUsuario,
-      apellidoUsuario: usuarioGuardado.apellidoUsuario,
-      email: usuarioGuardado.email,
-      fechaRegistro: usuarioGuardado.fechaRegistro,
-      usuarioActivo: usuarioGuardado.usuarioActivo,
-      rolSistema: usuarioGuardado.rolSistema,
-    };
+
+    return this.construirRespuestaUsuario(usuarioGuardado);
 
     //si se quisiera incluir la contraseña en la respuesta, se devolvería el usuario guardado completo sin desestructurar.
     // const usuarioGuardadoCompleto = await this.usuariosRepository.save(usuarioNuevo);
@@ -80,11 +159,11 @@ export class UsuariosService {
   /**
    * Método para obtener todos los usuarios del sistema.
    * @param {void} - No recibe parámetros.
-   * @returns {Promise<Usuarios[]>} - Promesa que resuelve con un array de usuarios.
+   * @returns {Promise<RespuestaUsuarioDto[]>} - Promesa que resuelve con un array de usuarios.
    */
 
   /* Obtiene con find() de usuariosRepository los datos de la bd, no se incluye la contraseña en el select */
-  async obtenerUsuarios(): Promise<Usuarios[]> {
+  async obtenerUsuarios(): Promise<RespuestaUsuarioDto[]> {
     const usuariosObtenidos = await this.usuariosRepository.find({
       select: [
         'idUsuario',
@@ -94,19 +173,21 @@ export class UsuariosService {
         'usuarioActivo',
         'rolSistema',
         'fechaRegistro',
-        'fechaActualizacion',
       ],
     });
-    return usuariosObtenidos;
+
+    return usuariosObtenidos.map((usuario) =>
+      this.construirRespuestaUsuario(usuario),
+    );
   }
 
   /* =============== OBTENER USUARIOS POR ID =============== */
   /**
    * Método para obtener un usuario por su ID.
    * @param {number} id - ID del usuario a obtener.
-   * @returns {Promise<Usuarios>} - Promesa que resuelve con el usuario encontrado.
+   * @returns {Promise<RespuestaUsuarioDto>} - Promesa que resuelve con el usuario encontrado.
    */
-  async obtenerUsuarioPorId(id: number): Promise<Usuarios> {
+  async obtenerUsuarioPorId(id: number): Promise<RespuestaUsuarioDto> {
     const usuarioObtenido = await this.usuariosRepository.findOne({
       where: { idUsuario: id },
       select: [
@@ -117,26 +198,25 @@ export class UsuariosService {
         'usuarioActivo',
         'rolSistema',
         'fechaRegistro',
-        'fechaActualizacion',
       ],
     });
     if (!usuarioObtenido) {
       throw new NotFoundException('Usuario no encontrado');
     }
-    return usuarioObtenido;
+    return this.construirRespuestaUsuario(usuarioObtenido);
   }
 
   /* =============== OBTENER USUARIOS CON FILTROS (QUERY PARAMS) =============== */
   /**
    * Método para obtener usuarios con filtros (Query Params)
    * @param {ObtenerUsuariosDto} filtros - DTO con los filtros para la consulta.
-   * @returns {Promise<Usuarios[]>} - Promesa que resuelve con array de usuarios que cumplen los filtros.
+   * @returns {Promise<RespuestaUsuarioDto[]>} - Promesa que resuelve con array de usuarios que cumplen los filtros.
    */
 
   //La función obtenerUsuariosConFiltros recibe la estructura de obtenerUsuariosDto a través de la variable 'filtros' para la consulta y devuelve una promesa que resuelve con un array de usuarios que cumplen los filtros.
   async obtenerUsuariosConFiltros(
     filtros: ObtenerUsuariosDto,
-  ): Promise<Usuarios[]> {
+  ): Promise<RespuestaUsuarioDto[]> {
     //constructorConsulta es un objeto dinámico que arma condiciones según filtros usando QueryBuilder de TypeORM para generar SQL.
     const constructorConsulta = this.usuariosRepository
       // .createQueryBuilder inicia la consulta con el alias 'usuario'.
@@ -187,8 +267,9 @@ export class UsuariosService {
       });
     }
 
-    // Ejecuta la consulta con getMany() y devuelve el resultado.
-    return await constructorConsulta.getMany();
+    const usuarios = await constructorConsulta.getMany();
+
+    return usuarios.map((usuario) => this.construirRespuestaUsuario(usuario));
   }
 
   /* =============== ACTUALIZAR USUARIO =============== */
@@ -196,7 +277,7 @@ export class UsuariosService {
    * Método para actualizar un usuario existente.
    * @param {number} id - ID del usuario a actualizar.
    * @param {ActualizarUsuarioDto} actualizarUsuarioDto - DTO con los datos a actualizar.
-   * @returns {Promise<Usuarios>} - Promesa que resuelve con el usuario actualizado.
+   * @returns {Promise<RespuestaUsuarioDto>} - Promesa que resuelve con el usuario actualizado.
    */
 
   async actualizarUsuario(
@@ -204,17 +285,13 @@ export class UsuariosService {
     actualizarUsuarioDto: ActualizarUsuarioDto,
     idUsuarioSolicitante: number,
     rolUsuarioSolicitante: 'admin' | 'usuario',
-  ): Promise<Usuarios> {
+  ): Promise<RespuestaUsuarioDto> {
     if (id !== idUsuarioSolicitante && rolUsuarioSolicitante !== 'admin') {
       throw new ForbiddenException('No autorizado para modificar otro usuario');
     }
 
-    const usuarioAActualizar = await this.usuariosRepository.findOneBy({
-      idUsuario: id,
-    });
-    if (!usuarioAActualizar) {
-      throw new NotFoundException('Usuario no encontrado');
-    }
+    // trae el método reutilizable obtenerUsuarioActivo.
+    await this.obtenerUsuarioActivo(id);
 
     const cambios = {
       nombreUsuario: actualizarUsuarioDto.nombreUsuario,
@@ -230,47 +307,45 @@ export class UsuariosService {
   /**
    * Método para cambiar la contraseña de un usuario.
    * @param {number} id - ID del usuario cuya contraseña se va a cambiar.
-   * @param {CambiarContrasenaDto} cambiarContrasenaDto - DTO con la contraseña actual, nueva contraseña y confirmación de nueva contraseña.
-   * @returns {Promise<void>} - Promesa que se resuelve cuando la contraseña ha sido cambiada exitosamente.
+   * @param {CambiarContrasenaDto} dto - DTO con la contraseña actual, nueva contraseña y confirmación de nueva contraseña.
    */
 
   async cambiarContrasena(
     id: number,
     dto: CambiarContrasenaDto,
-  ): Promise<Usuarios> {
-    //findOne es un método de TypeORM que busca un registro específico. where filtra un usuario cuyo campo idUsuario sea igual a id y select especifica que campos del usuario se deben devolver.
-    const usuarioActualizarContrasena = await this.usuariosRepository.findOne({
-      where: { idUsuario: id },
-      select: ['idUsuario', 'contrasena', 'usuarioActivo'],
-    });
-    // Manejo si no se encuentra el usuario con la id proporcionada.
-    if (!usuarioActualizarContrasena) {
-      throw new NotFoundException('Usuario no encontrado');
-    }
-    // Manejo si el usuario no tiene contraseña almacenada (puede ser null o undefined).
+  ): Promise<RespuestaUsuarioDto> {
+    // Se obtiene el usuario activo por su ID usando el método reutilizable obtenerUsuarioActivo, seleccionando solo los campos necesarios.
+    const usuarioActualizarContrasena = await this.obtenerUsuarioActivo(id, [
+      'idUsuario',
+      'nombreUsuario',
+      'apellidoUsuario',
+      'email',
+      'fechaRegistro',
+      'usuarioActivo',
+      'rolSistema',
+      'contrasena',
+    ]);
+
+    // Manejo si el usuario no tiene contraseña almacenada (puede ser null o undefined por registro con red social).
     if (!usuarioActualizarContrasena.contrasena) {
       throw new BadRequestException(
         'No hay contraseña almacenada para este usuario',
       );
     }
-    //Manejo si el usuario está inactivo
-    if (usuarioActualizarContrasena.usuarioActivo === false) {
-      throw new ForbiddenException('usuario desactivado');
-    }
-    // bcrypt.compare() compara la contraseña actual (dto.contrasenaActual) con el hash almacenado en la base de datos (usuario.contrasena) y maneja el error.
-    const coincide = await bcrypt.compare(
+
+    // Valida que la contraseña actual ingresada coincida con la almacenada mediante el método reutilizable.
+    await this.validarContrasenaUsuario(
       dto.contrasenaActual,
       usuarioActualizarContrasena.contrasena,
+      'Contraseña actual incorrecta',
     );
-    if (!coincide) {
-      throw new BadRequestException('Contraseña actual incorrecta');
-    }
-    // Manejo si la nueva contraseña y la confirmación no coinciden.
-    if (dto.contrasenaNueva !== dto.confirmarContrasenaNueva) {
-      throw new BadRequestException(
-        'La nueva contraseña y la confirmación no coinciden, debes ser iguales',
-      );
-    }
+
+    // Validar que la nueva contraseña y su confirmación coincidan mediante el método reutilizable.
+    this.validarCoincidenciaContrasenas(
+      dto.contrasenaNueva,
+      dto.confirmarContrasenaNueva,
+      'La nueva contraseña y la confirmación no coinciden, deben ser iguales',
+    );
     // Si todo es correcto, se hashea la nueva contraseña y se actualiza el campo contrasena del usuario. Luego, se guarda el usuario actualizado en la base de datos con save() y se devuelve el usuario actualizado sin la contraseña.
     usuarioActualizarContrasena.contrasena = await bcrypt.hash(
       dto.contrasenaNueva,
@@ -280,36 +355,27 @@ export class UsuariosService {
     const contrasenaActualizada = await this.usuariosRepository.save(
       usuarioActualizarContrasena,
     );
-    return {
-      idUsuario: contrasenaActualizada.idUsuario,
-      nombreUsuario: contrasenaActualizada.nombreUsuario,
-      apellidoUsuario: contrasenaActualizada.apellidoUsuario,
-      email: contrasenaActualizada.email,
-      fechaRegistro: contrasenaActualizada.fechaRegistro,
-      usuarioActivo: contrasenaActualizada.usuarioActivo,
-      rolSistema: contrasenaActualizada.rolSistema,
-    };
+
+    return this.construirRespuestaUsuario(contrasenaActualizada);
   }
 
   /* =============== ELIMINAR USUARIO =============== */
   /**
    * Método para eliminar un usuario por su ID.
    * @param {number} id - ID del usuario a eliminar.
-   * @param {EliminarUsuarioDto} eliminarUsuarioDto - DTO con la contraseña actual del usuario.
-   * @returns {Promise<void>} - Promesa que se resuelve cuando el usuario ha sido eliminado exitosamente.
+   * @param {EliminarUsuarioDto} dto - DTO con la contraseña actual del usuario.
+   * @returns {Promise<{ message: string }>} - Promesa que se resuelve cuando el usuario ha sido eliminado exitosamente.
    */
 
-  async eliminarUsuario(id: number, dto: EliminarUsuarioDto) {
-    // Selecciono un usuario por su id trayendo solo el idUsuario y la contraseña.
-    const usuarioEliminar = await this.usuariosRepository.findOne({
-      where: { idUsuario: id },
-      select: ['idUsuario', 'contrasena'],
-    });
-
-    // Manejo si no se encuentra el usuario con la id proporcionada.
-    if (!usuarioEliminar) {
-      throw new NotFoundException('Usuario no encontrado');
-    }
+  async eliminarUsuario(
+    id: number,
+    dto: EliminarUsuarioDto,
+  ): Promise<{ message: string }> {
+    const usuarioEliminar = await this.obtenerUsuarioActivo(id, [
+      'idUsuario',
+      'contrasena',
+      'usuarioActivo',
+    ]);
 
     // Manejo si el usuario no tiene contraseña almacenada (puede ser null o undefined) por registro con redes sociales.
     if (!usuarioEliminar.contrasena) {
@@ -317,14 +383,13 @@ export class UsuariosService {
         'No hay contraseña almacenada para este usuario',
       );
     }
-    // compara la contraseña actual (dto.contrasenaActual) con el hash almacenado en la base de datos (usuarioEliminar.contrasena)
-    const contrasenaEliminar = await bcrypt.compare(
+
+    // Valida que la contraseña ingresada coincida con la almacenada mediante el método reutilizable.
+    await this.validarContrasenaUsuario(
       dto.contrasenaActual,
       usuarioEliminar.contrasena,
+      'La contraseña es incorrecta',
     );
-    if (!contrasenaEliminar) {
-      throw new BadRequestException('La contraseña es incorrecta');
-    }
 
     usuarioEliminar.usuarioActivo = false;
     await this.usuariosRepository.save(usuarioEliminar);

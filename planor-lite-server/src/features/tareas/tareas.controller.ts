@@ -18,6 +18,7 @@ import { TareasService } from './tareas.service';
 import { AuthGuard } from '../../guards/auth/auth.guard';
 import { GetUser } from '../../common/decorators/get-user.decorator';
 import { Usuarios } from '../usuarios/entity/usuario.entity';
+import { RespuestaTareaDto } from './dto/respuesta-tarea.dto';
 import { CrearTareaDto } from './dto/crear-tarea.dto';
 import { Tareas } from './entities/tarea.entity';
 
@@ -96,9 +97,34 @@ export class TareasController {
     @GetUser() usuario: Usuarios,
     @Param('idEstadoKanban') idEstadoKanban: number,
     @Param('idTablero') idTablero: number,
-  ): Promise<Tareas[]> {
+  ): Promise<RespuestaTareaDto[]> {
     return await this.tareasService.verTareasPorEstado(
       idEstadoKanban,
+      usuario.idUsuario,
+      idTablero,
+    );
+  }
+
+  /* ========== VER TAREAS DEL TABLERO ========== */
+  @ApiOperation({
+    summary: 'Ver tareas del tablero',
+    description: 'Obtiene todas las tareas activas dentro de un tablero.',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Tareas obtenidas exitosamente.',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'No se pudieron obtener las tareas.',
+  })
+  @Get('/tablero/:idTablero')
+  @UseGuards(AuthGuard)
+  async verTareasTablero(
+    @GetUser() usuario: Usuarios,
+    @Param('idTablero') idTablero: number,
+  ): Promise<RespuestaTareaDto[]> {
+    return await this.tareasService.verTareasTablero(
       usuario.idUsuario,
       idTablero,
     );

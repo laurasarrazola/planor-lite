@@ -5,10 +5,32 @@ import { CrearTareaDto } from './dto/crear-tarea.dto';
 import { EstadosKanban } from '../estados/entities/estado.entity';
 import { Tableros } from '../tableros/entities/tablero.entity';
 import { NotFoundException, ConflictException } from '@nestjs/common';
+import { RespuestaTareaDto } from './dto/respuesta-tarea.dto';
 
 @Injectable()
 export class TareasService {
   constructor(private readonly dataSource: DataSource) {}
+  /* ========== MÉTODO REUTILIZABLE PARA CONSTRUIR LA RESPUESTA DE LA TAREA ========== */
+  /**
+   * Construye un objeto con la información pública de la tarea.
+   * @param {Tareas} tarea - Entidad de la tarea obtenida desde la base de datos.
+   * @returns {RespuestaTareaDto} Objeto con los datos de la tarea.
+   */
+  private construirRespuestaTarea(tarea: Tareas): RespuestaTareaDto {
+    return {
+      idTarea: tarea.idTarea,
+      titulo: tarea.titulo,
+      descripcion: tarea.descripcion,
+      prioridad: tarea.prioridad,
+      fechaVencimientoTarea: tarea.fechaVencimientoTarea,
+      ordenEnEstado: tarea.ordenEnEstado,
+      estado: {
+        idEstadoKanban: tarea.estadoKanban.idEstadoKanban,
+        nombreEstado: tarea.estadoKanban.nombreEstado,
+      },
+    };
+  }
+
   /* ========== METODO REUTILIZABLE PARA OBTENER TABLERO ACTIVO ========== */
   /**
    * Busca un tablero activo que pertenezca al usuario autenticado.
@@ -281,9 +303,11 @@ export class TareasService {
     idEstadoKanban: number,
     idSolicitante: number,
     idTablero: number,
-  ): Promise<Tareas[]> {
+  ): Promise<RespuestaTareaDto[]> {
     return await this.dataSource.transaction(
-      async (administradorTransaccion: EntityManager): Promise<Tareas[]> => {
+      async (
+        administradorTransaccion: EntityManager,
+      ): Promise<RespuestaTareaDto[]> => {
         // Traer el repositorio de tareas
         const repositorioTareas =
           administradorTransaccion.getRepository(Tareas);
@@ -302,15 +326,73 @@ export class TareasService {
           idTablero,
         );
 
-        // Obtener únicamente las tareas activas del estado.
-        return await repositorioTareas.find({
+        const tareas = await repositorioTareas.find({
           where: {
             tareaActiva: true,
             estadoKanban: {
               idEstadoKanban: estadoEncontrado.idEstadoKanban,
             },
           },
+          relations: {
+            estadoKanban: true,
+          },
+          order: {
+            ordenEnEstado: 'ASC',
+          },
         });
+
+        return tareas.map((tarea) => this.construirRespuestaTarea(tarea));
+      },
+    );
+  }
+
+  /* ========== VER TAREAS DEL TABLERO ========== */
+  /**
+   * Obtiene todas las tareas activas pertenecientes a un tablero.
+   * @param idSolicitante Identificador del usuario autenticado.
+   * @param idTablero Identificador del tablero.
+   * @returns {Promise<Tareas[]>}
+   */
+  async verTareasTablero(
+    idSolicitante: number,
+    idTablero: number,
+  ): Promise<RespuestaTareaDto[]> {
+    return await this.dataSource.transaction(
+      async (
+        administradorTransaccion: EntityManager,
+      ): Promise<RespuestaTareaDto[]> => {
+        // Repositorio de tareas
+        const repositorioTareas =
+          administradorTransaccion.getRepository(Tareas);
+
+        // Traer el tablero activo del propietario desde el método reutilizable obtenerTableroActivo.
+        await this.obtenerTableroActivo(
+          administradorTransaccion,
+          idSolicitante,
+          idTablero,
+        );
+
+        const tareas = await repositorioTareas.find({
+          where: {
+            tareaActiva: true,
+            estadoKanban: {
+              tablero: {
+                idTablero,
+              },
+            },
+          },
+          relations: {
+            estadoKanban: true,
+          },
+          order: {
+            estadoKanban: {
+              posicionEstado: 'ASC',
+            },
+            ordenEnEstado: 'ASC',
+          },
+        });
+
+        return tareas.map((tarea) => this.construirRespuestaTarea(tarea));
       },
     );
   }

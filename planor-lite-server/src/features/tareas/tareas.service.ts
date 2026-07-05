@@ -141,7 +141,6 @@ export class TareasService {
   private async obtenerTareaActiva(
     administradorTransaccion: EntityManager,
     idTarea: number,
-    idTablero: number,
   ): Promise<Tareas> {
     const repositorioTareas = administradorTransaccion.getRepository(Tareas);
 
@@ -149,11 +148,6 @@ export class TareasService {
       where: {
         idTarea,
         tareaActiva: true,
-        estadoKanban: {
-          tablero: {
-            idTablero,
-          },
-        },
       },
       relations: {
         estadoKanban: {
@@ -393,6 +387,41 @@ export class TareasService {
         });
 
         return tareas.map((tarea) => this.construirRespuestaTarea(tarea));
+      },
+    );
+  }
+
+  /* ========== VER DETALLE DE TAREA ========== */
+  /**
+   * Obtiene la información detallada de una tarea activa.
+   * @param idTarea Identificador de la tarea.
+   * @param idSolicitante Identificador del usuario autenticado.
+   * @param idTablero Identificador del tablero.
+   * @returns {Promise<RespuestaTareaDto>}
+   */
+  async verDetalleTarea(
+    idTarea: number,
+    idSolicitante: number,
+  ): Promise<RespuestaTareaDto> {
+    return await this.dataSource.transaction(
+      async (
+        administradorTransaccion: EntityManager,
+      ): Promise<RespuestaTareaDto> => {
+        // traer la tarea activa desde el método reutilizable obtenerTareaActiva.
+        const tareaEncontrada = await this.obtenerTareaActiva(
+          administradorTransaccion,
+          idTarea,
+        );
+
+        // traer el tablero activo del propietario desde el método reutilizable obtenerTableroActivo.
+        await this.obtenerTableroActivo(
+          administradorTransaccion,
+          idSolicitante,
+          tareaEncontrada.estadoKanban.tablero.idTablero,
+        );
+
+        // Construir la respuesta pública.
+        return this.construirRespuestaTarea(tareaEncontrada);
       },
     );
   }

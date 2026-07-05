@@ -129,4 +129,28 @@ export class TareasController {
       idTablero,
     );
   }
+
+  /* ========== VER DETALLE DE TAREA ========== */
+  @ApiOperation({
+    summary: 'Ver detalle de una tarea',
+    description:
+      'Obtiene la información detallada de una tarea activa perteneciente a un tablero.',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Detalle de la tarea obtenido exitosamente.',
+    type: RespuestaTareaDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'No se encontró la tarea solicitada.',
+  })
+  @Get('/:idTarea')
+  @UseGuards(AuthGuard)
+  async verDetalleTarea(
+    @GetUser() usuario: Usuarios,
+    @Param('idTarea') idTarea: number,
+  ): Promise<RespuestaTareaDto> {
+    return await this.tareasService.verDetalleTarea(idTarea, usuario.idUsuario);
+  }
 }

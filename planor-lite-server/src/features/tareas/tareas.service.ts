@@ -163,7 +163,7 @@ export class TareasService {
     return tareaEncontrada;
   }
 
-  /* ========== MÉTODO REUTILIZABLE PARA OBTENER VALIDAR LÍMITE DE 100 TAREAS ========== */
+  /* ========== MÉTODO REUTILIZABLE PARA VALIDAR LÍMITE DE 100 TAREAS ========== */
   /**
    * Valida que el estado no haya alcanzado el límite de tareas.
    * @param administradorTransaccion Administrador de la transacción.
@@ -214,7 +214,43 @@ export class TareasService {
       },
     });
 
-    return ultimaTarea ? ultimaTarea.ordenEnEstado + 1 : 1;
+    if (ultimaTarea) {
+      return ultimaTarea.ordenEnEstado + 1;
+    }
+
+    return 1;
+  }
+
+  /* ========== MÉTODO REUTILIZABLE PARA REORGANIZAR EL ORDEN DE LAS TAREAS ========== */
+  /**
+   * Reorganiza el orden consecutivo de las tareas activas de un estado.
+   * @param administradorTransaccion Administrador de la transacción.
+   * @param idEstadoKanban Identificador del estado.
+   */
+  private async reorganizarOrdenTareasEstado(
+    administradorTransaccion: EntityManager,
+    idEstadoKanban: number,
+  ): Promise<void> {
+    const repositorioTareas = administradorTransaccion.getRepository(Tareas);
+
+    const tareas = await repositorioTareas.find({
+      where: {
+        tareaActiva: true,
+        estadoKanban: {
+          idEstadoKanban,
+        },
+      },
+      order: {
+        ordenEnEstado: 'ASC',
+      },
+    });
+
+    // Reorganizar el orden de las tareas de manera consecutiva con base en su posición actual. Esto asegura que no haya huecos en la numeración del orden de las tareas dentro del estado.
+    for (let i = 0; i < tareas.length; i++) {
+      tareas[i].ordenEnEstado = i + 1;
+    }
+
+    await repositorioTareas.save(tareas);
   }
 
   /* ========== CREAR TAREA ========== */
@@ -425,4 +461,48 @@ export class TareasService {
       },
     );
   }
+
+  /* ========== ELIMINAR TAREA ========== */
+  /**
+   * Elimina lógicamente una tarea activa.
+   * @param idTarea Identificador de la tarea.
+   * @param idSolicitante Identificador del usuario autenticado.
+   */
+  async eliminarTarea(idTarea: number, idSolicitante: number): Promise<string> {
+    return await this.dataSource.transaction(
+      async (administradorTransaccion: EntityManager): Promise<string> => {
+        // Repositorio de tareas.
+        const repositorioTareas =
+          administradorTransaccion.getRepository(Tareas);
+
+        // traer la tarea activa desde el método reutilizable obtenerTareaActiva.
+        const tareaEncontrada = await this.obtenerTareaActiva(
+          administradorTransaccion,
+          idTarea,
+        );
+
+        // traer el tablero activo del propietario desde el método reutilizable obtenerTableroActivo.
+        await this.obtenerTableroActivo(
+          administradorTransaccion,
+          idSolicitante,
+          tareaEncontrada.estadoKanban.tablero.idTablero,
+        );
+
+        // Marcar la tarea como inactiva.
+        tareaEncontrada.tareaActiva = false;
+
+        await repositorioTareas.save(tareaEncontrada);
+
+        // Reorganizar el orden restante.
+        await this.reorganizarOrdenTareasEstado(
+          administradorTransaccion,
+          tareaEncontrada.estadoKanban.idEstadoKanban,
+        );
+
+        return 'tarea eliminada exitosamente';
+      },
+    );
+  }
 }
+
+//REVISAR POR QUE NO RESPONDE MENSAJE DE ELIMINACION EXITOSA

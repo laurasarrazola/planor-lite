@@ -297,11 +297,11 @@ export class EstadosKanbanService {
             estadosReordenados.splice(nuevaPosicion - 1, 0, estadoEncontrado);
 
             // PASO 3: Asignar posiciones definitivas
-            for (let indice = 0; indice < estadosReordenados.length; indice++) {
+            for (let i = 0; i < estadosReordenados.length; i++) {
               await repositorioEstados.update(
-                estadosReordenados[indice].idEstadoKanban,
+                estadosReordenados[i].idEstadoKanban,
                 {
-                  posicionEstado: indice + 1,
+                  posicionEstado: i + 1,
                 },
               );
             }

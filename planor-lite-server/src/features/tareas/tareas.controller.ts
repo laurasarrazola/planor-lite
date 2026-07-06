@@ -2,6 +2,7 @@ import {
   Controller,
   Post,
   Get,
+  Delete,
   Body,
   UseGuards,
   Param,
@@ -152,5 +153,28 @@ export class TareasController {
     @Param('idTarea') idTarea: number,
   ): Promise<RespuestaTareaDto> {
     return await this.tareasService.verDetalleTarea(idTarea, usuario.idUsuario);
+  }
+
+  /* ========== ELIMINAR TAREA ========== */
+  @ApiOperation({
+    summary: 'Eliminar tarea',
+    description:
+      'Realiza la eliminación lógica de una tarea perteneciente al usuario autenticado.',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Tarea eliminada exitosamente.',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'No se encontró la tarea solicitada.',
+  })
+  @Delete('/:idTarea')
+  @UseGuards(AuthGuard)
+  async eliminarTarea(
+    @GetUser() usuario: Usuarios,
+    @Param('idTarea') idTarea: number,
+  ): Promise<string> {
+    return await this.tareasService.eliminarTarea(idTarea, usuario.idUsuario);
   }
 }

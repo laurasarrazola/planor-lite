@@ -7,6 +7,7 @@ import {
   UseGuards,
   Param,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -176,5 +177,36 @@ export class TareasController {
     @Param('idTarea') idTarea: number,
   ): Promise<string> {
     return await this.tareasService.eliminarTarea(idTarea, usuario.idUsuario);
+  }
+
+  /* ========== BUSCAR TAREAS POR TÍTULO ========== */
+
+  @ApiOperation({
+    summary: 'Buscar tareas por título',
+    description:
+      'Busca tareas activas cuyo título coincida con el texto indicado.',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Tareas encontradas exitosamente.',
+    type: RespuestaTareaDto,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'No se encontró el tablero solicitado.',
+  })
+  @Get('/buscar/:idTablero')
+  @UseGuards(AuthGuard)
+  async buscarTareasPorTitulo(
+    @GetUser() usuario: Usuarios,
+    @Param('idTablero') idTablero: number,
+    @Query('titulo') titulo: string,
+  ): Promise<RespuestaTareaDto[]> {
+    return await this.tareasService.buscarTareasPorTitulo(
+      usuario.idUsuario,
+      idTablero,
+      titulo,
+    );
   }
 }

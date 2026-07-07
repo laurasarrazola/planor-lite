@@ -462,6 +462,69 @@ export class TareasService {
     );
   }
 
+  /* ========== BUSCAR TAREAS POR TÍTULO ========== */
+  /**
+   * Busca tareas activas por coincidencia en el título.
+   * @param idSolicitante Usuario autenticado.
+   * @param idTablero Tablero donde buscar.
+   * @param titulo Texto a buscar.
+   * @returns Lista de tareas encontradas.
+   */
+
+  // Se valida el tablero y luego se buscan tareas activas cuyo título
+  // contenga el texto indicado.
+  async buscarTareasPorTitulo(
+    idSolicitante: number,
+    idTablero: number,
+    titulo: string,
+  ): Promise<RespuestaTareaDto[]> {
+    return await this.dataSource.transaction(
+      async (
+        administradorTransaccion: EntityManager,
+      ): Promise<RespuestaTareaDto[]> => {
+        // Validar acceso al tablero.
+        await this.obtenerTableroActivo(
+          administradorTransaccion,
+          idSolicitante,
+          idTablero,
+        );
+
+        // Repositorio de tareas.
+        const repositorioTareas =
+          administradorTransaccion.getRepository(Tareas);
+
+        // Constructor dinámico de la consulta.
+        const constructorConsulta = repositorioTareas
+          .createQueryBuilder('tarea')
+          .leftJoinAndSelect('tarea.estadoKanban', 'estado')
+          .where('tarea.tareaActiva = true')
+          .andWhere('estado.IdTablero = :idTablero', {
+            idTablero,
+          });
+
+        // Buscar coincidencias por título.
+        if (titulo) {
+          constructorConsulta.andWhere('tarea.titulo LIKE :titulo', {
+            titulo: `%${titulo}%`,
+          });
+        }
+
+        // Ordenar por estado y posición.
+        constructorConsulta
+          .orderBy('estado.posicionEstado', 'ASC')
+          .addOrderBy('tarea.ordenEnEstado', 'ASC');
+
+        const tareas = await constructorConsulta.getMany();
+
+        if (!tareas.length) {
+          throw new NotFoundException('No se encuentra la tarea.');
+        }
+
+        return tareas.map((tarea) => this.construirRespuestaTarea(tarea));
+      },
+    );
+  }
+
   /* ========== ELIMINAR TAREA ========== */
   /**
    * Elimina lógicamente una tarea activa.
@@ -504,5 +567,3 @@ export class TareasService {
     );
   }
 }
-
-//REVISAR POR QUE NO RESPONDE MENSAJE DE ELIMINACION EXITOSA

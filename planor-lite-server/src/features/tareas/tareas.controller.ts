@@ -24,6 +24,8 @@ import { Usuarios } from '../usuarios/entity/usuario.entity';
 import { RespuestaTareaDto } from './dto/respuesta-tarea.dto';
 import { CrearTareaDto } from './dto/crear-tarea.dto';
 import { EditarTareaDto } from './dto/editar-tarea.dto';
+import { MoverTareaDto } from './dto/mover-tarea.dto';
+import { ReordenarTareaDto } from './dto/reordenar-tarea.dto';
 import { Tareas } from './entities/tarea.entity';
 
 @ApiTags('tareas')
@@ -240,6 +242,67 @@ export class TareasController {
   ): Promise<RespuestaTareaDto> {
     console.log(editarTareaDto);
     return await this.tareasService.editarTarea(
+      editarTareaDto,
+      idTarea,
+      usuario.idUsuario,
+    );
+  }
+
+  /* ========== MOVER TAREA ENTRE ESTADOS KANBAN ========== */
+  @ApiOperation({
+    summary: 'Mover tarea entre estados Kanban',
+    description:
+      'Permite mover una tarea de un estado Kanban a otro dentro del mismo tablero.',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Tarea movida exitosamente.',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'No se encontró la tarea solicitada.',
+  })
+  @Patch('/:idTarea/mover')
+  @UseGuards(AuthGuard)
+  async moverTarea(
+    @GetUser() usuario: Usuarios,
+    @Param('idTarea') idTarea: number,
+    @Body() moverTareaDto: MoverTareaDto,
+  ): Promise<RespuestaTareaDto> {
+    return this.tareasService.editarTarea(
+      moverTareaDto,
+      idTarea,
+      usuario.idUsuario,
+    );
+  }
+
+  /* ========== REORDENAR TAREA ========== */
+  @ApiOperation({
+    summary: 'Reordenar tarea',
+    description:
+      'Cambia la posición de una tarea dentro del mismo estado Kanban.',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Tarea reordenada exitosamente.',
+    type: RespuestaTareaDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'No se encontró la tarea solicitada.',
+  })
+  @Patch('/:idTarea/reordenar')
+  @UseGuards(AuthGuard)
+  async reordenarTarea(
+    @GetUser() usuario: Usuarios,
+    @Param('idTarea') idTarea: number,
+    @Body() reordenarTareaDto: ReordenarTareaDto,
+  ): Promise<RespuestaTareaDto> {
+    const editarTareaDto: EditarTareaDto = {
+      ordenEnEstado: reordenarTareaDto.ordenEnEstado,
+    };
+
+    return this.tareasService.editarTarea(
       editarTareaDto,
       idTarea,
       usuario.idUsuario,

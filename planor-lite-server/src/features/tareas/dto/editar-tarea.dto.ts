@@ -21,13 +21,10 @@ export class EditarTareaDto {
     if (typeof value !== 'string') {
       return undefined;
     }
-
     const texto = value.trim();
-
     if (texto === '') {
       return undefined;
     }
-
     return Number(texto);
   })
   @IsOptional()
@@ -48,13 +45,10 @@ export class EditarTareaDto {
     if (typeof value !== 'string') {
       return undefined;
     }
-
     const texto = value.trim();
-
     if (texto === '') {
       return undefined;
     }
-
     return Number(texto);
   })
   @IsOptional()

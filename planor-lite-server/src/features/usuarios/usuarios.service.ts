@@ -149,10 +149,6 @@ export class UsuariosService {
     const usuarioGuardado = await this.usuariosRepository.save(usuarioNuevo);
 
     return this.construirRespuestaUsuario(usuarioGuardado);
-
-    //si se quisiera incluir la contraseña en la respuesta, se devolvería el usuario guardado completo sin desestructurar.
-    // const usuarioGuardadoCompleto = await this.usuariosRepository.save(usuarioNuevo);
-    // return usuarioGuardadoCompleto;
   }
 
   /* =============== OBTENER USUARIOS =============== */
@@ -188,21 +184,16 @@ export class UsuariosService {
    * @returns {Promise<RespuestaUsuarioDto>} - Promesa que resuelve con el usuario encontrado.
    */
   async obtenerUsuarioPorId(id: number): Promise<RespuestaUsuarioDto> {
-    const usuarioObtenido = await this.usuariosRepository.findOne({
-      where: { idUsuario: id },
-      select: [
-        'idUsuario',
-        'nombreUsuario',
-        'apellidoUsuario',
-        'email',
-        'usuarioActivo',
-        'rolSistema',
-        'fechaRegistro',
-      ],
-    });
-    if (!usuarioObtenido) {
-      throw new NotFoundException('Usuario no encontrado');
-    }
+    const usuarioObtenido = await this.obtenerUsuarioActivo(id, [
+      'idUsuario',
+      'nombreUsuario',
+      'apellidoUsuario',
+      'email',
+      'usuarioActivo',
+      'rolSistema',
+      'fechaRegistro',
+    ]);
+
     return this.construirRespuestaUsuario(usuarioObtenido);
   }
 

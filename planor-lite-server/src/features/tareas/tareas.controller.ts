@@ -3,6 +3,7 @@ import {
   Post,
   Get,
   Delete,
+  Patch,
   Body,
   UseGuards,
   Param,
@@ -22,6 +23,7 @@ import { GetUser } from '../../common/decorators/get-user.decorator';
 import { Usuarios } from '../usuarios/entity/usuario.entity';
 import { RespuestaTareaDto } from './dto/respuesta-tarea.dto';
 import { CrearTareaDto } from './dto/crear-tarea.dto';
+import { EditarTareaDto } from './dto/editar-tarea.dto';
 import { Tareas } from './entities/tarea.entity';
 
 @ApiTags('tareas')
@@ -207,6 +209,40 @@ export class TareasController {
       usuario.idUsuario,
       idTablero,
       titulo,
+    );
+  }
+
+  /* ========== EDITAR TAREA ========== */
+  @ApiOperation({
+    summary: 'Editar tarea',
+    description:
+      'Actualiza parcialmente la información de una tarea del usuario autenticado.',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Tarea actualizada exitosamente.',
+    type: RespuestaTareaDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'No se encontró la tarea solicitada.',
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'Ya existe una tarea con ese título en el tablero.',
+  })
+  @Patch('/:idTarea')
+  @UseGuards(AuthGuard)
+  async editarTarea(
+    @GetUser() usuario: Usuarios,
+    @Param('idTarea') idTarea: number,
+    @Body() editarTareaDto: EditarTareaDto,
+  ): Promise<RespuestaTareaDto> {
+    console.log(editarTareaDto);
+    return await this.tareasService.editarTarea(
+      editarTareaDto,
+      idTarea,
+      usuario.idUsuario,
     );
   }
 }

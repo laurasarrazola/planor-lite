@@ -1,12 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsuariosService } from '../usuarios/usuarios.service';
-//import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
 import { RespuestaLoginDto } from './dto/respuesta-login.dto';
 import { JwtService } from '@nestjs/jwt';
 import type { Request } from 'express';
 import { LoginDto } from './dto/login.dto';
-import { ConfigService } from '@nestjs/config';
+//import { ConfigService } from '@nestjs/config';
 import { SesionesService } from '../sesiones/sesiones.service';
 
 // Se crea la interface para definir la estructura del payload del JWT, que contiene el ID del usuario (sub) y su correo electrónico (email).
@@ -21,7 +20,7 @@ export class AuthService {
   constructor(
     private readonly usuariosService: UsuariosService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    // private readonly configService: ConfigService,
     private readonly sesionesService: SesionesService,
   ) {}
 

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, EntityManager } from 'typeorm';
 import { Tareas } from './entities/tarea.entity';
 import { CrearTareaDto } from './dto/crear-tarea.dto';
+import { EditarTareaDto } from './dto/editar-tarea.dto';
 import { EstadosKanban } from '../estados/entities/estado.entity';
 import { Tableros } from '../tableros/entities/tablero.entity';
 import { NotFoundException, ConflictException } from '@nestjs/common';
@@ -99,40 +100,56 @@ export class TareasService {
     return estadoEncontrado;
   }
 
-  /* ========== METODO REUTILIZABLE PARA VALIDAR QUE NO HAYA DUPLICIDAD EN EL TÍTULO DE TAREA ========== */
+  /* ========== MÉTODO REUTILIZABLE PARA VALIDAR TÍTULO ÚNICO EN EL TABLERO ========== */
   /**
-   * Valida que no exista otra tarea activa con el mismo título dentro del estado.
+   * Valida que no exista otra tarea activa con el mismo título en el tablero.
    * @param administradorTransaccion Administrador de la transacción.
    * @param titulo Título de la tarea.
-   * @param idEstadoKanban Identificador del estado.
+   * @param idTablero Identificador del tablero.
+   * @param idTarea Ignorar esta tarea durante la validación (opcional).
    */
   private async validarTituloUnico(
     administradorTransaccion: EntityManager,
     titulo: string,
-    idEstadoKanban: number,
+    idTablero: number,
+    idTarea?: number,
   ): Promise<void> {
+    // Obtener el repositorio de tareas.
     const repositorioTareas = administradorTransaccion.getRepository(Tareas);
 
-    const tareaExistente: Tareas | null = await repositorioTareas.findOne({
-      where: {
+    // Construir la consulta de búsqueda.
+    const constructorConsulta = repositorioTareas
+      .createQueryBuilder('tarea')
+      .leftJoin('tarea.estadoKanban', 'estado')
+      .where('tarea.tareaActiva = true')
+      .andWhere('estado.IdTablero = :idTablero', {
+        idTablero,
+      })
+      .andWhere('tarea.titulo = :titulo', {
         titulo,
-        tareaActiva: true,
-        estadoKanban: {
-          idEstadoKanban,
-        },
-      },
-    });
+      });
 
+    // Ignorar la misma tarea durante la edición.
+    if (idTarea) {
+      constructorConsulta.andWhere('tarea.idTarea <> :idTarea', {
+        idTarea,
+      });
+    }
+
+    // Buscar una tarea con el mismo título.
+    const tareaExistente = await constructorConsulta.getOne();
+
+    // Detener la operación si ya existe.
     if (tareaExistente) {
       throw new ConflictException(
-        'Ya existe una tarea activa con ese título en este estado.',
+        'Ya existe una tarea activa con ese título en el tablero.',
       );
     }
   }
 
   /* ========== MÉTODO REUTILIZABLE PARA OBTENER UNA TAREA ACTIVA DEL TABLERO ========== */
   /**
-   * Busca una tarea activa perteneciente al tablero indicado.
+   * Busca una tarea activa por su identificador.
    * @param administradorTransaccion Administrador de la transacción.
    * @param idTarea Identificador de la tarea.
    * @param idTablero Identificador del tablero.
@@ -163,34 +180,34 @@ export class TareasService {
     return tareaEncontrada;
   }
 
-  /* ========== MÉTODO REUTILIZABLE PARA VALIDAR LÍMITE DE 100 TAREAS ========== */
-  /**
-   * Valida que el estado no haya alcanzado el límite de tareas.
-   * @param administradorTransaccion Administrador de la transacción.
-   * @param idEstadoKanban Identificador del estado.
-   * @throws ConflictException si el estado ya tiene 100 tareas activas.
-   */
-  private async validarLimiteTareasEstado(
-    administradorTransaccion: EntityManager,
-    idEstadoKanban: number,
-  ): Promise<void> {
-    const repositorioTareas = administradorTransaccion.getRepository(Tareas);
+  // /* ========== MÉTODO REUTILIZABLE PARA VALIDAR LÍMITE DE 100 TAREAS ========== */
+  // /**
+  //  * Valida que el estado no haya alcanzado el límite de tareas.
+  //  * @param administradorTransaccion Administrador de la transacción.
+  //  * @param idEstadoKanban Identificador del estado.
+  //  * @throws ConflictException si el estado ya tiene 100 tareas activas.
+  //  */
+  // private async validarLimiteTareasEstado(
+  //   administradorTransaccion: EntityManager,
+  //   idEstadoKanban: number,
+  // ): Promise<void> {
+  //   const repositorioTareas = administradorTransaccion.getRepository(Tareas);
 
-    const cantidadTareas = await repositorioTareas.count({
-      where: {
-        tareaActiva: true,
-        estadoKanban: {
-          idEstadoKanban,
-        },
-      },
-    });
+  //   const cantidadTareas = await repositorioTareas.count({
+  //     where: {
+  //       tareaActiva: true,
+  //       estadoKanban: {
+  //         idEstadoKanban,
+  //       },
+  //     },
+  //   });
 
-    if (cantidadTareas >= 100) {
-      throw new ConflictException(
-        'El estado ya tiene el máximo de 100 tareas permitidas.',
-      );
-    }
-  }
+  //   if (cantidadTareas >= 100) {
+  //     throw new ConflictException(
+  //       'El estado ya tiene el máximo de 100 tareas permitidas.',
+  //     );
+  //   }
+  // }
 
   /* ========== MÉTODO REUTILIZABLE PARA OBTENER EL SIGUIENTE ORDEN DE TAREA ========== */
   /**
@@ -253,6 +270,76 @@ export class TareasService {
     await repositorioTareas.save(tareas);
   }
 
+  /* ========== MÉTODO REUTILIZABLE PARA CAMBIAR LA POSICIÓN DE UNA TAREA ========== */
+  /**
+   * Reubica una tarea dentro del mismo estado o hacia otro estado.
+   * Ajusta automáticamente el orden del resto de tareas.
+   * @param administradorTransaccion Administrador de la transacción.
+   * @param tareaEncontrada Tarea que será movida.
+   * @param estadoDestino Estado donde quedará la tarea.
+   * @param nuevoOrden Posición solicitada.
+   */
+  private async moverTarea(
+    administradorTransaccion: EntityManager,
+    tareaEncontrada: Tareas,
+    estadoDestino: EstadosKanban,
+    nuevoOrden: number,
+  ): Promise<void> {
+    // Obtener el repositorio de tareas.
+    const repositorioTareas = administradorTransaccion.getRepository(Tareas);
+
+    // Guardar el estado origen antes de modificar la tarea.
+    const idEstadoOrigen = tareaEncontrada.estadoKanban.idEstadoKanban;
+
+    // Obtener las tareas activas del estado destino.
+    const tareasDestino = await repositorioTareas.find({
+      where: {
+        tareaActiva: true,
+        estadoKanban: {
+          idEstadoKanban: estadoDestino.idEstadoKanban,
+        },
+      },
+      order: {
+        ordenEnEstado: 'ASC',
+      },
+    });
+
+    // Excluir la tarea para evitar duplicarla en la lista.
+    const tareasSinMover = tareasDestino.filter(
+      (tarea) => tarea.idTarea !== tareaEncontrada.idTarea,
+    );
+
+    // Si el orden solicitado es menor a 1, ubicar la tarea al inicio.
+    if (nuevoOrden < 1) {
+      nuevoOrden = 1;
+    }
+
+    // Si el orden supera el máximo, ubicar la tarea al final.
+    if (nuevoOrden > tareasSinMover.length + 1) {
+      nuevoOrden = tareasSinMover.length + 1;
+    }
+
+    // Insertar la tarea en la posición solicitada.
+    tareasSinMover.splice(nuevoOrden - 1, 0, tareaEncontrada);
+
+    // Recalcular el orden consecutivo de todas las tareas.
+    for (let i = 0; i < tareasSinMover.length; i++) {
+      tareasSinMover[i].ordenEnEstado = i + 1;
+      tareasSinMover[i].estadoKanban = estadoDestino;
+    }
+
+    // Guardar el nuevo orden del estado destino.
+    await repositorioTareas.save(tareasSinMover);
+
+    // Reorganizar el estado origen si la tarea cambió de estado.
+    if (idEstadoOrigen !== estadoDestino.idEstadoKanban) {
+      await this.reorganizarOrdenTareasEstado(
+        administradorTransaccion,
+        idEstadoOrigen,
+      );
+    }
+  }
+
   /* ========== CREAR TAREA ========== */
   /**
    * @param {CrearTareaDto} crearTareaDto - Información de la tarea a crear.
@@ -289,14 +376,14 @@ export class TareasService {
         await this.validarTituloUnico(
           administradorTransaccion,
           crearTareaDto.titulo,
-          estadoEncontrado.idEstadoKanban,
+          idTablero,
         );
 
         // Traer la validación de límite de tareas desde el método reutlizable validarLimiteTareasEstado.
-        await this.validarLimiteTareasEstado(
-          administradorTransaccion,
-          estadoEncontrado.idEstadoKanban,
-        );
+        // await this.validarLimiteTareasEstado(
+        //   administradorTransaccion,
+        //   estadoEncontrado.idEstadoKanban,
+        // );
 
         // Traer el siguiente orden de tarea desde el método reutlizable obtenerSiguienteOrden.
         const ordenFinal: number = await this.obtenerSiguienteOrden(
@@ -521,6 +608,121 @@ export class TareasService {
         }
 
         return tareas.map((tarea) => this.construirRespuestaTarea(tarea));
+      },
+    );
+  }
+
+  /* ========== EDITAR TAREA ========== */
+  /**
+   * Edita la información de una tarea activa.
+   * @param editarTareaDto Información a modificar.
+   * @param idTarea Identificador de la tarea.
+   * @param idSolicitante Usuario autenticado.
+   * @returns Información actualizada de la tarea.
+   */
+  async editarTarea(
+    editarTareaDto: EditarTareaDto,
+    idTarea: number,
+    idSolicitante: number,
+  ): Promise<RespuestaTareaDto> {
+    return await this.dataSource.transaction(
+      async (
+        administradorTransaccion: EntityManager,
+      ): Promise<RespuestaTareaDto> => {
+        // Obtener el repositorio de tareas.
+        const repositorioTareas =
+          administradorTransaccion.getRepository(Tareas);
+
+        // Obtener la tarea activa.
+        const tareaEncontrada = await this.obtenerTareaActiva(
+          administradorTransaccion,
+          idTarea,
+        );
+
+        // Validar que el tablero pertenezca al usuario.
+        const tablero = await this.obtenerTableroActivo(
+          administradorTransaccion,
+          idSolicitante,
+          tareaEncontrada.estadoKanban.tablero.idTablero,
+        );
+
+        // Validar título únicamente si fue modificado.
+        if (
+          editarTareaDto.titulo !== undefined &&
+          editarTareaDto.titulo !== tareaEncontrada.titulo
+        ) {
+          await this.validarTituloUnico(
+            administradorTransaccion,
+            editarTareaDto.titulo,
+            tablero.idTablero,
+            tareaEncontrada.idTarea,
+          );
+
+          tareaEncontrada.titulo = editarTareaDto.titulo;
+        }
+
+        // Actualizar descripción si fue enviada.
+        if (editarTareaDto.descripcion !== undefined) {
+          tareaEncontrada.descripcion = editarTareaDto.descripcion;
+        }
+
+        // Actualizar prioridad si fue enviada.
+        if (editarTareaDto.prioridad !== undefined) {
+          tareaEncontrada.prioridad = editarTareaDto.prioridad;
+        }
+
+        // Actualizar fecha si fue enviada.
+        if (editarTareaDto.fechaVencimientoTarea !== undefined) {
+          tareaEncontrada.fechaVencimientoTarea =
+            editarTareaDto.fechaVencimientoTarea as unknown as Date;
+        }
+
+        // Obtener el estado destino.
+        let estadoDestino = tareaEncontrada.estadoKanban;
+
+        // Validar el nuevo estado únicamente si fue enviado.
+        if (
+          editarTareaDto.idEstadoKanban !== undefined &&
+          editarTareaDto.idEstadoKanban !==
+            tareaEncontrada.estadoKanban.idEstadoKanban
+        ) {
+          estadoDestino = await this.obtenerEstadoActivo(
+            administradorTransaccion,
+            editarTareaDto.idEstadoKanban,
+            tablero.idTablero,
+          );
+        }
+
+        // Determinar si debe cambiar de posición.
+        const cambiaEstado =
+          estadoDestino.idEstadoKanban !==
+          tareaEncontrada.estadoKanban.idEstadoKanban;
+
+        const cambiaOrden =
+          editarTareaDto.ordenEnEstado !== undefined &&
+          editarTareaDto.ordenEnEstado !== tareaEncontrada.ordenEnEstado;
+
+        // Reubicar la tarea únicamente cuando sea necesario.
+        if (cambiaEstado || cambiaOrden) {
+          await this.moverTarea(
+            administradorTransaccion,
+            tareaEncontrada,
+            estadoDestino,
+            editarTareaDto.ordenEnEstado ?? tareaEncontrada.ordenEnEstado,
+          );
+        } else {
+          // Guardar únicamente los cambios simples.
+          await repositorioTareas.save(tareaEncontrada);
+        }
+
+        // Consultar nuevamente la tarea actualizada.
+        const tareaActualizada = await this.obtenerTareaActiva(
+          administradorTransaccion,
+          tareaEncontrada.idTarea,
+        );
+
+        // Construir la respuesta pública.
+        return this.construirRespuestaTarea(tareaActualizada);
       },
     );
   }

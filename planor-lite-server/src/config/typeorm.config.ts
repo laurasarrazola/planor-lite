@@ -7,14 +7,11 @@ export const typeormConfig = (
   configService: ConfigService,
   // Indica el tipo de valor que la función debe devolver. debe retornar un objeto con la estructura que espera TypeOrmModuleOptions.
 ): TypeOrmModuleOptions => {
-  console.log(__dirname);
-  console.log(__dirname + '/../**/*.entity{.ts,.js}');
   return {
     type: 'mysql',
     host: configService.get<string>('DB_HOST', 'localhost'),
     port: configService.get<number>('DB_PORT', 3306),
     username: configService.get<string>('DB_USER', 'root'),
-    //password: '',
     password: configService.get<string>('DB_PASSWORD', ''),
     database: configService.get<string>('DB_NAME', 'planor_lite'),
     synchronize: configService.get<boolean>('DB_SYNCHRONIZE', false),

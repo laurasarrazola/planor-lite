@@ -1,3 +1,5 @@
+// el archivo main.ts es el punto de entrada principal de la aplicación NestJS. se genera automaticamente con Nest CLI. se define la función bootstrap() que inicializa la aplicación y configura los pipes globales, la documentación de Swagger y el puerto de escucha del servidor.
+
 // NestFactory crea una instancia de la aplicación Nest, que es el punto de entrada para la aplicación. se genera automaticamente con Nest CLI.
 import { NestFactory } from '@nestjs/core';
 // ValidationPipe es un pipe global que se utiliza para validar los datos de entrada en las solicitudes HTTP, trabaja de la mano con los DTOs. se añade manualmente en el main.ts para que se aplique a toda la aplicación.

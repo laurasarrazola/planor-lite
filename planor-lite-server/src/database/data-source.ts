@@ -1,4 +1,4 @@
-// DataSource representa la configuración y la conexión a la base de datos; se usa para crear/gestionar la conexión
+// DataSource representa la configuración y la conexión a la base de datos; se usa para crear/gestionar la conexión. la diferencia entre typeorm.config.ts y data-source.ts es que typeorm.config.ts se usa para configurar TypeORM en el contexto de NestJS, mientras que data-source.ts se usa para configurar TypeORM de manera independiente, por ejemplo, para ejecutar migraciones desde la línea de comandos.
 import { DataSource } from 'typeorm';
 //  dotenv carga variables desde un archivo .env al objeto global process.env.
 import { config } from 'dotenv';

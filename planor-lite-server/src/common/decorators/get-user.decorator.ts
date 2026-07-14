@@ -1,3 +1,5 @@
+//El dedorador personalizado @GetUser() es un decorador que se utiliza para extraer información del usuario autenticado desde el objeto Request en un controlador de NestJS. Se utiliza junto con los guards de autenticación para acceder a los datos del usuario en las rutas protegidas.
+
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 

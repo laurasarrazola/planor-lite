@@ -17,6 +17,19 @@ export class EditarTareaDto {
     required: false,
     minimum: 1,
   })
+  @Transform(({ value }) => {
+    if (typeof value !== 'string') {
+      return undefined;
+    }
+
+    const texto = value.trim();
+
+    if (texto === '') {
+      return undefined;
+    }
+
+    return Number(texto);
+  })
   @IsOptional()
   @IsInt()
   @Min(1, {
@@ -30,6 +43,19 @@ export class EditarTareaDto {
     description: 'Posición de la tarea dentro del estado.',
     required: false,
     minimum: 1,
+  })
+  @Transform(({ value }: { value: unknown }) => {
+    if (typeof value !== 'string') {
+      return undefined;
+    }
+
+    const texto = value.trim();
+
+    if (texto === '') {
+      return undefined;
+    }
+
+    return Number(texto);
   })
   @IsOptional()
   @IsInt()
@@ -47,9 +73,17 @@ export class EditarTareaDto {
     maxLength: 200,
   })
   @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      return value.trim();
+    if (typeof value !== 'string') {
+      return undefined;
     }
+
+    const texto = value.trim();
+
+    if (texto === '') {
+      return undefined;
+    }
+
+    return texto;
   })
   @IsOptional()
   @IsString()
@@ -63,9 +97,17 @@ export class EditarTareaDto {
     maxLength: 2000,
   })
   @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      return value.trim();
+    if (typeof value !== 'string') {
+      return undefined;
     }
+
+    const texto = value.trim();
+
+    if (texto === '') {
+      return undefined;
+    }
+
+    return texto;
   })
   @IsOptional()
   @IsString()
@@ -77,6 +119,19 @@ export class EditarTareaDto {
     description: 'Prioridad de la tarea.',
     required: false,
     enum: ['baja', 'media', 'alta'],
+  })
+  @Transform(({ value }) => {
+    if (typeof value !== 'string') {
+      return undefined;
+    }
+
+    const texto = value.trim();
+
+    if (texto === '') {
+      return undefined;
+    }
+
+    return texto.toLowerCase();
   })
   @IsOptional()
   @IsEnum(['baja', 'media', 'alta'], {
@@ -90,6 +145,19 @@ export class EditarTareaDto {
     required: false,
     type: String,
     format: 'date-time',
+  })
+  @Transform(({ value }) => {
+    if (typeof value !== 'string') {
+      return undefined;
+    }
+
+    const texto = value.trim();
+
+    if (texto === '') {
+      return undefined;
+    }
+
+    return texto;
   })
   @IsOptional()
   @IsDateString(

@@ -240,7 +240,6 @@ export class TareasController {
     @Param('idTarea') idTarea: number,
     @Body() editarTareaDto: EditarTareaDto,
   ): Promise<RespuestaTareaDto> {
-    console.log(editarTareaDto);
     return await this.tareasService.editarTarea(
       editarTareaDto,
       idTarea,

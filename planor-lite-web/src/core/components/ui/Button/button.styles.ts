@@ -101,15 +101,16 @@ export const buttonStyles = cva(
         /* ************************************/
         /* compoundVariants define estilos que solamente aparecen cuando varias variants coinciden al mismo tiempo. Esa combinación aplica únicamente los estilos definidos aquí. */
         compoundVariants: [
+            /* =========== COMBINACIONES PRIMARY COLOR =========== */
             // Primary + Filled + Default.
             {
                 variant: "Primary",
                 buttonStyle: "Filled",
                 estate: "Default",
                 className: [
-                    "bg-[var(--button-primary-filled-background)]", 
-                    "text-[var(--button-primary-filled-text)]", 
-                    "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]", 
+                    "bg-[var(--button-primary-filled-background)]",
+                    "text-[var(--button-primary-filled-text)]",
+                    "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
                 ].join(" "),
             },
 
@@ -119,9 +120,9 @@ export const buttonStyles = cva(
                 buttonStyle: "Filled",
                 estate: "Hover",
                 className: [
-                    "bg-[var(--button-primary-filled-background)]", 
-                    "text-[var(--button-primary-filled-text)]", 
-                    "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.25)]", 
+                    "bg-[var(--button-primary-filled-background)]",
+                    "text-[var(--button-primary-filled-text)]",
+                    "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.25)]",
                 ].join(" "),
             },
 
@@ -131,9 +132,9 @@ export const buttonStyles = cva(
                 buttonStyle: "Filled",
                 estate: "Disabled",
                 className: [
-                    "bg-[var(--button-primary-filled-disabled-background)]", 
-                    "text-[var(--button-primary-filled-disabled-text)]", 
-                    "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]", 
+                    "bg-[var(--button-primary-filled-disabled-background)]",
+                    "text-[var(--button-primary-filled-disabled-text)]",
+                    "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
                 ].join(" "),
             },
 
@@ -143,8 +144,8 @@ export const buttonStyles = cva(
                 buttonStyle: "Outlined",
                 estate: "Default",
                 className: [
-                    "border-[var(--button-primary-outlined-border)]", 
-                    "text-[var(--button-primary-outlined-text)]", 
+                    "border-[var(--button-primary-outlined-border)]",
+                    "text-[var(--button-primary-outlined-text)]",
                     "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
                 ].join(" "),
             },
@@ -155,9 +156,9 @@ export const buttonStyles = cva(
                 buttonStyle: "Outlined",
                 estate: "Hover",
                 className: [
-                    "border-2", 
-                    "border-[var(--button-primary-outlined-border)]", 
-                    "bg-transparent", 
+                    "border-2",
+                    "border-[var(--button-primary-outlined-border)]",
+                    "bg-transparent",
                     "text-[var(--button-primary-outlined-text)]",
                     "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.08)]",
                 ].join(" "),
@@ -170,11 +171,76 @@ export const buttonStyles = cva(
                 estate: "Disabled",
                 className: [
                     "bg-transparent",
-                    "border-2", 
-                    "border-[var(--button-primary-outlined-disabled-border)]", 
-                    "text-[var(--button-primary-outlined-disabled-text)]", 
+                    "border-2",
+                    "border-[var(--button-primary-outlined-disabled-border)]",
+                    "text-[var(--button-primary-outlined-disabled-text)]",
                     "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
                     "cursor-not-allowed",
+                ].join(" "),
+            },
+
+            /* =========== COMBINACIONES CTA COLOR =========== */
+            {
+                // CTA + Filled + Default.
+                variant: "CTA",
+                buttonStyle: "Filled",
+                estate: "Default",
+                className: [
+                    "bg-[var(--button-cta-filled-background)]",
+                    "text-[var(--button-cta-filled-text)]",
+                    "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
+                ].join(" "),
+            },
+
+            {
+                // CTA + Filled + Hover.
+                variant: "CTA",
+                buttonStyle: "Filled",
+                estate: "Hover",
+                className: [
+                    "bg-[var(--button-cta-filled-hover-background)]",
+                    "text-[var(--button-cta-filled-hover-text)]",
+                    "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.25)]",
+                ].join(" "),
+            },
+
+            {
+                // CTA + Filled + Disabled.
+                variant: "CTA",
+                buttonStyle: "Filled",
+                estate: "Disabled",
+                className: [
+                    "bg-[var(--button-cta-filled-disabled-background)]",
+                    "text-[var(--button-cta-filled-disabled-text)]",
+                    "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
+                ].join(" "),
+            },
+
+            {
+                // CTA + Outlined + Hover.
+                variant: "CTA",
+                buttonStyle: "Outlined",
+                estate: "Hover",
+                className: [
+                    "border-2",
+                    "border-[var(--button-cta-outlined-hover-border)]",
+                    "bg-transparent",
+                    "text-[var(--button-cta-outlined-hover-text)]",
+                    "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.25)]",
+                ].join(" "),
+            },
+
+            {
+                // CTA + Outlined + Disabled.
+                variant: "CTA",
+                buttonStyle: "Outlined",
+                estate: "Disabled",
+                className: [
+                    "bg-transparent",
+                    "border-2",
+                    "border-[var(--button-cta-outlined-disabled-border)]",
+                    "text-[var(--button-cta-outlined-disabled-text)]",
+                    "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
                 ].join(" "),
             },
         ],

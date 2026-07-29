@@ -4,10 +4,10 @@ function App() {
   return (
     <div className="p-10">
       <Button
-        variant="Primary"
-        buttonStyle="Outlined"
-        size="XS"
-        estate="Disabled">
+        variant="CTA"
+        buttonStyle="Filled"
+        size="S"
+        estate="Hover">
         Crear cuenta
       </Button>
     </div>

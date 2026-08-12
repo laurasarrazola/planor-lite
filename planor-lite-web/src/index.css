@@ -18,9 +18,9 @@
   --button-primary-filled-background: var(--color-amatista);
   --button-primary-filled-text: var(--color-vainilla);
 
-  /* Filled - Hover */
-  --button-primary-filled-hover-background: var(--color-amatista);
-  --button-primary-filled-hover-text: var(--color-vainilla);
+  /* Filled - focus */
+  --button-primary-filled-focus-background: var(--color-amatista);
+  --button-primary-filled-focus-text: var(--color-vainilla);
 
   /* Filled - Disabled */
   --button-primary-filled-disabled-background: #7B337E33;
@@ -30,9 +30,9 @@
   --button-primary-outlined-border: var(--color-amatista);
   --button-primary-outlined-text: var(--color-vainilla);
 
-  /* Outlined - Hover */
-  --button-primary-outlined-hover-border: var(--color-amatista);
-  --button-primary-outlined-hover-text: var(--color-vainilla);
+  /* Outlined - focus */
+  --button-primary-outlined-focus-border: var(--color-amatista);
+  --button-primary-outlined-focus-text: var(--color-vainilla);
 
   /* Outlined - Disabled */
   --button-primary-outlined-disabled-border: #7B337E33;
@@ -43,9 +43,9 @@
   --button-cta-filled-background: var(--color-zafiro-lavanda);
   --button-cta-filled-text: var(--color-vainilla);
 
-  /* Filled - Hover */
-  --button-cta-filled-hover-background: var(--color-zafiro-lavanda);
-  --button-cta-filled-hover-text: var(--color-vainilla);
+  /* Filled - focus */
+  --button-cta-filled-focus-background: var(--color-zafiro-lavanda);
+  --button-cta-filled-focus-text: var(--color-vainilla);
 
   /* Filled - Disabled */
   --button-cta-filled-disabled-background: #6264BC33;
@@ -55,9 +55,9 @@
   --button-cta-outlined-border: var(--color-zafiro-lavanda);
   --button-cta-outlined-text: var(--color-vainilla);
 
-  /* Outlined - Hover */
-  --button-cta-outlined-hover-border: var(--color-zafiro-lavanda);
-  --button-cta-outlined-hover-text: var(--color-vainilla);
+  /* Outlined - focus */
+  --button-cta-outlined-focus-border: var(--color-zafiro-lavanda);
+  --button-cta-outlined-focus-text: var(--color-vainilla);
 
   /* Outlined - Disabled */
   --button-cta-outlined-disabled-border: #6264BC26;
@@ -68,6 +68,28 @@
   --foreground: #FFF9E4;
   --border: #2A2E33;
   --radius: 0.625rem;
+
+  /* =========== INPUT =========== */
+
+/* Label */
+--input-label-default: var(--color-vainilla);
+--input-label-focus: var(--color-vainilla);
+--input-label-disabled: rgba(255, 249, 228, 0.40);
+
+/* Border */
+--input-border-default: rgba(123, 51, 126, 0.40);
+--input-border-focus: var(--color-amatista);
+--input-border-disabled: rgba(123, 51, 126, 0.40);
+
+/* Texto */
+--input-text-default: rgba(255, 249, 228, 0.20);
+--input-text-focus: rgba(255, 249, 228, 0.20);
+--input-text-disabled: rgba(255, 249, 228, 0.20);
+
+/* Helper */
+--input-helper-default: rgba(255, 249, 228, 0.40);
+--input-helper-focus: rgba(255, 249, 228, 0.40);
+--input-helper-disabled: rgba(255, 249, 228, 0.40);
 }
 
 /* =========== ESTILOS GLOBALES ROOT =========== */

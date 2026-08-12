@@ -11,7 +11,7 @@ import { cva } from "class-variance-authority";
 /* ************************************/
 /* buttonStyles es una configuración de CVA. recibe:
  * 1. Clases comunes para todos los botones.
- * 2. Variantes (size, variant, buttonStyle y estate).
+ * 2. Variantes (size, variant, buttonStyle y state).
  * 3. Combinaciones especiales (compoundVariants).
  * Con esa información genera automáticamente la lista final de clases CSS.
  */
@@ -88,7 +88,7 @@ export const buttonStyles = cva(
             },
 
             /* =========== Estado visual =========== */
-            estate: {
+            state: {
                 Default: "",
                 Hover: "",
                 Disabled: "cursor-not-allowed",
@@ -106,7 +106,7 @@ export const buttonStyles = cva(
             {
                 variant: "Primary",
                 buttonStyle: "Filled",
-                estate: "Default",
+                state: "Default",
                 className: [
                     "bg-[var(--button-primary-filled-background)]",
                     "text-[var(--button-primary-filled-text)]",
@@ -118,7 +118,7 @@ export const buttonStyles = cva(
                 // Primary + Filled + Hover.
                 variant: "Primary",
                 buttonStyle: "Filled",
-                estate: "Hover",
+                state: "Hover",
                 className: [
                     "bg-[var(--button-primary-filled-background)]",
                     "text-[var(--button-primary-filled-text)]",
@@ -130,7 +130,7 @@ export const buttonStyles = cva(
                 // Primary + Filled + Disabled.
                 variant: "Primary",
                 buttonStyle: "Filled",
-                estate: "Disabled",
+                state: "Disabled",
                 className: [
                     "bg-[var(--button-primary-filled-disabled-background)]",
                     "text-[var(--button-primary-filled-disabled-text)]",
@@ -142,7 +142,7 @@ export const buttonStyles = cva(
                 // Primary + Outlined + Default.
                 variant: "Primary",
                 buttonStyle: "Outlined",
-                estate: "Default",
+                state: "Default",
                 className: [
                     "border-[var(--button-primary-outlined-border)]",
                     "text-[var(--button-primary-outlined-text)]",
@@ -154,7 +154,7 @@ export const buttonStyles = cva(
                 // Primary + Outlined + Hover.
                 variant: "Primary",
                 buttonStyle: "Outlined",
-                estate: "Hover",
+                state: "Hover",
                 className: [
                     "border-2",
                     "border-[var(--button-primary-outlined-border)]",
@@ -168,7 +168,7 @@ export const buttonStyles = cva(
                 // Primary + Outlined + Disabled.
                 variant: "Primary",
                 buttonStyle: "Outlined",
-                estate: "Disabled",
+                state: "Disabled",
                 className: [
                     "bg-transparent",
                     "border-2",
@@ -184,7 +184,7 @@ export const buttonStyles = cva(
                 // CTA + Filled + Default.
                 variant: "CTA",
                 buttonStyle: "Filled",
-                estate: "Default",
+                state: "Default",
                 className: [
                     "bg-[var(--button-cta-filled-background)]",
                     "text-[var(--button-cta-filled-text)]",
@@ -196,7 +196,7 @@ export const buttonStyles = cva(
                 // CTA + Filled + Hover.
                 variant: "CTA",
                 buttonStyle: "Filled",
-                estate: "Hover",
+                state: "Hover",
                 className: [
                     "bg-[var(--button-cta-filled-hover-background)]",
                     "text-[var(--button-cta-filled-hover-text)]",
@@ -208,10 +208,22 @@ export const buttonStyles = cva(
                 // CTA + Filled + Disabled.
                 variant: "CTA",
                 buttonStyle: "Filled",
-                estate: "Disabled",
+                state: "Disabled",
                 className: [
                     "bg-[var(--button-cta-filled-disabled-background)]",
                     "text-[var(--button-cta-filled-disabled-text)]",
+                    "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
+                ].join(" "),
+            },
+
+            //CTA + Outlined + Default.
+            {
+                variant: "CTA",
+                buttonStyle: "Outlined",
+                state: "Default",
+                className: [
+                    "border-[var(--button-cta-outlined-border)]",
+                    "text-[var(--button-cta-outlined-text)]",
                     "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
                 ].join(" "),
             },
@@ -220,7 +232,7 @@ export const buttonStyles = cva(
                 // CTA + Outlined + Hover.
                 variant: "CTA",
                 buttonStyle: "Outlined",
-                estate: "Hover",
+                state: "Hover",
                 className: [
                     "border-2",
                     "border-[var(--button-cta-outlined-hover-border)]",
@@ -234,7 +246,7 @@ export const buttonStyles = cva(
                 // CTA + Outlined + Disabled.
                 variant: "CTA",
                 buttonStyle: "Outlined",
-                estate: "Disabled",
+                state: "Disabled",
                 className: [
                     "bg-transparent",
                     "border-2",

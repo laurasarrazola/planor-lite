@@ -70,7 +70,6 @@
   --radius: 0.625rem;
 
   /* =========== INPUT =========== */
-
 /* Label */
 --input-label-default: var(--color-vainilla);
 --input-label-focus: var(--color-vainilla);
@@ -90,6 +89,33 @@
 --input-helper-default: rgba(255, 249, 228, 0.40);
 --input-helper-focus: rgba(255, 249, 228, 0.40);
 --input-helper-disabled: rgba(255, 249, 228, 0.40);
+
+/* =========== TEXTAREA =========== */
+/* Label */
+--textarea-label-default: var(--color-vainilla);
+--textarea-label-focus: var(--color-vainilla);
+--textarea-label-disabled: rgba(255, 249, 228, 0.40);
+
+/* Border */
+--textarea-border-default: var(--color-amatista);
+--textarea-border-focus: var(--color-amatista);
+--textarea-border-disabled: rgba(123, 51, 126, 0.40);
+
+/* Texto escrito */
+--textarea-text-default: var(--color-vainilla);
+--textarea-text-focus: var(--color-vainilla);
+--textarea-text-disabled: rgba(255, 249, 228, 0.20);
+
+/* Placeholder */
+--textarea-placeholder-default: rgba(255, 249, 228, 0.20);
+--textarea-placeholder-focus: rgba(255, 249, 228, 0.20);
+--textarea-placeholder-disabled: rgba(255, 249, 228, 0.20);
+
+/* Helper */
+--textarea-helper-default: rgba(255, 249, 228, 0.20);
+--textarea-helper-focus: rgba(255, 249, 228, 0.20);
+--textarea-helper-disabled: rgba(255, 249, 228, 0.20);
+
 }
 
 /* =========== ESTILOS GLOBALES ROOT =========== */

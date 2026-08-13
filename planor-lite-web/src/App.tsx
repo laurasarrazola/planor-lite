@@ -1,5 +1,6 @@
 import { Button } from "@/core/components/ui/Button/Button";
-import { Input } from "@/core/components/ui/input/Input";
+import { Input } from "@/core/components/ui/Input/Input";
+import { TextArea } from "@/core/components/ui/TextArea/textArea";
 import { Plus } from "lucide-react";
 
 function App() {
@@ -159,6 +160,44 @@ function App() {
           label="Usuario"
           helperText="Este campo está deshabilitado."
           placeholder="Usuario"
+          state="Disabled"
+        />
+
+      </section>
+
+
+      {/* ====================================== */}
+      {/*               TEXTAREAS                */}
+      {/* ====================================== */}
+
+      <section className="flex flex-col gap-6 max-w-lg">
+
+        <h1 className="text-2xl font-bold text-white">
+          TextAreas
+        </h1>
+
+        {/* =========== DEFAULT =========== */}
+
+        <TextArea
+          label="Descripción"
+          helperText="Ingresa una descripción."
+          placeholder="Escribe aquí..."
+        />
+
+        {/* =========== FOCUS =========== */}
+
+        <TextArea
+          label="Comentario"
+          helperText="Estado Focus"
+          placeholder="Haz clic aquí..."
+        />
+
+        {/* =========== DISABLED =========== */}
+
+        <TextArea
+          label="Observaciones"
+          helperText="Este campo está deshabilitado."
+          placeholder="No disponible"
           state="Disabled"
         />
 

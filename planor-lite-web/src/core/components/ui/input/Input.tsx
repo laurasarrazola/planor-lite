@@ -8,11 +8,10 @@
  * 4. Renderizar la estructura completa del componente. */
 
 import {
-    useState,
+    useState, //useState es un hook de React que permite agregar estado a un componente funcional.
     type FocusEvent,
     type InputHTMLAttributes,
 } from "react";
-
 import {
     inputStyles,
     inputLabelStyles,
@@ -20,7 +19,6 @@ import {
     inputValueStyles,
     helperTextStyles,
 } from "./input.styles";
-
 import type { InputState } from "./input.types";
 
 /****************************************/
@@ -29,9 +27,9 @@ import type { InputState } from "./input.types";
 /* Extiende todas las propiedades nativas de un input HTML y agrega las propiedades personalizadas del sistema de diseño.*/
 interface InputProps
     extends InputHTMLAttributes<HTMLInputElement> {
-    label?: string;
-    helperText?: string;
-    state?: InputState;
+    label?: string; // Texto que se muestra como etiqueta del input.
+    helperText?: string; // Texto que se muestra como ayuda debajo del input.
+    state?: InputState; // Estado visual del input (Default, Focus o Disabled).
 }
 
 /****************************************/
@@ -48,132 +46,72 @@ export function Input({
     ...props
 }: InputProps) {
 
-    /************************************/
-    /*      ESTADO INTERNO DEL INPUT    */
-    /************************************/
+    /* ========== ESTADO INTERNO DEL INPUT ========= */
     /* Determina si el input tiene actualmente el foco. */
-    const [isFocused, setIsFocused] = useState(false);
+    const [estaEnFoco, cambiarEstadoFoco] = useState(false);
+    //const [valor, cambiarValor] = useState(inicial), isFocused lee el estado del input, setIsFocused cambia el estado del input.
 
-    /************************************/
-    /*      ESTADO DESHABILITADO        */
-    /************************************/
+    /* ========== ESTADO DESHABILITADO ========== */
+    /* El input queda deshabilitado cuando: 1. Se recibe disabled={true} 2. Se recibe state="Disabled".*/
+    const estaDeshabilitado = disabled || state === "Disabled";
 
-    /* El input queda deshabilitado cuando:
-     * 1. Se recibe disabled={true}.
-     * 2. Se recibe state="Disabled".*/
-    const isDisabled =
-        disabled || state === "Disabled";
+    /* ========== ESTADO VISUAL ACTUAL ========== */
+    /* El estado visual se determina en este orden: 1. Disabled 2. Focus 3. Default */
+    function obtenerEstadoVisual(): InputState {
+        if (estaDeshabilitado) return "Disabled";
+        if (estaEnFoco) return "Focus";
+        return "Default";
+    }
+    const estadoVisual = obtenerEstadoVisual();
 
-    /************************************/
-    /*       ESTADO VISUAL ACTUAL       */
-    /************************************/
-
-    /* El estado visual se determina en este orden:
-     *
-     * 1. Disabled
-     * 2. Focus
-     * 3. Default
-     */
-    const visualState: InputState =
-        isDisabled
-            ? "Disabled"
-            : isFocused
-                ? "Focus"
-                : "Default";
-
-    /************************************/
-    /*             ON FOCUS             */
-    /************************************/
-
-    const handleFocus = (
-        event: FocusEvent<HTMLInputElement>
-    ) => {
-
-        setIsFocused(true);
-
+    /* ========== ON FOCUS ========== */
+    // Cuando el input recibe el foco, se actualiza el estado interno.
+    function manejarFoco(event: FocusEvent<HTMLInputElement>): void {
+        cambiarEstadoFoco(true);
         onFocus?.(event);
-    };
+    }
 
-    /************************************/
-    /*              ON BLUR              */
-    /************************************/
-
-    const handleBlur = (
-        event: FocusEvent<HTMLInputElement>
-    ) => {
-
-        setIsFocused(false);
-
-        onBlur?.(event);
-    };
+    /* ========== ON BLUR ========== */
+    // Cuando el input pierde el foco, se actualiza el estado interno.
+    function manejarDesenfoque(event: FocusEvent<HTMLInputElement>): void {
+    cambiarEstadoFoco(false);
+    onBlur?.(event);
+}
 
     return (
+        <div className={`${inputStyles} ${className ?? ""}`}>
 
-        <div
-            className={inputStyles({
-                state: visualState,
-                className,
-            })}
-        >
-
-            {/* ==================================== */}
-            {/*            INPUT CONTENT             */}
-            {/* ==================================== */}
-
+            {/* =========== INPUT CONTENT =========== */}
             <div className="flex flex-col items-start gap-2 self-stretch">
 
                 {/* =========== LABEL =========== */}
-
                 {label && (
-
-                    <label
-                        className={inputLabelStyles({
-                            state: visualState,
-                        })}
-                    >
+                    <label className={inputLabelStyles({ state: estadoVisual })}>
                         {label}
                     </label>
-
                 )}
 
                 {/* =========== INPUT CONTAINER =========== */}
-
-                <div
-                    className={inputContainerStyles({
-                        state: visualState,
-                    })}
-                >
+                <div className={inputContainerStyles({ state: estadoVisual })}>
 
                     {/* =========== INPUT =========== */}
-
                     <input
-                        className={inputValueStyles({
-                            state: visualState,
-                        })}
-                        disabled={isDisabled}
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
+                        className={inputValueStyles({ state: estadoVisual })}
+                        disabled={estaDeshabilitado}
+                        onFocus={manejarFoco}
+                        onBlur={manejarDesenfoque}
                         {...props}
                     />
-
                 </div>
-
             </div>
 
             {/* =========== HELPER TEXT =========== */}
-
             {helperText && (
-
                 <span
-                    className={helperTextStyles({
-                        state: visualState,
-                    })}
-                >
+                    className={helperTextStyles({ state: estadoVisual })}>
                     {helperText}
                 </span>
-
             )}
-
         </div>
     );
 }

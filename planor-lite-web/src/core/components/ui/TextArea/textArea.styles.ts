@@ -1,34 +1,44 @@
 /***************************************/
-/*     ESTILOS DEL COMPONENTE INPUT    */
+/*   ESTILOS DEL COMPONENTE TEXTAREA   */
 /***************************************/
-/* Este archivo contiene únicamente los estilos visuales del componente Input. No renderiza HTML ni contiene lógica de negocio. Utiliza Class Variance Authority (CVA) para generar automáticamente las clases CSS según las propiedades recibidas desde Input.tsx. */
+/* Este archivo contiene únicamente los estilos visuales del componente TextArea. No renderiza HTML ni contiene lógica de negocio. Utiliza Class Variance Authority (CVA) para generar automáticamente las clases CSS según el estado recibido desde TextArea.tsx. */
 
 import { cva } from "class-variance-authority";
 
 /************************************/
-/*      ESTILOS BASE DEL INPUT      */
+/*     ESTILOS BASE DEL TEXTAREA    */
 /************************************/
-/* Este contenedor representa el componente completo. No utiliza CVA porque su apariencia nunca cambia entre Default, Focus y Disabled. */
-export const inputStyles = [
-    "flex",
-    "flex-col",
-    "items-start",
-    "gap-[6px]",
-    "px-[10px]",
-    "py-[12px]",
-    "w-full",
+/* Este contenedor representa el componente completo. No utiliza CVA porque nunca cambia entre Default, Focus o Disabled. Todos sus estilos son fijos. */
+export const textAreaStyles = [
+  "inline-flex",
+  "flex-col",
+  "items-start",
+  "gap-[6px]",
+  "p-[10px]",
+].join(" ");
+
+
+/************************************/
+/*       ESTILOS DEL CONTENEDOR     */
+/************************************/
+/* Contiene Label, TextAreaContainer y HelperText. Su apariencia nunca cambia, por lo que no requiere variantes ni CVA. */
+export const textAreaContentStyles = [
+  "flex",
+  "flex-col",
+  "items-start",
+  "gap-[8px]",
+  "p-[10px]",
 ].join(" ");
 
 /************************************/
 /*          ESTILOS DEL LABEL       */
 /************************************/
-export const inputLabelStyles = cva(
+export const textAreaLabelStyles = cva(
     [
-        "self-stretch",
         "font-sans",
         "text-[16px]",
         "font-normal",
-        "leading-[100%]"
+        "leading-[100%]",
     ],
     {
         variants: {
@@ -38,37 +48,43 @@ export const inputLabelStyles = cva(
                 Disabled: "",
             },
         },
+
         compoundVariants: [
             {
                 state: "Default",
-                className: "text-[var(--input-label-default)]",
+                className:
+                    "text-[var(--textarea-label-default)]",
             },
             {
                 state: "Focus",
-                className: "text-[var(--input-label-focus)]",
+                className:
+                    "text-[var(--textarea-label-focus)]",
             },
             {
                 state: "Disabled",
-                className: "text-[var(--input-label-disabled)]",
+                className:
+                    "text-[var(--textarea-label-disabled)]",
             },
         ],
     }
 );
 
+
 /************************************/
 /*      ESTILOS DEL CONTENEDOR      */
 /************************************/
-export const inputContainerStyles = cva(
+export const textAreaContainerStyles = cva(
     [
         "flex",
-        "h-[44px]",
-        "items-center",
-        "gap-[12px]",
-        "self-stretch",
-        "rounded-[8px]",
+        "w-[320px]",
+        "h-[120px]",
+        "items-start",
+        "gap-[8px]",
+        "rounded-[6px]",
         "px-[16px]",
-        "py-[12px]"
+        "py-[12px]",
     ],
+
     {
         variants: {
             state: {
@@ -77,33 +93,40 @@ export const inputContainerStyles = cva(
                 Disabled: "",
             },
         },
+
         compoundVariants: [
+            /* =========== ESTADO DEFAULT =========== */
             {
                 state: "Default",
-                className: "border border-[var(--input-border-default)]",
+                className:
+                    "border border-[var(--textarea-border-default)]",
             },
             {
                 state: "Focus",
                 className: [
                     "border-2",
-                    "border-[var(--input-border-focus)]",
-                    "shadow-[1px_1px_6px_0_var(--input-border-focus)]"
-                ].join(" "),
+                    "border-[var(--textarea-border-focus)]",
+                    "shadow-[1px_1px_6px_0_var(--textarea-border-focus)]",
+                ],
             },
             {
                 state: "Disabled",
-                className: "border border-[var(--input-border-disabled)]",
+                className:
+                    "border border-[var(--textarea-border-disabled)]",
             },
         ],
     }
 );
 
+
 /************************************/
-/*       ESTILOS DEL INPUT         */
+/*       ESTILOS DEL TEXTAREA       */
 /************************************/
-export const inputValueStyles = cva(
+export const textAreaValueStyles = cva(
     [
         "w-full",
+        "h-full",
+        "resize-none",
         "bg-transparent",
         "border-none",
         "outline-none",
@@ -116,6 +139,7 @@ export const inputValueStyles = cva(
         "leading-[100%]",
         "caret-[var(--color-vainilla)]",
     ],
+
     {
         variants: {
             state: {
@@ -129,38 +153,40 @@ export const inputValueStyles = cva(
             {
                 state: "Default",
                 className: [
-                    "text-[var(--color-vainilla)]",
-                    "placeholder:text-[var(--input-text-default)]",
-                ].join(" "),
+                    "text-[var(--textarea-text-default)]",
+                    "placeholder:text-[var(--textarea-placeholder-default)]",
+                ],
             },
             {
                 state: "Focus",
                 className: [
-                    "text-[var(--color-vainilla)]",
-                    "placeholder:text-[var(--input-text-focus)]",
-                ].join(" "),
+                    "text-[var(--textarea-text-focus)]",
+                    "placeholder:text-[var(--textarea-placeholder-focus)]",
+                ],
             },
             {
                 state: "Disabled",
                 className: [
-                    "text-[var(--input-text-disabled)]",
-                    "placeholder:text-[var(--input-text-disabled)]",
-                ].join(" "),
+                    "text-[var(--textarea-text-disabled)]",
+                    "placeholder:text-[var(--textarea-placeholder-disabled)]",
+                ],
             },
         ],
     }
 );
 
+
 /************************************/
 /*        ESTILOS HELPER TEXT       */
 /************************************/
-export const helperTextStyles = cva(
+export const textAreaHelperTextStyles = cva(
     [
+        "font-sans",
         "text-[14px]",
         "font-light",
         "leading-[100%]",
-        "text-center",
     ],
+
     {
         variants: {
             state: {
@@ -169,21 +195,23 @@ export const helperTextStyles = cva(
                 Disabled: "",
             },
         },
+
         compoundVariants: [
+
             {
                 state: "Default",
-                className: "text-[var(--input-helper-default)]",
+                className:
+                    "text-[var(--textarea-helper-default)]",
             },
             {
                 state: "Focus",
                 className:
-                    "text-[var(--input-helper-focus)]",
+                    "text-[var(--textarea-helper-focus)]",
             },
-
             {
                 state: "Disabled",
                 className:
-                    "text-[var(--input-helper-disabled)]",
+                    "text-[var(--textarea-helper-disabled)]",
             },
         ],
     }

@@ -33,34 +33,24 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 /****************************************/
 export function Button({
   children,
-
   variant = "Primary",
   buttonStyle = "Filled",
   size = "XS",
   state = "Default",
   leftIcon,
   rightIcon,
-
   disabled,
   className,
-
   ...props
 }: ButtonProps) {
   /* =========== Estado deshabilitado =========== */
   /* El botón queda deshabilitado cuando se recibe disabled={true} o el estado visual es "Disabled" */
-  const isDisabled = disabled || state === "Disabled";
+  const estaDeshabilitado = disabled || state === "Disabled";
   return (
     <button
       /* Obtiene las clases CSS generadas por CVA. */
-      className={buttonStyles({
-        variant,
-        buttonStyle,
-        size,
-        state,
-        className,
-      })}
-      /* Aplica el estado deshabilitado al elemento HTML. */
-      disabled={isDisabled}
+      className={buttonStyles({ variant, buttonStyle, size, state, className })}
+      disabled={estaDeshabilitado}
       {...props}
     >
       {leftIcon && (

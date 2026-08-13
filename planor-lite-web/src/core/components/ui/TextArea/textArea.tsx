@@ -50,93 +50,60 @@ export function TextArea({
     ...props
 }: TextAreaProps) {
 
-    /************************************/
-    /*    ESTADO INTERNO DEL TEXTAREA   */
-    /************************************/
+    /* ========= ESTADO INTERNO DEL TEXTAREA ========= */
     /* Determina si el textarea tiene actualmente el foco. */
-    const [isFocused, setIsFocused] = useState(false);
+    const [estaEnFoco, cambiarEstadoFoco] = useState(false);
 
-    /************************************/
-    /*       ESTADO DESHABILITADO       */
-    /************************************/
-    /* El textarea queda deshabilitado cuando:
-     * 1. Se recibe disabled={true}.
-     * 2. Se recibe state="Disabled". */
-    const isDisabled =
-        disabled || state === "Disabled";
+    /* ========= ESTADO DESHABILITADO ========= */
+    /* El textarea queda deshabilitado cuando: 1. Se recibe disabled={true} 2. Se recibe state="Disabled". */
+    const estaDeshabilitado = disabled || state === "Disabled";
 
-    /************************************/
-    /*        ESTADO VISUAL ACTUAL      */
-    /************************************/
+    /* =========  ESTADO VISUAL ACTUAL ========= */
     /* El estado visual se determina en este orden: 1. Disabled 2. Focus 3. Default */
-    const visualState: TextAreaState =
-        isDisabled
-            ? "Disabled"
-            : isFocused
-                ? "Focus"
-                : "Default";
+    function obtenerEstadoVisual(): TextAreaState {
+        if (estaDeshabilitado) return "Disabled";
+        if (estaEnFoco) return "Focus";
+        return "Default";
+    }
+    const estadoVisual = obtenerEstadoVisual();
 
 
-    /************************************/
-    /*             ON FOCUS             */
-    /************************************/
-    const handleFocus = (
-        event: FocusEvent<HTMLTextAreaElement>
-    ) => {
-        setIsFocused(true);
+    /* ========= ON FOCUS ========= */
+    function manejarFoco(event: FocusEvent<HTMLTextAreaElement>): void {
+        cambiarEstadoFoco(true);
         onFocus?.(event);
-    };
+    }
 
-
-    /************************************/
-    /*              ON BLUR             */
-    /************************************/
-    const handleBlur = (
-        event: FocusEvent<HTMLTextAreaElement>
-    ) => {
-        setIsFocused(false);
+    /* ========= ON BLUR ========= */
+    function manejarDesenfoque(event: FocusEvent<HTMLTextAreaElement>): void {
+        cambiarEstadoFoco(false);
         onBlur?.(event);
-    };
+    }
 
-    /************************************/
-    /*              RENDER              */
-    /************************************/
     return (
         <div className={`${textAreaStyles} ${className ?? ""}`}>
 
-            {/* ==================================== */}
-            {/*          TEXTAREA CONTENT            */}
-            {/* ==================================== */}
-
+            {/* ========= TEXTAREA CONTENT ========= */}
             <div className={textAreaContentStyles}>
 
                 {/* =========== LABEL =========== */}
                 {label && (
-                    <label
-                        className={textAreaLabelStyles({
-                            state: visualState,
-                        })}
-                    >
+                    <label className={textAreaLabelStyles({
+                        state: estadoVisual
+                    })}>
                         {label}
                     </label>
                 )}
 
-
                 {/* ======== TEXTAREA CONTAINER ======== */}
-                <div
-                    className={textAreaContainerStyles({
-                        state: visualState,
-                    })}>
+                <div className={textAreaContainerStyles({ state: estadoVisual })}>
 
                     {/* =========== TEXTAREA =========== */}
-
                     <textarea
-                        className={textAreaValueStyles({
-                            state: visualState,
-                        })}
-                        disabled={isDisabled}
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
+                        className={textAreaValueStyles({ state: estadoVisual })}
+                        disabled={estaDeshabilitado}
+                        onFocus={manejarFoco}
+                        onBlur={manejarDesenfoque}
                         {...props}
                     />
                 </div>
@@ -145,15 +112,10 @@ export function TextArea({
             {/* =========== HELPER TEXT =========== */}
             {helperText && (
                 <span
-                    className={textAreaHelperTextStyles({
-                        state: visualState,
-                    })}
-                >
+                    className={textAreaHelperTextStyles({ state: estadoVisual })}>
                     {helperText}
                 </span>
-
             )}
-
         </div>
     );
 }

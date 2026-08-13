@@ -52,18 +52,15 @@ export const textAreaLabelStyles = cva(
         compoundVariants: [
             {
                 state: "Default",
-                className:
-                    "text-[var(--textarea-label-default)]",
+                className: "text-[var(--textarea-label-default)]",
             },
             {
                 state: "Focus",
-                className:
-                    "text-[var(--textarea-label-focus)]",
+                className: "text-[var(--textarea-label-focus)]",
             },
             {
                 state: "Disabled",
-                className:
-                    "text-[var(--textarea-label-disabled)]",
+                className: "text-[var(--textarea-label-disabled)]",
             },
         ],
     }
@@ -84,7 +81,6 @@ export const textAreaContainerStyles = cva(
         "px-[16px]",
         "py-[12px]",
     ],
-
     {
         variants: {
             state: {
@@ -95,11 +91,9 @@ export const textAreaContainerStyles = cva(
         },
 
         compoundVariants: [
-            /* =========== ESTADO DEFAULT =========== */
             {
                 state: "Default",
-                className:
-                    "border border-[var(--textarea-border-default)]",
+                className: "border border-[var(--textarea-border-default)]",
             },
             {
                 state: "Focus",
@@ -107,12 +101,11 @@ export const textAreaContainerStyles = cva(
                     "border-2",
                     "border-[var(--textarea-border-focus)]",
                     "shadow-[1px_1px_6px_0_var(--textarea-border-focus)]",
-                ],
+                ].join(" "),
             },
             {
                 state: "Disabled",
-                className:
-                    "border border-[var(--textarea-border-disabled)]",
+                className: "border border-[var(--textarea-border-disabled)]",
             },
         ],
     }
@@ -139,7 +132,6 @@ export const textAreaValueStyles = cva(
         "leading-[100%]",
         "caret-[var(--color-vainilla)]",
     ],
-
     {
         variants: {
             state: {
@@ -155,21 +147,21 @@ export const textAreaValueStyles = cva(
                 className: [
                     "text-[var(--textarea-text-default)]",
                     "placeholder:text-[var(--textarea-placeholder-default)]",
-                ],
+                ].join(" "),
             },
             {
                 state: "Focus",
                 className: [
                     "text-[var(--textarea-text-focus)]",
                     "placeholder:text-[var(--textarea-placeholder-focus)]",
-                ],
+                ].join(" "),
             },
             {
                 state: "Disabled",
                 className: [
                     "text-[var(--textarea-text-disabled)]",
                     "placeholder:text-[var(--textarea-placeholder-disabled)]",
-                ],
+                ].join(" "),
             },
         ],
     }
@@ -200,18 +192,15 @@ export const textAreaHelperTextStyles = cva(
 
             {
                 state: "Default",
-                className:
-                    "text-[var(--textarea-helper-default)]",
+                className: "text-[var(--textarea-helper-default)]",
             },
             {
                 state: "Focus",
-                className:
-                    "text-[var(--textarea-helper-focus)]",
+                className: "text-[var(--textarea-helper-focus)]",
             },
             {
                 state: "Disabled",
-                className:
-                    "text-[var(--textarea-helper-disabled)]",
+                className: "text-[var(--textarea-helper-disabled)]",
             },
         ],
     }

@@ -179,7 +179,6 @@ export const helperTextStyles = cva(
                 className:
                     "text-[var(--input-helper-focus)]",
             },
-
             {
                 state: "Disabled",
                 className:

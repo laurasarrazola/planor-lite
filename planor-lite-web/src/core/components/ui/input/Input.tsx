@@ -27,9 +27,9 @@ import type { InputState } from "./input.types";
 /* Extiende todas las propiedades nativas de un input HTML y agrega las propiedades personalizadas del sistema de diseño.*/
 interface InputProps
     extends InputHTMLAttributes<HTMLInputElement> {
-    label?: string; // Texto que se muestra como etiqueta del input.
-    helperText?: string; // Texto que se muestra como ayuda debajo del input.
-    state?: InputState; // Estado visual del input (Default, Focus o Disabled).
+    label?: string;
+    helperText?: string;
+    state?: InputState;
 }
 
 /****************************************/
@@ -74,9 +74,9 @@ export function Input({
     /* ========== ON BLUR ========== */
     // Cuando el input pierde el foco, se actualiza el estado interno.
     function manejarDesenfoque(event: FocusEvent<HTMLInputElement>): void {
-    cambiarEstadoFoco(false);
-    onBlur?.(event);
-}
+        cambiarEstadoFoco(false);
+        onBlur?.(event);
+    }
 
     return (
         <div className={`${inputStyles} ${className ?? ""}`}>

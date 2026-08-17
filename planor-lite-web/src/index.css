@@ -116,6 +116,16 @@
 --textarea-helper-focus: rgba(255, 249, 228, 0.20);
 --textarea-helper-disabled: rgba(255, 249, 228, 0.20);
 
+/* =========== BADGE PRIORITY =========== */
+/* Fondo */
+--badge-alta-background: #A855F740;
+--badge-media-background: #F4C54240;
+--badge-baja-background: #2ECC7140;
+
+/* Texto e icono */
+--badge-alta-text: #FFF9E4CC;
+--badge-media-text: #FFF9E4CC;
+--badge-baja-text: #FFF9E4CC;
 }
 
 /* =========== ESTILOS GLOBALES ROOT =========== */

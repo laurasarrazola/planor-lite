@@ -1,6 +1,7 @@
 import { Button } from "@/core/components/ui/Button/Button";
 import { Input } from "@/core/components/ui/Input/Input";
-import { TextArea } from "@/core/components/ui/TextArea/textArea";
+import { TextArea } from "@/core/components/ui/TextArea/TextArea";
+import { BadgePriority } from "@/core/components/ui/BadgePriority/BadgePriority";
 import { Plus } from "lucide-react";
 
 function App() {
@@ -201,6 +202,21 @@ function App() {
           state="Disabled"
         />
 
+      </section>
+
+      {/* ====================================== */}
+      {/*               BADGES                   */}
+      {/* ====================================== */}
+      <section className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-white">
+          BadgePriority
+        </h1>
+
+        <div className="flex gap-4 items-center">
+          <BadgePriority priority="Alta" />
+          <BadgePriority priority="Media" />
+          <BadgePriority priority="Baja" />
+        </div>
       </section>
 
     </div>

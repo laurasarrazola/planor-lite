@@ -22,7 +22,7 @@ export function ButtonIcon({
     children,
 }: ButtonIconProps) {
     return (
-        <span className=" flex h-6 w-6 items-center justify-center shrink-0" >
+        <span className="flex h-6 w-6 items-center justify-center shrink-0" >
             {children}
         </span>
     );

@@ -126,6 +126,16 @@
 --badge-alta-text: #FFF9E4CC;
 --badge-media-text: #FFF9E4CC;
 --badge-baja-text: #FFF9E4CC;
+
+/* =========== MODAL =========== */
+--modal-background: #191B1F;
+--modal-border: var(--color-amatista);
+--modal-shadow: rgba(123, 51, 126, 0.60);
+
+--modal-title: var(--color-vainilla);
+--modal-description: var(--color-vainilla);
+
+--modal-close-icon: var(--color-vainilla);
 }
 
 /* =========== ESTILOS GLOBALES ROOT =========== */
@@ -217,11 +227,11 @@
     @apply border-border outline-ring/50;
   }
 
-  body {
-    @apply bg-background text-foreground;
-  }
-
   html {
     @apply font-sans;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
   }
 }

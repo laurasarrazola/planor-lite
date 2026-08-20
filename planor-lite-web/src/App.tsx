@@ -2,6 +2,7 @@ import { Button } from "@/core/components/ui/Button/Button";
 import { Input } from "@/core/components/ui/Input/Input";
 import { TextArea } from "@/core/components/ui/TextArea/TextArea";
 import { BadgePriority } from "@/core/components/ui/BadgePriority/BadgePriority";
+import { Modal } from "@/core/components/ui/Modals/Modal";
 import { Plus } from "lucide-react";
 
 function App() {
@@ -219,6 +220,42 @@ function App() {
         </div>
       </section>
 
+      {/* ====================================== */}
+      {/*               MODALS                  */}
+      {/* ====================================== */}
+
+      <section className="flex flex-col gap-6">
+        <h1 className="text-2xl font-bold text-white">
+          Modals
+        </h1>
+
+        <Modal
+          size="Small"
+          title="Eliminar tarea"
+          description="¿Estás seguro de eliminar esta tarea?"
+          onClose={() => console.log("Cerrar")}
+          actions={
+            <>
+              <Button
+                variant="Primary"
+                buttonStyle="Outlined"
+              >
+                Cancelar
+              </Button>
+
+              <Button>
+                Eliminar
+              </Button>
+            </>
+          }
+        >
+          <p className="text-sm font-light text-(--color-vainilla)">
+            Esta acción no se puede deshacer.
+          </p>
+        </Modal>
+      </section>
+
+      
     </div>
   );
 }

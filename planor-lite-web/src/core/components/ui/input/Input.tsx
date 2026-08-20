@@ -18,7 +18,7 @@ import {
     inputContainerStyles,
     inputValueStyles,
     helperTextStyles,
-} from "./input.styles";
+} from "./Input.styles";
 import type { InputState } from "./input.types";
 
 /****************************************/

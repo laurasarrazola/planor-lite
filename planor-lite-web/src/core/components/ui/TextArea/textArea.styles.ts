@@ -66,7 +66,6 @@ export const textAreaLabelStyles = cva(
     }
 );
 
-
 /************************************/
 /*      ESTILOS DEL CONTENEDOR      */
 /************************************/
@@ -110,7 +109,6 @@ export const textAreaContainerStyles = cva(
         ],
     }
 );
-
 
 /************************************/
 /*       ESTILOS DEL TEXTAREA       */
@@ -166,7 +164,6 @@ export const textAreaValueStyles = cva(
         ],
     }
 );
-
 
 /************************************/
 /*        ESTILOS HELPER TEXT       */

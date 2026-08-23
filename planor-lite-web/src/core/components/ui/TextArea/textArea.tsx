@@ -20,9 +20,9 @@ import {
     textAreaContainerStyles,
     textAreaValueStyles,
     textAreaHelperTextStyles,
-} from "./textArea.styles";
+} from "./TextArea.styles";
 
-import type { TextAreaState } from "./textArea.types";
+import type { TextAreaState } from "./TextArea.types";
 
 
 /****************************************/

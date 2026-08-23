@@ -5,15 +5,16 @@
  * 1. Recibir las propiedades del botón.
  * 2. Solicitar las clases CSS a button.styles.ts.
  * 3. Renderizar un elemento <button> con los estilos correspondientes.*/
+
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import { buttonStyles } from "./button.styles";
+import { buttonStyles } from "./Button.styles";
 import { ButtonIcon } from "./ButtonIcon";
 import type {
   ButtonVariant,
   ButtonStyle,
   ButtonSize,
   ButtonState,
-} from "./button.types";
+} from "./Button.types";
 
 /****************************************/
 /*      INTERFAZ DEL COMPONENTE         */

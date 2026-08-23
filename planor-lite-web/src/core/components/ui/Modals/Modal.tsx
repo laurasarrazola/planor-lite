@@ -46,13 +46,10 @@ export function Modal({
 }: ModalProps) {
 
     return (
-
         <div className={modalStyles({ size })}>
 
             {/* ========== CLOSE ACTION ========== */}
-
             <div className={modalCloseActionStyles}>
-
                 <button
                     type="button"
                     onClick={onClose}
@@ -63,50 +60,37 @@ export function Modal({
                         className={modalCloseIconStyles}
                     />
                 </button>
-
             </div>
 
             {/* ========== MODAL CONTENT ========== */}
-
             <div className={modalContentStyles}>
-
                 {/* ========== HEADER ========== */}
-
                 <div className={modalHeaderStyles({ size })}>
-
                     <h2 className={modalTitleStyles({ size })}>
                         {title}
                     </h2>
-
                     {description && (
                         <p className={modalDescriptionStyles({ size })}>
                             {description}
                         </p>
                     )}
-
                 </div>
 
                 {/* ========== BODY ========== */}
-
                 <div className={modalBodyStyles}>
-
                     <div className={modalInnerContentStyles({ size })}>
                         {children}
                     </div>
-
                 </div>
 
                 {/* ========== ACTIONS ========== */}
-
                 {actions && (
                     <div className={modalActionsStyles}>
                         {actions}
                     </div>
                 )}
-
             </div>
-
+            
         </div>
-
     );
 }

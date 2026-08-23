@@ -1,7 +1,6 @@
 /****************************************/
 /* ESTILOS DEL COMPONENTE BADGEPRIORITY */
 /****************************************/
-
 /* Contiene únicamente los estilos visuales del BadgePriority. */
 
 import { cva } from "class-variance-authority";
@@ -9,18 +8,18 @@ import { cva } from "class-variance-authority";
 /****************************************/
 /*      ESTILOS BASE DEL BADGE          */
 /****************************************/
-
-/* Estilos estructurales de la cápsula. */
+/* Define la apariencia y distribución del único contenedor que agrupa el icono y la etiqueta del badge. */
 export const badgePriorityStyles = cva(
     [
         "flex",
         "w-[77px]",
         "h-[20px]",
-        "flex-col",
-        "justify-center",
         "items-center",
+        "justify-center",
         "gap-[10px]",
         "rounded-[6px]",
+        "px-[10px]",
+        "py-[10px]",
     ],
     {
         variants: {
@@ -34,25 +33,9 @@ export const badgePriorityStyles = cva(
 );
 
 /****************************************/
-/*       ESTILOS DEL CONTENIDO         */
-/****************************************/
-
-/* Contenedor interno que agrupa icono y texto. */
-export const badgeContentStyles = [
-    "flex",
-    "items-center",
-    "justify-center",
-    "gap-[10px]",
-    "self-stretch",
-    "px-[10px]",
-    "py-[10px]",
-].join(" ");
-
-/****************************************/
 /*         ESTILOS DEL ICONO            */
 /****************************************/
-
-/* Tamaño definido en Figma para el icono. */
+/* Tamaño definido para el icono. */
 export const badgeIconStyles = [
     "w-[15px]",
     "h-[15px]",
@@ -62,8 +45,7 @@ export const badgeIconStyles = [
 /****************************************/
 /*          ESTILOS DEL LABEL           */
 /****************************************/
-
-/* Tipografía definida en Figma. */
+/* Tipografía definida y apariencia de la etiqueta */
 export const badgeLabelStyles = [
     "text-center",
     "font-montserrat",

@@ -3,6 +3,7 @@ import { Input } from "@/core/components/ui/Input/Input";
 import { TextArea } from "@/core/components/ui/TextArea/TextArea";
 import { BadgePriority } from "@/core/components/ui/BadgePriority/BadgePriority";
 import { Modal } from "@/core/components/ui/Modals/Modal";
+import { Header } from "@/core/components/ui/Header/Header";
 import { Plus } from "lucide-react";
 
 function App() {
@@ -255,7 +256,22 @@ function App() {
         </Modal>
       </section>
 
-      
+      <Header
+        mode="Guest"
+        navigationItems={[
+          { label: "Inicio" },
+          { label: "Características" },
+          { label: "Cómo funciona" },
+        ]}
+      />
+
+      <Header
+        mode="Authenticated"
+        navigationItems={[
+          { label: "Mis tableros" },
+        ]}
+      />
+
     </div>
   );
 }

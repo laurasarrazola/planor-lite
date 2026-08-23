@@ -11,7 +11,6 @@ import logo from "@/assets/logo/Planor-logo.svg";
 import { Button } from "../Button/Button";
 import {
   headerStyles,
-  brandingStyles,
   logoStyles,
   navigationStyles,
   navigationItemStyles,
@@ -26,14 +25,14 @@ import type {
 /****************************************/
 /*      INTERFAZ DEL COMPONENTE         */
 /****************************************/
-
+/* Define las propiedades que recibe el componente Header */
 interface HeaderProps {
-  mode?: HeaderMode;
-  navigationItems: NavigationItem[];
-  onNavigationClick?: (item: NavigationItem) => void;
-  onProfileClick?: () => void;
-  onLogin?: () => void;
-  onRegister?: () => void;
+  mode?: HeaderMode; // Define si el header corresponde a un usuario autenticado o invitado.
+  navigationItems: NavigationItem[]; // Contiene los elementos que aparecerán en la navegación.
+  onNavigationClick?: (item: NavigationItem) => void; // Función ejecutada cuando el usuario selecciona un elemento de navegación.
+  onProfileClick?: () => void;  // Función ejecutada cuando el usuario hace clic en el perfil.
+  onLogin?: () => void; // Función ejecutada cuando el usuario hace clic en iniciar sesión.
+  onRegister?: () => void; // Función ejecutada cuando el usuario hace clic en registrarse.
 }
 
 /****************************************/
@@ -50,14 +49,12 @@ export function Header({
   return (
     <header className={headerStyles({ mode })}>
 
-      {/* ========== BRANDING ========== */}
-      <div className={brandingStyles}>
-        <img
-          src={logo}
-          alt="Planor"
-          className={logoStyles}
-        />
-      </div>
+      {/* ========== LOGO ========== */}
+      <img
+        src={logo}
+        alt="Planor"
+        className={logoStyles}
+      />
 
       {/* ========== NAVEGACIÓN ========== */}
       <nav className={navigationStyles}>
@@ -77,15 +74,12 @@ export function Header({
       <div className={actionsStyles}>
 
         {mode === "Authenticated" ? (
-
           <Icon
             icon="mingcute:user-4-fill"
             className={userIconStyles}
             onClick={onProfileClick}
           />
-
         ) : (
-
           <>
             <Button
               variant="CTA"

@@ -90,7 +90,7 @@ export const buttonStyles = cva(
             /* =========== Estado visual =========== */
             state: {
                 Default: "",
-                Hover: "",
+                Active: "",
                 Disabled: "cursor-not-allowed",
             },
 
@@ -115,13 +115,13 @@ export const buttonStyles = cva(
             },
 
             {
-                // Primary + Filled + Hover.
+                // Primary + Filled + Active.
                 variant: "Primary",
                 buttonStyle: "Filled",
-                state: "Hover",
+                state: "Active",
                 className: [
-                    "bg-[var(--button-primary-filled-background)]",
-                    "text-[var(--button-primary-filled-text)]",
+                    "bg-[var(--button-primary-filled-active-background)]",
+                    "text-[var(--button-primary-filled-active-text)]",
                     "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.25)]",
                 ].join(" "),
             },
@@ -151,15 +151,15 @@ export const buttonStyles = cva(
             },
 
             {
-                // Primary + Outlined + Hover.
+                // Primary + Outlined + Active.
                 variant: "Primary",
                 buttonStyle: "Outlined",
-                state: "Hover",
+                state: "Active",
                 className: [
                     "border-2",
-                    "border-[var(--button-primary-outlined-border)]",
+                    "border-[var(--button-primary-outlined-active-border)]",
                     "bg-transparent",
-                    "text-[var(--button-primary-outlined-text)]",
+                    "text-[var(--button-primary-outlined-active-text)]",
                     "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.08)]",
                 ].join(" "),
             },
@@ -193,13 +193,13 @@ export const buttonStyles = cva(
             },
 
             {
-                // CTA + Filled + Hover.
+                // CTA + Filled + Active.
                 variant: "CTA",
                 buttonStyle: "Filled",
-                state: "Hover",
+                state: "Active",
                 className: [
-                    "bg-[var(--button-cta-filled-hover-background)]",
-                    "text-[var(--button-cta-filled-hover-text)]",
+                    "bg-[var(--button-cta-filled-active-background)]",
+                    "text-[var(--button-cta-filled-active-text)]",
                     "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.25)]",
                 ].join(" "),
             },
@@ -229,15 +229,15 @@ export const buttonStyles = cva(
             },
 
             {
-                // CTA + Outlined + Hover.
+                // CTA + Outlined + Active.
                 variant: "CTA",
                 buttonStyle: "Outlined",
-                state: "Hover",
+                state: "Active",
                 className: [
                     "border-2",
-                    "border-[var(--button-cta-outlined-hover-border)]",
+                    "border-[var(--button-cta-outlined-active-border)]",
                     "bg-transparent",
-                    "text-[var(--button-cta-outlined-hover-text)]",
+                    "text-[var(--button-cta-outlined-active-text)]",
                     "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.25)]",
                 ].join(" "),
             },

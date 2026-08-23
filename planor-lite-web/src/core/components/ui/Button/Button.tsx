@@ -6,7 +6,7 @@
  * 2. Solicitar las clases CSS a button.styles.ts.
  * 3. Renderizar un elemento <button> con los estilos correspondientes.*/
 
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { useState, type ButtonHTMLAttributes } from "react";
 import { buttonStyles } from "./Button.styles";
 import { ButtonIcon } from "./ButtonIcon";
 import type {
@@ -25,8 +25,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   buttonStyle?: ButtonStyle; // Estilo (filled u outlined).
   size?: ButtonSize; // Tamaño.
   state?: ButtonState; // Estado visual.
-  leftIcon?: ReactNode; // Icono a la izquierda del texto.
-  rightIcon?: ReactNode; // Icono a la derecha del texto.
+  leftIcon?: string; // Icono a la izquierda del texto.
+  rightIcon?: string; // Icono a la derecha del texto.
 }
 
 /****************************************/
@@ -44,26 +44,42 @@ export function Button({
   className,
   ...props
 }: ButtonProps) {
+  /* =========== Estado interno durante el clic =========== */
+  const [estaActivo, setEstaActivo] = useState(false);
+
   /* =========== Estado deshabilitado =========== */
   /* El botón queda deshabilitado cuando se recibe disabled={true} o el estado visual es "Disabled" */
   const estaDeshabilitado = disabled || state === "Disabled";
+
+  /* Determina el estado visual del botón según las propiedades recibidas y el estado interno. */
+  let estadoVisual: ButtonState = "Default";
+  if (estaDeshabilitado) {
+    estadoVisual = "Disabled";
+  } else if (estaActivo) {
+    estadoVisual = "Active";
+  }
+
   return (
     <button
-      /* Obtiene las clases CSS generadas por CVA. */
-      className={buttonStyles({ variant, buttonStyle, size, state, className })}
+      className={buttonStyles({
+        variant,
+        buttonStyle,
+        size,
+        state: estadoVisual,
+        className,
+      })}
       disabled={estaDeshabilitado}
+      onMouseDown={() => setEstaActivo(true)}
+      onMouseUp={() => setEstaActivo(false)}
+      onMouseLeave={() => setEstaActivo(false)}
       {...props}
     >
       {leftIcon && (
-        <ButtonIcon>
-          {leftIcon}
-        </ButtonIcon>
+        <ButtonIcon icon={leftIcon} />
       )}
       {children}
       {rightIcon && (
-        <ButtonIcon>
-          {rightIcon}
-        </ButtonIcon>
+        <ButtonIcon icon={rightIcon} />
       )}
     </button>
   );

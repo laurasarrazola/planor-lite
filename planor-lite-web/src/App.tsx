@@ -4,7 +4,7 @@ import { TextArea } from "@/core/components/ui/TextArea/TextArea";
 import { BadgePriority } from "@/core/components/ui/BadgePriority/BadgePriority";
 import { Modal } from "@/core/components/ui/Modals/Modal";
 import { Header } from "@/core/components/ui/Header/Header";
-import { Plus } from "lucide-react";
+
 
 function App() {
   return (
@@ -29,10 +29,9 @@ function App() {
         <Button
           variant="Primary"
           size="XS"
-          state="Hover"
           buttonStyle="Filled"
         >
-          Primary Hover
+          Primary Active
         </Button>
 
         <Button
@@ -56,9 +55,8 @@ function App() {
           variant="Primary"
           size="L"
           buttonStyle="Outlined"
-          state="Hover"
         >
-          Primary Outlined Hover
+          Primary Outlined Active
         </Button>
 
         <Button
@@ -77,9 +75,8 @@ function App() {
 
         <Button
           variant="CTA"
-          state="Hover"
         >
-          CTA Hover
+          CTA Active
         </Button>
 
         <Button
@@ -99,9 +96,8 @@ function App() {
         <Button
           variant="CTA"
           buttonStyle="Outlined"
-          state="Hover"
         >
-          CTA Outlined Hover
+          CTA Outlined Active
         </Button>
 
         <Button
@@ -113,22 +109,19 @@ function App() {
         </Button>
 
         {/* Con iconos */}
-
-        <Button leftIcon={<Plus />}>
+        <Button leftIcon="mingcute:user-4-fill">
           Guardar
         </Button>
 
-        <Button rightIcon={<Plus />}>
+        <Button rightIcon="mingcute:arrow-right-fill">
           Siguiente
         </Button>
 
         <Button
-          leftIcon={<Plus />}
-          rightIcon={<Plus />}
-        >
+          leftIcon="mingcute:user-4-fill"
+          rightIcon="mingcute:user-4-fill">
           Ambos iconos
         </Button>
-
       </section>
 
       {/* ====================================== */}

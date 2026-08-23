@@ -22,7 +22,7 @@ export type ButtonSize=
   |"L";
 
 /* ======== Estado visual ======== */
-export type ButtonState=
-  |"Default"
-  |"Hover"
-  |"Disabled";
+export type ButtonState =
+  | "Default"
+  | "Active"
+  | "Disabled";

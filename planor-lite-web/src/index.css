@@ -18,9 +18,9 @@
   --button-primary-filled-background: var(--color-amatista);
   --button-primary-filled-text: var(--color-vainilla);
 
-  /* Filled - focus */
-  --button-primary-filled-focus-background: var(--color-amatista);
-  --button-primary-filled-focus-text: var(--color-vainilla);
+  /* Filled - active */
+  --button-primary-filled-active-background: var(--color-amatista);
+  --button-primary-filled-active-text: var(--color-vainilla);
 
   /* Filled - Disabled */
   --button-primary-filled-disabled-background: #7B337E33;
@@ -30,9 +30,9 @@
   --button-primary-outlined-border: var(--color-amatista);
   --button-primary-outlined-text: var(--color-vainilla);
 
-  /* Outlined - focus */
-  --button-primary-outlined-focus-border: var(--color-amatista);
-  --button-primary-outlined-focus-text: var(--color-vainilla);
+  /* Outlined - active */
+  --button-primary-outlined-active-border: var(--color-amatista);
+  --button-primary-outlined-active-text: var(--color-vainilla);
 
   /* Outlined - Disabled */
   --button-primary-outlined-disabled-border: #7B337E33;
@@ -43,9 +43,9 @@
   --button-cta-filled-background: var(--color-zafiro-lavanda);
   --button-cta-filled-text: var(--color-vainilla);
 
-  /* Filled - focus */
-  --button-cta-filled-focus-background: var(--color-zafiro-lavanda);
-  --button-cta-filled-focus-text: var(--color-vainilla);
+  /* Filled - active */
+  --button-cta-filled-active-background: var(--color-zafiro-lavanda);
+  --button-cta-filled-active-text: var(--color-vainilla);
 
   /* Filled - Disabled */
   --button-cta-filled-disabled-background: #6264BC33;
@@ -55,9 +55,9 @@
   --button-cta-outlined-border: var(--color-zafiro-lavanda);
   --button-cta-outlined-text: var(--color-vainilla);
 
-  /* Outlined - focus */
-  --button-cta-outlined-focus-border: var(--color-zafiro-lavanda);
-  --button-cta-outlined-focus-text: var(--color-vainilla);
+  /* Outlined - active */
+  --button-cta-outlined-active-border: var(--color-zafiro-lavanda);
+  --button-cta-outlined-active-text: var(--color-vainilla);
 
   /* Outlined - Disabled */
   --button-cta-outlined-disabled-border: #6264BC26;

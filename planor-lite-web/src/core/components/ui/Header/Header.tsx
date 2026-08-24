@@ -46,6 +46,39 @@ export function Header({
   onLogin,
   onRegister,
 }: HeaderProps) {
+
+let acciones;
+
+if (mode === "Authenticated") {
+  acciones = (
+    <Icon
+      icon="mingcute:user-4-fill"
+      className={userIconStyles}
+      onClick={onProfileClick}
+    />
+  );
+} else {
+  acciones = (
+    <>
+      <Button
+        variant="CTA"
+        buttonStyle="Outlined"
+        onClick={onLogin}
+      >
+        Iniciar sesión
+      </Button>
+
+      <Button
+        variant="Primary"
+        buttonStyle="Filled"
+        onClick={onRegister}
+      >
+        Registrarse
+      </Button>
+    </>
+  );
+}
+
   return (
     <header className={headerStyles({ mode })}>
 
@@ -72,33 +105,7 @@ export function Header({
 
       {/* ========== ACCIONES ========== */}
       <div className={actionsStyles}>
-
-        {mode === "Authenticated" ? (
-          <Icon
-            icon="mingcute:user-4-fill"
-            className={userIconStyles}
-            onClick={onProfileClick}
-          />
-        ) : (
-          <>
-            <Button
-              variant="CTA"
-              buttonStyle="Outlined"
-              onClick={onLogin}
-            >
-              Iniciar sesión
-            </Button>
-
-            <Button
-              variant="Primary"
-              buttonStyle="Filled"
-              onClick={onRegister}
-            >
-              Registrarse
-            </Button>
-          </>
-        )}
-
+        {acciones}
       </div>
     </header>
   );

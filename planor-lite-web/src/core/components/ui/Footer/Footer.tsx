@@ -6,7 +6,7 @@ import {
     footerNavigationItemStyles,
     footerBottomStyles,
     footerTextStyles,
-} from "./footer.styles";
+} from "./Footer.styles";
 
 export function Footer() {
     return (

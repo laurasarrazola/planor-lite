@@ -1,5 +1,5 @@
 /****************************************/
-/*      COMPONENTE HEADER                */
+/*       COMPONENTE HEADER              */
 /****************************************/
 /* Este archivo define el componente reutilizable Header. Responsabilidades:
  * 1. Recibir las propiedades del header.

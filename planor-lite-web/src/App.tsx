@@ -5,6 +5,7 @@ import { BadgePriority } from "@/core/components/ui/BadgePriority/BadgePriority"
 import { Modal } from "@/core/components/ui/Modals/Modal";
 import { Header } from "@/core/components/ui/Header/Header";
 import { Footer } from "@/core/components/ui/Footer/Footer";
+import { HomeCard } from "@/core/components/ui/HomeCards/HomeCards";
 
 
 function App() {
@@ -259,9 +260,27 @@ function App() {
       {/* ====================================== */}
       {/*               FOOTER                   */}
       {/* ====================================== */}
-    <Footer />
+      <Footer />
 
+      {/* ====================================== */}
+      {/*               HOME CARDS               */}
+      {/* ====================================== */}
+      <div className="flex gap-6">
+      <HomeCard
+        accent="Amatista"
+        icon="lucide:layout-dashboard"
+        title="Organiza"
+        description="Gestiona tus tareas de forma sencilla."
+      />
 
+      <HomeCard
+        accent="ZafiroLavanda"
+        icon="lucide:check-circle"
+        title="Completa"
+        description="Visualiza tu progreso y alcanza tus objetivos."
+      />
+      </div>
+      
     </div>
   );
 }

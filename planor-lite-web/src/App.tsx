@@ -253,21 +253,8 @@ function App() {
       {/* ====================================== */}
       {/*               HEADER                   */}
       {/* ====================================== */}
-      <Header
-        mode="Guest"
-        navigationItems={[
-          { label: "Inicio" },
-          { label: "Características" },
-          { label: "Cómo funciona" },
-        ]}
-      />
-
-      <Header
-        mode="Authenticated"
-        navigationItems={[
-          { label: "Mis tableros" },
-        ]}
-      />
+      <Header mode="Guest" />
+      <Header mode="Authenticated" />
 
       {/* ====================================== */}
       {/*               FOOTER                   */}

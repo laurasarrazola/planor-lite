@@ -28,7 +28,6 @@ import type {
 /* Define las propiedades que recibe el componente Header */
 interface HeaderProps {
   mode?: HeaderMode; // Define si el header corresponde a un usuario autenticado o invitado.
-  navigationItems: NavigationItem[]; // Contiene los elementos que aparecerán en la navegación.
   onNavigationClick?: (item: NavigationItem) => void; // Función ejecutada cuando el usuario selecciona un elemento de navegación.
   onProfileClick?: () => void;  // Función ejecutada cuando el usuario hace clic en el perfil.
   onLogin?: () => void; // Función ejecutada cuando el usuario hace clic en iniciar sesión.
@@ -40,44 +39,60 @@ interface HeaderProps {
 /****************************************/
 export function Header({
   mode = "Guest",
-  navigationItems,
   onNavigationClick,
   onProfileClick,
   onLogin,
   onRegister,
 }: HeaderProps) {
 
-let acciones;
+  /* ========== NAVEGACIÓN ========== */
 
-if (mode === "Authenticated") {
-  acciones = (
-    <Icon
-      icon="mingcute:user-4-fill"
-      className={userIconStyles}
-      onClick={onProfileClick}
-    />
-  );
-} else {
-  acciones = (
-    <>
-      <Button
-        variant="CTA"
-        buttonStyle="Outlined"
-        onClick={onLogin}
-      >
-        Iniciar sesión
-      </Button>
+  let navigationItems: NavigationItem[];
 
-      <Button
-        variant="Primary"
-        buttonStyle="Filled"
-        onClick={onRegister}
-      >
-        Registrarse
-      </Button>
-    </>
-  );
-}
+  if (mode === "Authenticated") {
+    navigationItems = [
+      { label: "Mis tableros" },
+    ];
+  } else {
+    navigationItems = [
+      { label: "Inicio" },
+      { label: "Características" },
+      { label: "Cómo funciona" },
+    ];
+  }
+
+  /* ========== ACCIONES ========== */
+  let acciones;
+
+  if (mode === "Authenticated") {
+    acciones = (
+      <Icon
+        icon="mingcute:user-4-fill"
+        className={userIconStyles}
+        onClick={onProfileClick}
+      />
+    );
+  } else {
+    acciones = (
+      <>
+        <Button
+          variant="CTA"
+          buttonStyle="Outlined"
+          onClick={onLogin}
+        >
+          Iniciar sesión
+        </Button>
+
+        <Button
+          variant="Primary"
+          buttonStyle="Filled"
+          onClick={onRegister}
+        >
+          Registrarse
+        </Button>
+      </>
+    );
+  }
 
   return (
     <header className={headerStyles({ mode })}>

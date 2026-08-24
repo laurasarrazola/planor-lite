@@ -80,10 +80,7 @@ export function Input({
 
     return (
         <div className={`${inputStyles} ${className ?? ""}`}>
-
-            {/* =========== INPUT CONTENT =========== */}
-            <div className="flex flex-col items-start gap-2 self-stretch">
-
+            
                 {/* =========== LABEL =========== */}
                 {label && (
                     <label className={inputLabelStyles({ state: estadoVisual })}>
@@ -103,7 +100,6 @@ export function Input({
                         {...props}
                     />
                 </div>
-            </div>
 
             {/* =========== HELPER TEXT =========== */}
             {helperText && (

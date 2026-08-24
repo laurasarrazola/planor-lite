@@ -13,7 +13,7 @@ export const inputStyles = [
     "flex",
     "flex-col",
     "items-start",
-    "gap-[6px]",
+    "gap-[8px]",
     "px-[10px]",
     "py-[12px]",
     "w-full",

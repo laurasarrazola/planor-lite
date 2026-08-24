@@ -123,31 +123,20 @@ export const modalDescriptionStyles = cva(
 /************************************/
 /*            MODAL BODY            */
 /************************************/
-export const modalBodyStyles = [
-    "flex",
-    "flex-col",
-    "items-start",
-    "gap-[16px]",
-    "self-stretch",
-    "p-[10px]",
-].join(" ");
-
-/************************************/
-/*          CONTENT INTERNO         */
-/************************************/
-export const modalInnerContentStyles = cva(
+export const modalBodyStyles = cva(
     [
         "flex",
         "flex-col",
         "items-start",
         "gap-[16px]",
         "self-stretch",
+        "p-[10px]",
     ],
     {
         variants: {
             size: {
-                Small: "h-[100px]",
-                Medium: "p-[10px]",
+                Small: "h-[120px]",
+                Medium: "p-[20px]",
             },
         },
     }

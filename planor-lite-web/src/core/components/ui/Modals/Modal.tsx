@@ -1,13 +1,11 @@
 /****************************************/
 /*           COMPONENTE MODAL           */
 /****************************************/
-/*
- * Responsabilidades:
+/* Responsabilidades:
  * 1. Recibir las propiedades del modal.
  * 2. Renderizar la estructura del modal.
  * 3. Utilizar Button como asset.
- * 4. Utilizar Iconify para el icono de cerrar.
- */
+ * 4. Utilizar Iconify para el icono de cerrar.*/
 
 import type { ReactNode } from "react";
 import { Icon } from "@iconify/react";
@@ -21,7 +19,6 @@ import {
     modalTitleStyles,
     modalDescriptionStyles,
     modalBodyStyles,
-    modalInnerContentStyles,
     modalActionsStyles,
 } from "./Modal.styles";
 
@@ -77,10 +74,8 @@ export function Modal({
                 </div>
 
                 {/* ========== BODY ========== */}
-                <div className={modalBodyStyles}>
-                    <div className={modalInnerContentStyles({ size })}>
-                        {children}
-                    </div>
+                <div className={modalBodyStyles({ size })}>
+                    {children}
                 </div>
 
                 {/* ========== ACTIONS ========== */}
@@ -90,7 +85,7 @@ export function Modal({
                     </div>
                 )}
             </div>
-            
+
         </div>
     );
 }

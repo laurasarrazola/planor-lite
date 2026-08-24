@@ -17,7 +17,6 @@ import {
     textAreaStyles,
     textAreaContentStyles,
     textAreaLabelStyles,
-    textAreaContainerStyles,
     textAreaValueStyles,
     textAreaHelperTextStyles,
 } from "./TextArea.styles";
@@ -88,34 +87,31 @@ export function TextArea({
 
                 {/* =========== LABEL =========== */}
                 {label && (
-                    <label className={textAreaLabelStyles({
-                        state: estadoVisual
-                    })}>
+                    <label
+                        className={textAreaLabelStyles({ state: estadoVisual })}>
                         {label}
                     </label>
                 )}
 
                 {/* ======== TEXTAREA CONTAINER ======== */}
-                <div className={textAreaContainerStyles({ state: estadoVisual })}>
-
-                    {/* =========== TEXTAREA =========== */}
-                    <textarea
-                        className={textAreaValueStyles({ state: estadoVisual })}
-                        disabled={estaDeshabilitado}
-                        onFocus={manejarFoco}
-                        onBlur={manejarDesenfoque}
-                        {...props}
-                    />
-                </div>
+                <textarea
+                    className={textAreaValueStyles({ state: estadoVisual })}
+                    disabled={estaDeshabilitado}
+                    onFocus={manejarFoco}
+                    onBlur={manejarDesenfoque}
+                    {...props}
+                />
             </div>
 
             {/* =========== HELPER TEXT =========== */}
-            {helperText && (
-                <span
-                    className={textAreaHelperTextStyles({ state: estadoVisual })}>
-                    {helperText}
-                </span>
-            )}
-        </div>
+            {
+                helperText && (
+                    <span
+                        className={textAreaHelperTextStyles({ state: estadoVisual })}>
+                        {helperText}
+                    </span>
+                )
+            }
+        </div >
     );
 }

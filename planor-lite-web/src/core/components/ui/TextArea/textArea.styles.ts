@@ -10,11 +10,11 @@ import { cva } from "class-variance-authority";
 /************************************/
 /* Este contenedor representa el componente completo. No utiliza CVA porque nunca cambia entre Default, Focus o Disabled. Todos sus estilos son fijos. */
 export const textAreaStyles = [
-  "inline-flex",
-  "flex-col",
-  "items-start",
-  "gap-[6px]",
-  "p-[10px]",
+    "inline-flex",
+    "flex-col",
+    "items-start",
+    "gap-[6px]",
+    "p-[10px]",
 ].join(" ");
 
 
@@ -23,11 +23,11 @@ export const textAreaStyles = [
 /************************************/
 /* Contiene Label, TextAreaContainer y HelperText. Su apariencia nunca cambia, por lo que no requiere variantes ni CVA. */
 export const textAreaContentStyles = [
-  "flex",
-  "flex-col",
-  "items-start",
-  "gap-[8px]",
-  "p-[10px]",
+    "flex",
+    "flex-col",
+    "items-start",
+    "gap-[8px]",
+    "p-[10px]",
 ].join(" ");
 
 /************************************/
@@ -67,59 +67,17 @@ export const textAreaLabelStyles = cva(
 );
 
 /************************************/
-/*      ESTILOS DEL CONTENEDOR      */
-/************************************/
-export const textAreaContainerStyles = cva(
-    [
-        "flex",
-        "w-[320px]",
-        "h-[120px]",
-        "items-start",
-        "gap-[8px]",
-        "rounded-[6px]",
-        "px-[16px]",
-        "py-[12px]",
-    ],
-    {
-        variants: {
-            state: {
-                Default: "",
-                Focus: "",
-                Disabled: "",
-            },
-        },
-
-        compoundVariants: [
-            {
-                state: "Default",
-                className: "border border-[var(--textarea-border-default)]",
-            },
-            {
-                state: "Focus",
-                className: [
-                    "border-2",
-                    "border-[var(--textarea-border-focus)]",
-                    "shadow-[1px_1px_6px_0_var(--textarea-border-focus)]",
-                ].join(" "),
-            },
-            {
-                state: "Disabled",
-                className: "border border-[var(--textarea-border-disabled)]",
-            },
-        ],
-    }
-);
-
-/************************************/
 /*       ESTILOS DEL TEXTAREA       */
 /************************************/
 export const textAreaValueStyles = cva(
     [
-        "w-full",
-        "h-full",
+        "w-[320px]",
+        "h-[120px]",
         "resize-none",
+        "rounded-[6px]",
+        "px-[16px]",
+        "py-[12px]",
         "bg-transparent",
-        "border-none",
         "outline-none",
         "ring-0",
         "focus:outline-none",
@@ -143,20 +101,29 @@ export const textAreaValueStyles = cva(
             {
                 state: "Default",
                 className: [
+                    "border",
+                    "border-[var(--textarea-border-default)]",
                     "text-[var(--textarea-text-default)]",
                     "placeholder:text-[var(--textarea-placeholder-default)]",
                 ].join(" "),
             },
+
             {
                 state: "Focus",
                 className: [
+                    "border-2",
+                    "border-[var(--textarea-border-focus)]",
+                    "shadow-[1px_1px_6px_0_var(--textarea-border-focus)]",
                     "text-[var(--textarea-text-focus)]",
                     "placeholder:text-[var(--textarea-placeholder-focus)]",
                 ].join(" "),
             },
+
             {
                 state: "Disabled",
                 className: [
+                    "border",
+                    "border-[var(--textarea-border-disabled)]",
                     "text-[var(--textarea-text-disabled)]",
                     "placeholder:text-[var(--textarea-placeholder-disabled)]",
                 ].join(" "),

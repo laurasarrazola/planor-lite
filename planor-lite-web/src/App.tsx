@@ -4,6 +4,7 @@ import { TextArea } from "@/core/components/ui/TextArea/TextArea";
 import { BadgePriority } from "@/core/components/ui/BadgePriority/BadgePriority";
 import { Modal } from "@/core/components/ui/Modals/Modal";
 import { Header } from "@/core/components/ui/Header/Header";
+import { Footer } from "@/core/components/ui/Footer/Footer";
 
 
 function App() {
@@ -249,6 +250,9 @@ function App() {
         </Modal>
       </section>
 
+      {/* ====================================== */}
+      {/*               HEADER                   */}
+      {/* ====================================== */}
       <Header
         mode="Guest"
         navigationItems={[
@@ -264,6 +268,12 @@ function App() {
           { label: "Mis tableros" },
         ]}
       />
+
+      {/* ====================================== */}
+      {/*               FOOTER                   */}
+      {/* ====================================== */}
+    <Footer />
+
 
     </div>
   );

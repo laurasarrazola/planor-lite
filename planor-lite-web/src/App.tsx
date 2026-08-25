@@ -6,6 +6,7 @@ import { Modal } from "@/core/components/ui/Modals/Modal";
 import { Header } from "@/core/components/ui/Header/Header";
 import { Footer } from "@/core/components/ui/Footer/Footer";
 import { HomeCard } from "@/core/components/ui/HomeCards/HomeCards";
+import {BoardCard} from "@/core/components/ui/BoardCards/BoardCards";
 
 
 function App() {
@@ -280,7 +281,22 @@ function App() {
         description="Visualiza tu progreso y alcanza tus objetivos."
       />
       </div>
-      
+
+      {/* ====================================== */}
+      {/*              BOARD CARDS               */}
+      {/* ====================================== */}
+      <div className="flex gap-6">
+      <BoardCard 
+      accent="Amatista"
+      title="Mi Tablero"
+      description="Este es mi tablero de tareas." />
+
+      <BoardCard
+      accent="ZafiroLavanda"
+      title="Tablero de Proyecto"
+      description="Tablero para gestionar el proyecto." />
+      </div>
+
     </div>
   );
 }

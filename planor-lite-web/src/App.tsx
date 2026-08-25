@@ -7,6 +7,7 @@ import { Header } from "@/core/components/ui/Header/Header";
 import { Footer } from "@/core/components/ui/Footer/Footer";
 import { HomeCard } from "@/core/components/ui/HomeCards/HomeCards";
 import {BoardCard} from "@/core/components/ui/BoardCards/BoardCards";
+import { TaskCard } from "./core/components/ui/TaskCards/TaskCards";
 
 
 function App() {
@@ -296,6 +297,16 @@ function App() {
       title="Tablero de Proyecto"
       description="Tablero para gestionar el proyecto." />
       </div>
+
+      {/* ====================================== */}
+      {/*             TASK CARD                  */}
+      {/* ====================================== */}
+      <TaskCard
+        title="Tarea de ejemplo"
+        description="Esta es una tarea de ejemplo con un tetxo larguisimo a ver como se comporta la jodida tarjeta."
+        priority="Alta"
+        dueDate="2026-10-15"
+      />
 
     </div>
   );

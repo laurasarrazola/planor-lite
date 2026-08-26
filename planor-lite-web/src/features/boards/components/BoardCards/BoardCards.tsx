@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Button } from "../Button/Button";
+import { Button } from "../../../../core/components/ui/Button/Button";
 import {
     boardCardStyles,
     boardCardHeaderStyles,

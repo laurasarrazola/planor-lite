@@ -8,7 +8,7 @@
 
 import { Icon } from "@iconify/react";
 import logo from "@/assets/logo/Planor-logo.svg";
-import { Button } from "../Button/Button";
+import { Button } from "../../ui/Button/Button";
 import {
   headerStyles,
   logoStyles,

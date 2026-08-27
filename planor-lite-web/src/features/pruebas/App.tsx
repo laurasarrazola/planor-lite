@@ -1,315 +1,325 @@
-// import { Button } from "@/core/components/ui/Button/Button";
-// import { Input } from "@/core/components/ui/Input/Input";
-// import { TextArea } from "@/core/components/ui/TextArea/TextArea";
-// import { BadgePriority } from "@/features/tasks/components/BadgePriority/BadgePriority";
-// import { Modal } from "@/core/components/ui/Modals/Modal";
-// import { Header } from "@/core/components/layout/Header/Header";
-// import { Footer } from "@/core/components/layout/Footer/Footer";
-// import { HomeCard } from "@/features/home/componets/HomeCards/HomeCards";
-// import {BoardCard} from "@/features/boards/components/BoardCards/BoardCards";
-// import { TaskCard } from "./features/tasks/components/TaskCards/TaskCards";
+import { Button } from "@/core/components/ui/Button/Button";
+import { Input } from "@/core/components/ui/Input/Input";
+import { TextArea } from "@/core/components/ui/TextArea/TextArea";
+import { BadgePriority } from "@/features/tasks/components/BadgePriority/BadgePriority";
+import { Modal } from "@/core/components/ui/Modals/Modal";
+import { Header } from "@/core/components/layout/Header/Header";
+import { Footer } from "@/core/components/layout/Footer/Footer";
+import { HomeCard } from "@/features/home/componets/HomeCards/HomeCards";
+import { BoardCard } from "@/features/boards/components/BoardCards/BoardCards";
+import { TaskCard } from "@/features/tasks/components/TaskCards/TaskCards";
+import { KanbanColumn } from "../boards/components/KanbanColumns/KanbanColumns";
 
 
-// function App() {
-//   return (
-//     <div className="p-10 flex flex-col gap-12">
+export const Pruebas: React.FC = () => {
 
-//       {/* ====================================== */}
-//       {/*              BOTONES                   */}
-//       {/* ====================================== */}
+    return (
+        <div className="p-10 flex flex-col gap-12">
 
-//       <section className="flex flex-col gap-6">
+            {/* ====================================== */}
+            {/*              BOTONES                   */}
+            {/* ====================================== */}
 
-//         <h1 className="text-2xl font-bold text-white">
-//           Botones
-//         </h1>
+            <section className="flex flex-col gap-6">
 
-//         {/* Primary */}
+                <h1 className="text-2xl font-bold text-white">
+                    Botones
+                </h1>
 
-//         <Button>
-//           Primary Default
-//         </Button>
+                {/* Primary */}
 
-//         <Button
-//           variant="Primary"
-//           size="XS"
-//           buttonStyle="Filled"
-//         >
-//           Primary Active
-//         </Button>
+                <Button>
+                    Primary Default
+                </Button>
 
-//         <Button
-//           variant="Primary"
-//           size="S"
-//           state="Disabled"
-//           buttonStyle="Filled"
-//         >
-//           Primary Disabled
-//         </Button>
+                <Button
+                    variant="Primary"
+                    size="XS"
+                    buttonStyle="Filled"
+                >
+                    Primary Active
+                </Button>
 
-//         <Button
-//           variant="Primary"
-//           size="M"
-//           buttonStyle="Outlined"
-//         >
-//           Primary Outlined Default
-//         </Button>
+                <Button
+                    variant="Primary"
+                    size="S"
+                    state="Disabled"
+                    buttonStyle="Filled"
+                >
+                    Primary Disabled
+                </Button>
 
-//         <Button
-//           variant="Primary"
-//           size="L"
-//           buttonStyle="Outlined"
-//         >
-//           Primary Outlined Active
-//         </Button>
+                <Button
+                    variant="Primary"
+                    size="M"
+                    buttonStyle="Outlined"
+                >
+                    Primary Outlined Default
+                </Button>
 
-//         <Button
-//           variant="Primary"
-//           buttonStyle="Outlined"
-//           state="Disabled"
-//         >
-//           Primary Outlined Disabled
-//         </Button>
+                <Button
+                    variant="Primary"
+                    size="L"
+                    buttonStyle="Outlined"
+                >
+                    Primary Outlined Active
+                </Button>
 
-//         {/* CTA */}
+                <Button
+                    variant="Primary"
+                    buttonStyle="Outlined"
+                    state="Disabled"
+                >
+                    Primary Outlined Disabled
+                </Button>
 
-//         <Button variant="CTA">
-//           CTA Default
-//         </Button>
+                {/* CTA */}
 
-//         <Button
-//           variant="CTA"
-//         >
-//           CTA Active
-//         </Button>
+                <Button variant="CTA">
+                    CTA Default
+                </Button>
 
-//         <Button
-//           variant="CTA"
-//           state="Disabled"
-//         >
-//           CTA Disabled
-//         </Button>
+                <Button
+                    variant="CTA"
+                >
+                    CTA Active
+                </Button>
 
-//         <Button
-//           variant="CTA"
-//           buttonStyle="Outlined"
-//         >
-//           CTA Outlined Default
-//         </Button>
+                <Button
+                    variant="CTA"
+                    state="Disabled"
+                >
+                    CTA Disabled
+                </Button>
 
-//         <Button
-//           variant="CTA"
-//           buttonStyle="Outlined"
-//         >
-//           CTA Outlined Active
-//         </Button>
+                <Button
+                    variant="CTA"
+                    buttonStyle="Outlined"
+                >
+                    CTA Outlined Default
+                </Button>
 
-//         <Button
-//           variant="CTA"
-//           buttonStyle="Outlined"
-//           state="Disabled"
-//         >
-//           CTA Outlined Disabled
-//         </Button>
+                <Button
+                    variant="CTA"
+                    buttonStyle="Outlined"
+                >
+                    CTA Outlined Active
+                </Button>
 
-//         {/* Con iconos */}
-//         <Button leftIcon="mingcute:user-4-fill">
-//           Guardar
-//         </Button>
+                <Button
+                    variant="CTA"
+                    buttonStyle="Outlined"
+                    state="Disabled"
+                >
+                    CTA Outlined Disabled
+                </Button>
 
-//         <Button rightIcon="mingcute:arrow-right-fill">
-//           Siguiente
-//         </Button>
+                {/* Con iconos */}
+                <Button leftIcon="mingcute:user-4-fill">
+                    Guardar
+                </Button>
 
-//         <Button
-//           leftIcon="mingcute:user-4-fill"
-//           rightIcon="mingcute:user-4-fill">
-//           Ambos iconos
-//         </Button>
-//       </section>
+                <Button rightIcon="mingcute:arrow-right-fill">
+                    Siguiente
+                </Button>
 
-//       {/* ====================================== */}
-//       {/*               INPUTS                   */}
-//       {/* ====================================== */}
+                <Button
+                    leftIcon="mingcute:user-4-fill"
+                    rightIcon="mingcute:user-4-fill">
+                    Ambos iconos
+                </Button>
+            </section>
 
-//       <section className="flex flex-col gap-6 max-w-lg">
+            {/* ====================================== */}
+            {/*               INPUTS                   */}
+            {/* ====================================== */}
 
-//         <h1 className="text-2xl font-bold text-white">
-//           Inputs
-//         </h1>
+            <section className="flex flex-col gap-6 max-w-lg">
 
-//         {/* =========== DEFAULT =========== */}
+                <h1 className="text-2xl font-bold text-white">
+                    Inputs
+                </h1>
 
-//         <Input
-//           label="Correo electrónico"
-//           helperText="Ingresa tu correo institucional."
-//           placeholder="correo@ejemplo.com"
-//         />
+                {/* =========== DEFAULT =========== */}
 
-//         {/* =========== FOCUS =========== */}
+                <Input
+                    label="Correo electrónico"
+                    helperText="Ingresa tu correo institucional."
+                    placeholder="correo@ejemplo.com"
+                />
 
-//         <Input
-//           label="Nombre"
-//           helperText="Haz clic sobre el campo para activar Focus."
-//           placeholder="Escribe tu nombre"
-//         />
+                {/* =========== FOCUS =========== */}
 
-//         {/* =========== DISABLED =========== */}
+                <Input
+                    label="Nombre"
+                    helperText="Haz clic sobre el campo para activar Focus."
+                    placeholder="Escribe tu nombre"
+                />
 
-//         <Input
-//           label="Usuario"
-//           helperText="Este campo está deshabilitado."
-//           placeholder="Usuario"
-//           state="Disabled"
-//         />
+                {/* =========== DISABLED =========== */}
 
-//       </section>
+                <Input
+                    label="Usuario"
+                    helperText="Este campo está deshabilitado."
+                    placeholder="Usuario"
+                    state="Disabled"
+                />
+
+            </section>
 
 
-//       {/* ====================================== */}
-//       {/*               TEXTAREAS                */}
-//       {/* ====================================== */}
+            {/* ====================================== */}
+            {/*               TEXTAREAS                */}
+            {/* ====================================== */}
 
-//       <section className="flex flex-col gap-6 max-w-lg">
+            <section className="flex flex-col gap-6 max-w-lg">
 
-//         <h1 className="text-2xl font-bold text-white">
-//           TextAreas
-//         </h1>
+                <h1 className="text-2xl font-bold text-white">
+                    TextAreas
+                </h1>
 
-//         {/* =========== DEFAULT =========== */}
+                {/* =========== DEFAULT =========== */}
 
-//         <TextArea
-//           label="Descripción"
-//           helperText="Ingresa una descripción."
-//           placeholder="Escribe aquí..."
-//         />
+                <TextArea
+                    label="Descripción"
+                    helperText="Ingresa una descripción."
+                    placeholder="Escribe aquí..."
+                />
 
-//         {/* =========== FOCUS =========== */}
+                {/* =========== FOCUS =========== */}
 
-//         <TextArea
-//           label="Comentario"
-//           helperText="Estado Focus"
-//           placeholder="Haz clic aquí..."
-//         />
+                <TextArea
+                    label="Comentario"
+                    helperText="Estado Focus"
+                    placeholder="Haz clic aquí..."
+                />
 
-//         {/* =========== DISABLED =========== */}
+                {/* =========== DISABLED =========== */}
 
-//         <TextArea
-//           label="Observaciones"
-//           helperText="Este campo está deshabilitado."
-//           placeholder="No disponible"
-//           state="Disabled"
-//         />
+                <TextArea
+                    label="Observaciones"
+                    helperText="Este campo está deshabilitado."
+                    placeholder="No disponible"
+                    state="Disabled"
+                />
 
-//       </section>
+            </section>
 
-//       {/* ====================================== */}
-//       {/*               BADGES                   */}
-//       {/* ====================================== */}
-//       <section className="flex flex-col gap-4">
-//         <h1 className="text-2xl font-bold text-white">
-//           BadgePriority
-//         </h1>
+            {/* ====================================== */}
+            {/*               BADGES                   */}
+            {/* ====================================== */}
+            <section className="flex flex-col gap-4">
+                <h1 className="text-2xl font-bold text-white">
+                    BadgePriority
+                </h1>
 
-//         <div className="flex gap-4 items-center">
-//           <BadgePriority priority="Alta" />
-//           <BadgePriority priority="Media" />
-//           <BadgePriority priority="Baja" />
-//         </div>
-//       </section>
+                <div className="flex gap-4 items-center">
+                    <BadgePriority priority="Alta" />
+                    <BadgePriority priority="Media" />
+                    <BadgePriority priority="Baja" />
+                </div>
+            </section>
 
-//       {/* ====================================== */}
-//       {/*               MODALS                  */}
-//       {/* ====================================== */}
+            {/* ====================================== */}
+            {/*               MODALS                  */}
+            {/* ====================================== */}
 
-//       <section className="flex flex-col gap-6">
-//         <h1 className="text-2xl font-bold text-white">
-//           Modals
-//         </h1>
+            <section className="flex flex-col gap-6">
+                <h1 className="text-2xl font-bold text-white">
+                    Modals
+                </h1>
 
-//         <Modal
-//           size="Small"
-//           title="Eliminar tarea"
-//           description="¿Estás seguro de eliminar esta tarea?"
-//           onClose={() => console.log("Cerrar")}
-//           actions={
-//             <>
-//               <Button
-//                 variant="Primary"
-//                 buttonStyle="Outlined"
-//               >
-//                 Cancelar
-//               </Button>
+                <Modal
+                    size="Small"
+                    title="Eliminar tarea"
+                    description="¿Estás seguro de eliminar esta tarea?"
+                    onClose={() => console.log("Cerrar")}
+                    actions={
+                        <>
+                            <Button
+                                variant="Primary"
+                                buttonStyle="Outlined"
+                            >
+                                Cancelar
+                            </Button>
 
-//               <Button>
-//                 Eliminar
-//               </Button>
-//             </>
-//           }
-//         >
-//           <p className="text-sm font-light text-(--color-vainilla)">
-//             Esta acción no se puede deshacer.
-//           </p>
-//         </Modal>
-//       </section>
+                            <Button>
+                                Eliminar
+                            </Button>
+                        </>
+                    }
+                >
+                    <p className="text-sm font-light text-(--color-vainilla)">
+                        Esta acción no se puede deshacer.
+                    </p>
+                </Modal>
+            </section>
 
-//       {/* ====================================== */}
-//       {/*               HEADER                   */}
-//       {/* ====================================== */}
-//       <Header mode="Guest" />
-//       <Header mode="Authenticated" />
+            {/* ====================================== */}
+            {/*               HEADER                   */}
+            {/* ====================================== */}
+            <Header mode="Guest" />
+            <Header mode="Authenticated" />
 
-//       {/* ====================================== */}
-//       {/*               FOOTER                   */}
-//       {/* ====================================== */}
-//       <Footer />
+            {/* ====================================== */}
+            {/*               FOOTER                   */}
+            {/* ====================================== */}
+            <Footer />
 
-//       {/* ====================================== */}
-//       {/*               HOME CARDS               */}
-//       {/* ====================================== */}
-//       <div className="flex gap-6">
-//       <HomeCard
-//         accent="Amatista"
-//         icon="lucide:layout-dashboard"
-//         title="Organiza"
-//         description="Gestiona tus tareas de forma sencilla."
-//       />
+            {/* ====================================== */}
+            {/*               HOME CARDS               */}
+            {/* ====================================== */}
+            <div className="flex gap-6">
+                <HomeCard
+                    accent="Amatista"
+                    icon="lucide:layout-dashboard"
+                    title="Organiza"
+                    description="Gestiona tus tareas de forma sencilla."
+                />
 
-//       <HomeCard
-//         accent="ZafiroLavanda"
-//         icon="lucide:check-circle"
-//         title="Completa"
-//         description="Visualiza tu progreso y alcanza tus objetivos."
-//       />
-//       </div>
+                <HomeCard
+                    accent="ZafiroLavanda"
+                    icon="lucide:check-circle"
+                    title="Completa"
+                    description="Visualiza tu progreso y alcanza tus objetivos."
+                />
+            </div>
 
-//       {/* ====================================== */}
-//       {/*              BOARD CARDS               */}
-//       {/* ====================================== */}
-//       <div className="flex gap-6">
-//       <BoardCard 
-//       accent="Amatista"
-//       title="Mi Tablero"
-//       description="Este es mi tablero de tareas." />
+            {/* ====================================== */}
+            {/*              BOARD CARDS               */}
+            {/* ====================================== */}
+            <div className="flex gap-6">
+                <BoardCard
+                    accent="Amatista"
+                    title="Mi Tablero"
+                    description="Este es mi tablero de tareas." />
 
-//       <BoardCard
-//       accent="ZafiroLavanda"
-//       title="Tablero de Proyecto"
-//       description="Tablero para gestionar el proyecto." />
-//       </div>
+                <BoardCard
+                    accent="ZafiroLavanda"
+                    title="Tablero de Proyecto"
+                    description="Tablero para gestionar el proyecto." />
+            </div>
 
-//       {/* ====================================== */}
-//       {/*             TASK CARD                  */}
-//       {/* ====================================== */}
-//       <TaskCard
-//         title="Tarea de ejemplo"
-//         description="Esta es una tarea de ejemplo con un tetxo larguisimo a ver como se comporta la jodida tarjeta."
-//         priority="Alta"
-//         dueDate="2026-10-15"
-//       />
+            {/* ====================================== */}
+            {/*             TASK CARD                  */}
+            {/* ====================================== */}
+            <TaskCard
+                title="Tarea de ejemplo"
+                description="Esta es una tarea de ejemplo con un tetxo larguisimo a ver como se comporta la jodida tarjeta."
+                priority="Alta"
+                dueDate="2026-10-15"
+            />
 
-//     </div>
-//   );
-// }
+            {/* ====================================== */}
+            {/*             KANBAN COLUMNS             */}
+            {/* ====================================== */}
+            <div className="flex gap-6">
+                <KanbanColumn state="Pendiente" />
+                <KanbanColumn state="En ejecución" />
+                <KanbanColumn state="Terminado" />
+                <KanbanColumn state="Aprobado" />
+            </div>
 
-// export default App;
+        </div>
+    );
+}

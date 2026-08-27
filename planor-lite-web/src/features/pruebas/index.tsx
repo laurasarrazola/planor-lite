@@ -1,0 +1,1 @@
+export {Pruebas} from './App'

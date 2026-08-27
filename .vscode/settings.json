@@ -3,5 +3,6 @@
     "editor.tokenColorCustomizations": {
         "comments": "",
         "textMateRules": []
-    }
+    },
+    "css.lint.unknownAtRules": "ignore"
 }

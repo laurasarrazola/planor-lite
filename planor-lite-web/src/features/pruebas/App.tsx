@@ -5,7 +5,7 @@ import { BadgePriority } from "@/features/tasks/components/BadgePriority/BadgePr
 import { Modal } from "@/core/components/ui/Modals/Modal";
 import { Header } from "@/core/components/layout/Header/Header";
 import { Footer } from "@/core/components/layout/Footer/Footer";
-import { HomeCard } from "@/features/home/componets/HomeCards/HomeCards";
+import { HomeCard } from "@/features/home/components/HomeCards/HomeCards";
 import { BoardCard } from "@/features/boards/components/BoardCards/BoardCards";
 import { TaskCard } from "@/features/tasks/components/TaskCards/TaskCards";
 import { KanbanColumn } from "../boards/components/KanbanColumns/KanbanColumns";

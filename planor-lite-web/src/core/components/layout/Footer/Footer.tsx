@@ -11,23 +11,26 @@ import {
 export function Footer() {
     return (
         <footer className={footerStyles}>
-
             {/* ========== FOOTER CONTENT ========== */}
+
             <div className={footerContentStyles}>
                 {/* ========== LOGO ========== */}
-                <img src={logo} alt="Planor"/>
+                <img
+                    src={logo}
+                    alt="Planor"
+                    className="h-auto w-auto max-w-full"/>
 
                 {/* ========== FOOTER NAVIGATION ========== */}
-                <nav
-                    className={footerNavigationStyles}
-                    aria-label="Navegación del footer">
-                    <a href="#caracteristicas" className={footerNavigationItemStyles} >
+                <nav className={footerNavigationStyles} aria-label="Navegación del footer">
+                    <a href="#caracteristicas" className={footerNavigationItemStyles}>
                         Características
                     </a>
-                    <a href="#como-funciona" className={footerNavigationItemStyles} >
+
+                    <a href="#como-funciona" className={footerNavigationItemStyles}>
                         Cómo funciona
                     </a>
-                    <a href="#contacto" className={footerNavigationItemStyles} >
+
+                    <a href="#contacto" className={footerNavigationItemStyles}>
                         Contacto
                     </a>
                 </nav>
@@ -38,11 +41,11 @@ export function Footer() {
                 <span className={footerTextStyles}>
                     © 2026 Planor
                 </span>
+
                 <span className={footerTextStyles}>
                     Versión 1.0
                 </span>
             </div>
-
         </footer>
     );
 }

@@ -8,7 +8,8 @@
  * 4. Renderizar la estructura completa del componente. */
 
 import {
-    useState, //useState es un hook de React que permite agregar estado a un componente funcional.
+    useId,
+    useState,
     type FocusEvent,
     type InputHTMLAttributes,
 } from "react";
@@ -46,6 +47,8 @@ export function Input({
     ...props
 }: InputProps) {
 
+    const idGenerado = useId();
+
     /* ========== ESTADO INTERNO DEL INPUT ========= */
     /* Determina si el input tiene actualmente el foco. */
     const [estaEnFoco, cambiarEstadoFoco] = useState(false);
@@ -80,26 +83,30 @@ export function Input({
 
     return (
         <div className={`${inputStyles} ${className ?? ""}`}>
-            
-                {/* =========== LABEL =========== */}
-                {label && (
-                    <label className={inputLabelStyles({ state: estadoVisual })}>
-                        {label}
-                    </label>
-                )}
 
-                {/* =========== INPUT CONTAINER =========== */}
-                <div className={inputContainerStyles({ state: estadoVisual })}>
+            {/* =========== LABEL =========== */}
+            {label && (
+                <label
+                    htmlFor={idGenerado}
+                    className={inputLabelStyles({ state: estadoVisual })}
+                >
+                    {label}
+                </label>
+            )}
 
-                    {/* =========== INPUT =========== */}
-                    <input
-                        className={inputValueStyles({ state: estadoVisual })}
-                        disabled={estaDeshabilitado}
-                        onFocus={manejarFoco}
-                        onBlur={manejarDesenfoque}
-                        {...props}
-                    />
-                </div>
+            {/* =========== INPUT CONTAINER =========== */}
+            <div className={inputContainerStyles({ state: estadoVisual })}>
+
+                {/* =========== INPUT =========== */}
+                <input
+                    id={idGenerado}
+                    className={inputValueStyles({ state: estadoVisual })}
+                    disabled={estaDeshabilitado}
+                    onFocus={manejarFoco}
+                    onBlur={manejarDesenfoque}
+                    {...props}
+                />
+            </div>
 
             {/* =========== HELPER TEXT =========== */}
             {helperText && (

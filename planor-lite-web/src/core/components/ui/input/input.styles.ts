@@ -11,12 +11,13 @@ import { cva } from "class-variance-authority";
 /* Este contenedor representa el componente completo. No utiliza CVA porque su apariencia nunca cambia entre Default, Focus y Disabled. */
 export const inputStyles = [
     "flex",
+    "min-w-0",
+    "w-full",
     "flex-col",
     "items-start",
     "gap-[8px]",
     "px-[10px]",
     "py-[12px]",
-    "w-full",
 ].join(" ");
 
 /************************************/
@@ -61,13 +62,15 @@ export const inputLabelStyles = cva(
 export const inputContainerStyles = cva(
     [
         "flex",
-        "h-[44px]",
+        "min-h-[44px]",
+        "w-full",
+        "min-w-0",
         "items-center",
         "gap-[12px]",
         "self-stretch",
         "rounded-[8px]",
         "px-[16px]",
-        "py-[12px]"
+        "py-[10px]",
     ],
     {
         variants: {
@@ -104,6 +107,7 @@ export const inputContainerStyles = cva(
 export const inputValueStyles = cva(
     [
         "w-full",
+        "min-w-0",
         "bg-transparent",
         "border-none",
         "outline-none",
@@ -113,7 +117,7 @@ export const inputValueStyles = cva(
         "font-sans",
         "text-[16px]",
         "font-normal",
-        "leading-[100%]",
+        "leading-[20px]",
         "caret-[var(--color-vainilla)]",
     ],
     {
@@ -156,10 +160,13 @@ export const inputValueStyles = cva(
 /************************************/
 export const helperTextStyles = cva(
     [
+        "w-full",
+        "min-w-0",
+        "break-words",
         "text-[14px]",
         "font-light",
-        "leading-[100%]",
-        "text-center",
+        "leading-[20px]",
+        "text-left",
     ],
     {
         variants: {

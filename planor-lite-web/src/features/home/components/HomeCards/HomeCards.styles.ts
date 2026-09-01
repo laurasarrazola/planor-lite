@@ -9,8 +9,11 @@ import { cva } from "class-variance-authority";
 export const homeCardStyles = cva(
     [
         "flex",
-        "w-[300px]",
-        "h-[220px]",
+        "w-full",
+        "max-w-[300px]",
+        "min-w-0",
+        "min-h-[220px]",
+        "h-auto",
         "flex-col",
         "items-center",
         "justify-center",
@@ -20,6 +23,7 @@ export const homeCardStyles = cva(
         "border-[var(--color-obsidiana)]",
         "bg-[#272E35]",
         "p-[24px]",
+        "box-border",
         "shadow-[2px_5px_5px_0_rgba(0,0,0,0.40)]",
     ],
     {
@@ -40,6 +44,7 @@ export const homeCardIconBackgroundStyles = cva(
         "flex",
         "w-[60px]",
         "h-[60px]",
+        "shrink-0",
         "items-center",
         "justify-center",
         "rounded-full",
@@ -70,6 +75,8 @@ export const homeCardIconStyles = [
 /************************************/
 export const homeCardTextContentStyles = [
     "flex",
+    "w-full",
+    "min-w-0",
     "flex-col",
     "items-center",
     "justify-center",
@@ -85,12 +92,14 @@ export const homeCardTextContentStyles = [
 /************************************/
 export const homeCardTitleStyles = [
     "self-stretch",
+    "min-w-0",
     "font-sans",
     "text-[24px]",
     "font-normal",
-    "leading-[100%]",
+    "leading-[28px]",
     "text-center",
     "text-[var(--color-vainilla)]",
+    "break-words",
 ].join(" ");
 
 /************************************/
@@ -98,10 +107,12 @@ export const homeCardTitleStyles = [
 /************************************/
 export const homeCardDescriptionStyles = [
     "self-stretch",
+    "min-w-0",
     "font-sans",
     "text-[16px]",
     "font-normal",
-    "leading-[100%]",
+    "leading-[20px]",
     "text-center",
     "text-[var(--color-vainilla)]",
+    "break-words",
 ].join(" ");

@@ -1,84 +1,163 @@
 /****************************************/
-/*        ESTILOS DEL HEADER            */
+/*          ESTILOS DEL HEADER          */
 /****************************************/
-import { cva } from "class-variance-authority";
+const menuItemBaseStyles = [
+    "cursor-pointer",
+    "border-0",
+    "bg-transparent",
+    "font-sans",
+    "font-normal",
+    "text-[var(--color-vainilla)]",
+    "transition-colors",
+    "hover:bg-white/5",
+    "hover:text-white",
+].join(" ");
 
-/************************************/
-/*      CONTENEDOR PRINCIPAL        */
-/************************************/
-export const headerStyles = cva(
-  [
+/****************************************/
+/*      CONTENEDOR PRINCIPAL            */
+/****************************************/
+export const headerStyles = [
+    "sticky",
+    "top-0",
+    "z-50",
+    "relative",
     "flex",
     "w-full",
-    "h-[80px]",
-    "px-[20px]",
-    "py-[16px]",
-    "justify-between",
+    "min-h-[80px]",
     "items-center",
+    "justify-between",
+    "px-[clamp(12px,2vw,20px)]",
+    "py-[16px]",
     "bg-[#111519]",
-  ],
-  {
-    variants: {
-      mode: {
-        Authenticated: "",
-        Guest: "",
-      },
-    },
-  }
-);
+].join(" ");
 
-/************************************/
-/*            LOGO                  */
-/************************************/
+/****************************************/
+/*              LOGO                    */
+/****************************************/
 export const logoStyles = [
-  "h-[36px]",
-  "w-auto",
-  "object-contain",
+    "h-[36px]",
+    "w-auto",
+    "max-w-[160px]",
+    "shrink-0",
+    "object-contain",
 ].join(" ");
 
-/************************************/
-/*         NAVEGACIÓN               */
-/************************************/
+/****************************************/
+/*          NAVEGACIÓN                 */
+/****************************************/
 export const navigationStyles = [
-  "flex",
-  "items-center",
-  "justify-center",
-  "gap-[32px]",
-  "px-[10px]",
-  "py-[10px]",
+    "hidden",
+    "items-center",
+    "justify-center",
+    "gap-[clamp(16px,2.2vw,32px)]",
+    "px-[10px]",
+    "py-[10px]",
+    "md:flex",
 ].join(" ");
 
-/************************************/
-/*      ITEM DE NAVEGACIÓN          */
-/************************************/
+/****************************************/
+/*      ITEM DE NAVEGACIÓN             */
+/****************************************/
 export const navigationItemStyles = [
-  "text-[16px]",
-  "font-normal",
-  "leading-[16px]",
-  "text-[var(--color-vainilla)]",
-  "transition-colors",
-  "hover:text-white",
-  "cursor-pointer",
+    menuItemBaseStyles,
+    "p-0",
+    "whitespace-nowrap",
+    "text-[clamp(14px,1.4vw,16px)]",
+    "leading-[16px]",
 ].join(" ");
 
-/************************************/
-/*       ACCIONES DERECHA           */
-/************************************/
+/****************************************/
+/*       ACCIONES DERECHA              */
+/****************************************/
 export const actionsStyles = [
-  "flex",
-  "items-center",
-  "justify-center",
-  "gap-[16px]",
-  "px-[10px]",
-  "py-[10px]",
+    "hidden",
+    "items-center",
+    "justify-center",
+    "gap-[clamp(8px,1.2vw,16px)]",
+    "px-[10px]",
+    "py-[10px]",
+    "md:flex",
 ].join(" ");
 
-/************************************/
-/*        ICONO USUARIO             */
-/************************************/
+/****************************************/
+/*          ICONO USUARIO              */
+/****************************************/
 export const userIconStyles = [
-  "w-[40px]",
-  "h-[40px]",
-  "text-[var(--color-vainilla)]",
-  "cursor-pointer",
+    "h-[40px]",
+    "w-[40px]",
+    "shrink-0",
+    "cursor-pointer",
+    "text-[var(--color-vainilla)]",
+].join(" ");
+
+/****************************************/
+/*       BOTÓN MENÚ HAMBURGUESA        */
+/****************************************/
+export const menuButtonStyles = [
+    "flex",
+    "h-[40px]",
+    "w-[40px]",
+    "shrink-0",
+    "items-center",
+    "justify-center",
+    "cursor-pointer",
+    "rounded-md",
+    "border",
+    "border-transparent",
+    "bg-transparent",
+    "text-[var(--color-vainilla)]",
+    "transition-colors",
+    "hover:bg-white/5",
+    "md:hidden",
+].join(" ");
+
+/****************************************/
+/*       ICONO MENÚ HAMBURGUESA        */
+/****************************************/
+export const menuIconStyles = [
+    "h-[28px]",
+    "w-[28px]",
+].join(" ");
+
+/****************************************/
+/*           MENÚ MÓVIL                */
+/****************************************/
+export const mobileMenuStyles = [
+    "absolute",
+    "left-0",
+    "right-0",
+    "top-full",
+    "z-50",
+    "flex",
+    "flex-col",
+    "border-t",
+    "border-white/10",
+    "bg-[#111519]",
+    "px-[16px]",
+    "py-[12px]",
+    "shadow-lg",
+    "md:hidden",
+].join(" ");
+
+/****************************************/
+/*       ITEM MENÚ MÓVIL               */
+/****************************************/
+export const mobileMenuItemStyles = [
+    menuItemBaseStyles,
+    "w-full",
+    "px-[12px]",
+    "py-[14px]",
+    "text-left",
+    "text-[16px]",
+    "leading-[20px]",
+].join(" ");
+
+/****************************************/
+/*      SEPARADOR MENÚ MÓVIL           */
+/****************************************/
+export const mobileMenuDividerStyles = [
+    "my-[4px]",
+    "h-px",
+    "w-full",
+    "bg-white/10",
 ].join(" ");

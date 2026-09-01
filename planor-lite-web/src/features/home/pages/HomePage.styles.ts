@@ -1,12 +1,11 @@
 export const homePageStyles = [
-    "flex",
-    "min-h-screen",
-    "w-full",
-    "flex-col",
-    "items-center",
-    "overflow-x-hidden",
-    "bg-[#16191C]",
-    "text-[var(--color-vainilla)]",
+  "flex",
+  "min-h-screen",
+  "w-full",
+  "flex-col",
+  "items-stretch",
+  "bg-[#16191C]",
+  "text-[var(--color-vainilla)]",
 ].join(" ");
 
 /****************************************/

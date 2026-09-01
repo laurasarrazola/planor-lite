@@ -106,7 +106,7 @@ export const kanbanColumnTaskListStyles = [
     "flex-col",
     "items-start",
     "gap-[12px]",
-    "overflow-y-auto",
+  //  "overflow-y-auto",
     "px-[10px]",
     "py-[10px]",
 ].join(" ");

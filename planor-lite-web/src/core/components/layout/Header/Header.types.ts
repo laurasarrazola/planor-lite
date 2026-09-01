@@ -2,11 +2,11 @@
 /*            TIPOS DEL HEADER          */
 /****************************************/
 
-export type HeaderMode =
+export type ModoHeader =
   | "Authenticated"
   | "Guest";
 
-export interface NavigationItem {
+export interface ElementoNavegacion {
   label: string;
   href?: string;
 }

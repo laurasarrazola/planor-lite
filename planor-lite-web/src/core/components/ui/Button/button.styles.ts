@@ -19,18 +19,19 @@ export const buttonStyles = cva(
 
     /* =========== Clases comunes para TODOS los botones =========== */
     [
-        "inline-flex",               // Usa Flex para organizar su contenido horizontalmente.
-        "max-w-full",                // Impide que el botón supere el ancho disponible.
-        "items-center",              // Centra el contenido verticalmente.
-        "justify-center",            // Centra el contenido horizontalmente.
-        "whitespace-nowrap",         // Mantiene el texto en una sola línea por defecto.
-        "overflow-hidden",           // Evita desbordamientos visuales.
-        "rounded-[8px]",             // Todas las variantes utilizan el mismo radio de borde.
-        "font-sans",                 // Todo el proyecto utiliza la fuente principal.
-        "font-normal",               // Todos los botones usan peso Regular (400).
-        "not-italic",                // El texto nunca utiliza cursiva.
-        "text-center",               // El texto siempre permanece centrado.
-        "transition-colors",         // Suaviza los cambios de color.
+        "inline-flex", // Usa Flex para organizar su contenido horizontalmente.
+        "max-w-full", // Impide que el botón supere el ancho disponible.
+        "min-w-0", // Permite que el botón se reduzca hasta 0px si es necesario.
+        "items-center", // Centra el contenido verticalmente.
+        "justify-center", // Centra el contenido horizontalmente.
+        "whitespace-nowrap", // Mantiene el texto en una sola línea por defecto.
+        "overflow-hidden", // Evita desbordamientos visuales.
+        "rounded-[8px]", // Todas las variantes utilizan el mismo radio de borde.
+        "font-sans", // Todo el proyecto utiliza la fuente principal.
+        "font-normal", // Todos los botones usan peso Regular (400).
+        "not-italic", // El texto nunca utiliza cursiva.
+        "text-center", // El texto siempre permanece centrado.
+        "transition-colors", // Suaviza los cambios de color.
         "focus-visible:outline-none", // Elimina el contorno por defecto del navegador.
         "focus-visible:ring-2", // Agrega un anillo de enfoque cuando el botón está activo y es enfocado mediante teclado.
         "focus-visible:ring-[var(--color-zafiro-lavanda)]", // Color del anillo de enfoque.
@@ -48,40 +49,45 @@ export const buttonStyles = cva(
         variants: {
 
             /* =========== Tamaños del botón =========== */
+            /* Cada tamaño mantiene una escala visual estable. La adaptación responsive se controla principalmente mediante el contenedor que utiliza el botón. */
+
             size: {
                 XS: [
-                    "px-[12px]",
-                    "py-[8px]",
+                    "min-h-[32px]",
+                    "px-[10px]",
+                    "py-[6px]",
                     "gap-[6px]",
-                    "text-[16px]",
-                    "leading-[100%]",
+                    "text-[14px]",
+                    "leading-[20px]",
                 ].join(" "),
 
                 S: [
-                    "px-[16px]",
-                    "py-[10px]",
-                    "gap-[8px]",
-                    "text-[24px]",
-                    "leading-[100%]",
+                    "min-h-[36px]",
+                    "px-[12px]",
+                    "py-[8px]",
+                    "gap-[6px]",
+                    "text-[14px]",
+                    "leading-[20px]",
                 ].join(" "),
 
                 M: [
-                    "px-[20px]",
-                    "py-[12px]",
+                    "min-h-[44px]",
+                    "px-[16px]",
+                    "py-[10px]",
                     "gap-[8px]",
-                    "text-[24px]",
-                    "leading-[100%]",
+                    "text-[16px]",
+                    "leading-[20px]",
                 ].join(" "),
 
                 L: [
-                    "px-[24px]",
-                    "py-[16px]",
+                    "min-h-[48px]",
+                    "px-[20px]",
+                    "py-[12px]",
                     "gap-[8px]",
-                    "text-[24px]",
-                    "leading-[100%]",
+                    "text-[16px]",
+                    "leading-[24px]",
                 ].join(" "),
             },
-
             /* =========== Color del botón =========== */
             variant: {
                 Primary: "",

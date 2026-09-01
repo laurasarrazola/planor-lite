@@ -54,6 +54,7 @@ export function Button({
   onPointerDown,
   onPointerUp,
   onPointerLeave,
+  onPointerCancel,
   ...props
 }: PropiedadesButton) {
 
@@ -112,6 +113,16 @@ export function Button({
     }
   };
 
+  const manejarPointerCancel = (
+    evento: PointerEvent<HTMLButtonElement>
+  ) => {
+    setEstaActivo(false);
+
+    if (onPointerCancel) {
+      onPointerCancel(evento);
+    }
+  };
+
   /* =========== Render =========== */
   return (
     <button
@@ -126,16 +137,23 @@ export function Button({
       onPointerDown={manejarPointerDown}
       onPointerUp={manejarPointerUp}
       onPointerLeave={manejarPointerLeave}
+      onPointerCancel={manejarPointerCancel}
       {...props}
     >
       {iconoIzquierdo && (
-        <ButtonIcon icon={iconoIzquierdo} />
+        <ButtonIcon
+          icon={iconoIzquierdo}
+          size={size}
+        />
       )}
 
       {children}
-
+      
       {iconoDerecho && (
-        <ButtonIcon icon={iconoDerecho} />
+        <ButtonIcon
+          icon={iconoDerecho}
+          size={size}
+        />
       )}
     </button>
   );

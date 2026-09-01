@@ -22,14 +22,12 @@ export const KanbanColumn = ({
     return (
         <section className={kanbanColumnStyles}>
 
-            {/************************************/}
-            {/*              HEADER              */}
-            {/************************************/}
+            {/***************HEADER***************/}
             <header className={kanbanColumnHeaderStyles}>
                 <div className={kanbanColumnStateInfoStyles}>
                     <span
                         className={kanbanColumnStatusDotStyles({ state })}
-                        aria-hidden="true"/>
+                        aria-hidden="true" />
                     <h2 className={kanbanColumnStateNameStyles}>
                         {state}
                     </h2>
@@ -44,29 +42,21 @@ export const KanbanColumn = ({
                 </button>
             </header>
 
-
-            {/************************************/}
-            {/*          LISTA DE TAREAS          */}
-            {/************************************/}
+            {/***************LISTA DE TAREAS***************/}
             <div className={kanbanColumnTaskListStyles}>
                 {children}
             </div>
 
-
-            {/************************************/}
-            {/*          ACCIÓN PRINCIPAL        */}
-            {/************************************/}
-            <div className={kanbanColumnButtonStyles}>
-                <Button
-                    variant="CTA"
-                    buttonStyle="Outlined"
-                    size="XS"
-                    onClick={onAddTask}
-                    className="w-full"
-                >
-                    + Agregar tarea
-                </Button>
-            </div>
+            {/***************ACCIÓN PRINCIPAL***************/}
+            <Button
+                variant="CTA"
+                buttonStyle="Outlined"
+                size="XS"
+                onClick={onAddTask}
+                className={kanbanColumnButtonStyles}
+            >
+                + Agregar tarea
+            </Button>
 
         </section>
     );

@@ -2,9 +2,12 @@
 /* ESTILOS DEL COMPONENTE TASK CARD */
 /************************************/
 export const taskCardStyles = [
-    "flex",
-    "w-[261px]",
-    "h-[105px]",
+"flex",
+    "w-full",
+    "max-w-[261px]",
+    "min-w-0",
+    "min-h-[105px]",
+    "h-auto",
     "flex-col",
     "justify-between",
     "rounded-[12px]",
@@ -12,6 +15,7 @@ export const taskCardStyles = [
     "border-[rgba(33,6,53,0.45)]",
     "bg-[#222930]",
     "p-[10px]",
+    "box-border",
     "shadow-[2px_2px_4px_0_rgba(33,6,53,0.20)]",
     "cursor-pointer",
 ].join(" ");
@@ -23,7 +27,9 @@ export const taskCardHeaderStyles = [
     "relative",
     "flex",
     "w-full",
+    "min-w-0",
     "items-start",
+    "gap-[8px]",
 ].join(" ");
 
 /************************************/
@@ -44,6 +50,7 @@ export const taskCardTextsStyles = [
 /************************************/
 export const taskCardTitleStyles = [
     "w-full",
+    "min-w-0",
     "truncate",
     "font-sans",
     "text-[16px]",
@@ -56,7 +63,9 @@ export const taskCardTitleStyles = [
 /************************************/
 export const taskCardDescriptionStyles = [
     "w-full",
+    "min-w-0",
     "line-clamp-2",
+    "break-words",
     "font-sans",
     "text-[12px]",
     "leading-[18px]",
@@ -67,11 +76,23 @@ export const taskCardDescriptionStyles = [
 /*               MENÚ               */
 /************************************/
 export const taskCardMenuStyles = [
-    "h-[15px]",
-    "w-[15px]",
+    "flex",
+    "h-[32px]",
+    "w-[32px]",
     "shrink-0",
+    "items-center",
+    "justify-center",
+    "rounded-[6px]",
+    "border-0",
+    "bg-transparent",
+    "p-0",
     "cursor-pointer",
     "text-[var(--color-vainilla)]",
+    "transition-colors",
+    "hover:bg-white/5",
+    "focus-visible:outline-none",
+    "focus-visible:ring-2",
+    "focus-visible:ring-[var(--color-zafiro-lavanda)]",
 ].join(" ");
 
 /************************************/
@@ -80,8 +101,10 @@ export const taskCardMenuStyles = [
 export const taskCardFooterStyles = [
     "flex",
     "w-full",
+    "min-w-0",
     "items-center",
     "justify-between",
+    "gap-[8px]",
 ].join(" ");
 
 /************************************/
@@ -89,6 +112,7 @@ export const taskCardFooterStyles = [
 /************************************/
 export const taskCardDueDateStyles = [
     "flex",
+    "min-w-0",
     "items-center",
     "gap-[10px]",
     "px-[10px]",
@@ -108,10 +132,12 @@ export const taskCardDueDateIconStyles = [
 /*          TEXTO DE FECHA          */
 /************************************/
 export const taskCardDueDateTextStyles = [
+    "min-w-0",
     "font-sans",
     "text-[12px]",
     "font-light",
-    "leading-[12px]",
+    "leading-[16px]",
     "text-center",
     "text-[var(--color-vainilla)]",
+    "break-words",
 ].join(" ");

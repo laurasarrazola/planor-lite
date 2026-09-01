@@ -10,11 +10,15 @@ import { cva } from "class-variance-authority";
 /************************************/
 /* Este contenedor representa el componente completo. No utiliza CVA porque nunca cambia entre Default, Focus o Disabled. Todos sus estilos son fijos. */
 export const textAreaStyles = [
-    "inline-flex",
+    "flex",
+    "w-full",
+    "min-w-0",
+    "max-w-full",
     "flex-col",
     "items-start",
     "gap-[6px]",
     "p-[10px]",
+    "box-border",
 ].join(" ");
 
 
@@ -24,10 +28,14 @@ export const textAreaStyles = [
 /* Contiene Label, TextAreaContainer y HelperText. Su apariencia nunca cambia, por lo que no requiere variantes ni CVA. */
 export const textAreaContentStyles = [
     "flex",
+    "w-full",
+    "min-w-0",
+    "max-w-full",
     "flex-col",
     "items-start",
     "gap-[8px]",
     "p-[10px]",
+    "box-border",
 ].join(" ");
 
 /************************************/
@@ -35,10 +43,13 @@ export const textAreaContentStyles = [
 /************************************/
 export const textAreaLabelStyles = cva(
     [
+        "w-full",
+        "min-w-0",
         "font-sans",
         "text-[16px]",
         "font-normal",
-        "leading-[100%]",
+        "leading-[20px]",
+        "break-words",
     ],
     {
         variants: {
@@ -48,7 +59,6 @@ export const textAreaLabelStyles = cva(
                 Disabled: "",
             },
         },
-
         compoundVariants: [
             {
                 state: "Default",
@@ -71,9 +81,12 @@ export const textAreaLabelStyles = cva(
 /************************************/
 export const textAreaValueStyles = cva(
     [
-        "w-[320px]",
+        "w-full",
+        "max-w-[320px]",
+        "min-w-0",
         "h-[120px]",
         "resize-none",
+        "box-border",
         "rounded-[6px]",
         "px-[16px]",
         "py-[12px]",
@@ -85,7 +98,7 @@ export const textAreaValueStyles = cva(
         "font-sans",
         "text-[16px]",
         "font-normal",
-        "leading-[100%]",
+        "leading-[20px]",
         "caret-[var(--color-vainilla)]",
     ],
     {
@@ -96,7 +109,6 @@ export const textAreaValueStyles = cva(
                 Disabled: "",
             },
         },
-
         compoundVariants: [
             {
                 state: "Default",
@@ -107,7 +119,6 @@ export const textAreaValueStyles = cva(
                     "placeholder:text-[var(--textarea-placeholder-default)]",
                 ].join(" "),
             },
-
             {
                 state: "Focus",
                 className: [
@@ -118,7 +129,6 @@ export const textAreaValueStyles = cva(
                     "placeholder:text-[var(--textarea-placeholder-focus)]",
                 ].join(" "),
             },
-
             {
                 state: "Disabled",
                 className: [
@@ -132,17 +142,20 @@ export const textAreaValueStyles = cva(
     }
 );
 
+
 /************************************/
 /*        ESTILOS HELPER TEXT       */
 /************************************/
 export const textAreaHelperTextStyles = cva(
     [
+        "w-full",
+        "min-w-0",
         "font-sans",
         "text-[14px]",
         "font-light",
-        "leading-[100%]",
+        "leading-[20px]",
+        "break-words",
     ],
-
     {
         variants: {
             state: {
@@ -151,9 +164,7 @@ export const textAreaHelperTextStyles = cva(
                 Disabled: "",
             },
         },
-
         compoundVariants: [
-
             {
                 state: "Default",
                 className: "text-[var(--textarea-helper-default)]",

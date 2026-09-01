@@ -11,8 +11,10 @@ import { cva } from "class-variance-authority";
 export const boardCardStyles = cva(
     [
         "flex",
-        "w-[320px]",
-        "h-[204px]",
+        "w-full",
+        "max-w-[320px]",
+        "min-w-0",
+        "min-h-[204px]",
         "flex-col",
         "items-start",
         "gap-[20px]",
@@ -21,6 +23,7 @@ export const boardCardStyles = cva(
         "border-[rgba(255,249,228,0.10)]",
         "bg-[#191E22]",
         "p-[20px]",
+        "box-border",
         "shadow-[2px_2px_4px_0_rgba(33,6,53,0.20)]",
     ],
     {
@@ -38,9 +41,11 @@ export const boardCardStyles = cva(
 /****************************************/
 export const boardCardHeaderStyles = [
     "flex",
+    "w-full",
+    "min-w-0",
     "items-start",
     "justify-between",
-    "self-stretch",
+    "gap-[8px]",
 ].join(" ");
 
 /****************************************/
@@ -48,12 +53,16 @@ export const boardCardHeaderStyles = [
 /****************************************/
 export const boardCardInfoStyles = [
     "flex",
-    "w-[260px]",
-    "h-[112px]",
+    "w-full",
+    "min-w-0",
+    "max-w-full",
+    "flex-1",
+    "min-h-[112px]",
     "items-center",
     "justify-center",
     "gap-[16px]",
     "py-[13px]",
+    "box-border",
 ].join(" ");
 
 /****************************************/
@@ -85,6 +94,7 @@ export const boardCardIconContainerStyles = cva(
 export const boardCardIconStyles = [
     "w-[24px]",
     "h-[24px]",
+    "shrink-0",
     "text-[var(--color-vainilla)]",
 ].join(" ");
 
@@ -93,12 +103,15 @@ export const boardCardIconStyles = [
 /****************************************/
 export const boardCardTextsStyles = [
     "flex",
+    "w-full",
     "min-w-0",
+    "max-w-full",
     "flex-1",
     "flex-col",
     "items-start",
     "gap-[4px]",
     "p-[10px]",
+    "box-border",
 ].join(" ");
 
 /****************************************/
@@ -106,11 +119,13 @@ export const boardCardTextsStyles = [
 /****************************************/
 export const boardCardTitleStyles = [
     "w-full",
+    "min-w-0",
     "font-sans",
     "text-[24px]",
     "font-normal",
-    "leading-[100%]",
+    "leading-[29px]",
     "text-[var(--color-vainilla)]",
+    "break-words",
 ].join(" ");
 
 /****************************************/
@@ -118,11 +133,13 @@ export const boardCardTitleStyles = [
 /****************************************/
 export const boardCardDescriptionStyles = [
     "w-full",
+    "min-w-0",
     "font-sans",
     "text-[14px]",
     "font-light",
-    "leading-[100%]",
+    "leading-[20px]",
     "text-[var(--color-vainilla)]",
+    "break-words",
 ].join(" ");
 
 /****************************************/
@@ -132,6 +149,9 @@ export const boardCardMenuStyles = [
     "w-[20px]",
     "h-[20px]",
     "shrink-0",
+    "border-0",
+    "bg-transparent",
+    "p-0",
     "text-[var(--color-vainilla)]",
     "cursor-pointer",
 ].join(" ");
@@ -141,4 +161,6 @@ export const boardCardMenuStyles = [
 /*****************************************/
 export const boardCardButtonStyles = [
     "w-full",
+    "max-w-full",
+    "min-w-0",
 ].join(" ");

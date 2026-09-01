@@ -1,41 +1,52 @@
-/***************************************/
-/*    ESTILOS DEL COMPONENTE BUTTON    */
-/***************************************/
+/****************************************/
+/*    ESTILOS DEL COMPONENTE BUTTON     */
+/****************************************/
 /* Este archivo contiene únicamente los estilos visuales del componente Button. No renderiza HTML ni contiene lógica de negocio.
- Utiliza Class Variance Authority (CVA) para generar automáticamente las clases CSS según las propiedades recibidas desde Button.tsx. */
+ * Utiliza Class Variance Authority (CVA) para generar automáticamente las clases CSS según las propiedades recibidas desde Button.tsx. */
 
 import { cva } from "class-variance-authority";
 
-/* ************************************/
-/*   CONFIGURACIÓN DE ESTILOS BASE    */
-/* ************************************/
+/***************************************/
+/*       CONFIGURACIÓN DE ESTILOS      */
+/***************************************/
 /* buttonStyles es una configuración de CVA. recibe:
  * 1. Clases comunes para todos los botones.
  * 2. Variantes (size, variant, buttonStyle y state).
  * 3. Combinaciones especiales (compoundVariants).
- * Con esa información genera automáticamente la lista final de clases CSS.
- */
+ * Con esa información genera automáticamente la lista final de clases CSS. */
+
 export const buttonStyles = cva(
+
     /* =========== Clases comunes para TODOS los botones =========== */
     [
-        "inline-flex", // Usa Flex para organizar su contenido horizontalmente.
-        "items-center",   // Centra el contenido verticalmente.
-        "justify-center",   // Centra el contenido horizontalmente.
-        "whitespace-nowrap",   // Evita que el texto se divida en varias líneas.
-        "rounded-[8px]", // Todas las variantes utilizan el mismo radio de borde.
-        "font-sans", // Todo el proyecto utiliza la fuente principal.
-        "font-normal", // Todos los botones usan peso Regular (400).
-        "not-italic", // El texto nunca utiliza cursiva.
-        "text-center",// El texto siempre permanece centrado.
+        "inline-flex",               // Usa Flex para organizar su contenido horizontalmente.
+        "max-w-full",                // Impide que el botón supere el ancho disponible.
+        "items-center",              // Centra el contenido verticalmente.
+        "justify-center",            // Centra el contenido horizontalmente.
+        "whitespace-nowrap",         // Mantiene el texto en una sola línea por defecto.
+        "overflow-hidden",           // Evita desbordamientos visuales.
+        "rounded-[8px]",             // Todas las variantes utilizan el mismo radio de borde.
+        "font-sans",                 // Todo el proyecto utiliza la fuente principal.
+        "font-normal",               // Todos los botones usan peso Regular (400).
+        "not-italic",                // El texto nunca utiliza cursiva.
+        "text-center",               // El texto siempre permanece centrado.
+        "transition-colors",         // Suaviza los cambios de color.
+        "focus-visible:outline-none", // Elimina el contorno por defecto del navegador.
+        "focus-visible:ring-2", // Agrega un anillo de enfoque cuando el botón está activo y es enfocado mediante teclado.
+        "focus-visible:ring-[var(--color-zafiro-lavanda)]", // Color del anillo de enfoque.
+        "focus-visible:ring-offset-2", // Espacio entre el botón y el anillo de enfoque.
+        "focus-visible:ring-offset-[#111519]", // Color del fondo detrás del anillo de enfoque.
+        "sm:whitespace-nowrap", // Mantiene el texto en una sola línea en pantallas pequeñas.
+        "max-[359px]:whitespace-normal", // Permite que el texto se divida en varias líneas en pantallas muy pequeñas (menos de 360px de ancho).
     ],
 
-    /* ************************************/
-    /*              VARIANTS              */
-    /* ************************************/
-    /* Las variants representan propiedades independientes entre sí. Cada propiedad agrega clases CSS de forma aislada y aporta únicamente la parte del estilo que le corresponde.*/
+    /***************************************/
+    /*               VARIANTS              */
+    /***************************************/
+    /* Las variants representan propiedades independientes entre sí. Cada propiedad agrega clases CSS de forma aislada y aporta únicamente la parte del estilo que le corresponde. */
     {
-        // Variantes del botón. Cada variante tiene sus propias clases CSS.
         variants: {
+
             /* =========== Tamaños del botón =========== */
             size: {
                 XS: [
@@ -81,6 +92,7 @@ export const buttonStyles = cva(
             /* =========== Estilo del botón =========== */
             buttonStyle: {
                 Filled: "",
+
                 Outlined: [
                     "bg-transparent",
                     "border-[2px]",
@@ -93,16 +105,16 @@ export const buttonStyles = cva(
                 Active: "",
                 Disabled: "cursor-not-allowed",
             },
-
         },
 
-        /* ************************************/
-        /*      COMBINACIONES ESPECIALES      */
-        /* ************************************/
-        /* compoundVariants define estilos que solamente aparecen cuando varias variants coinciden al mismo tiempo. Esa combinación aplica únicamente los estilos definidos aquí. */
+        /***************************************/
+        /*        COMBINACIONES ESPECIALES     */
+        /***************************************/
+        /* compoundVariants define estilos que solamente aparecen cuando varias variants coinciden al mismo tiempo.
+         * Esa combinación aplica únicamente los estilos definidos aquí. */
         compoundVariants: [
             /* =========== COMBINACIONES PRIMARY COLOR =========== */
-            // Primary + Filled + Default.
+            /* Primary + Filled + Default. */
             {
                 variant: "Primary",
                 buttonStyle: "Filled",
@@ -114,8 +126,8 @@ export const buttonStyles = cva(
                 ].join(" "),
             },
 
+            /* Primary + Filled + Active. */
             {
-                // Primary + Filled + Active.
                 variant: "Primary",
                 buttonStyle: "Filled",
                 state: "Active",
@@ -126,8 +138,8 @@ export const buttonStyles = cva(
                 ].join(" "),
             },
 
+            /* Primary + Filled + Disabled. */
             {
-                // Primary + Filled + Disabled.
                 variant: "Primary",
                 buttonStyle: "Filled",
                 state: "Disabled",
@@ -138,8 +150,8 @@ export const buttonStyles = cva(
                 ].join(" "),
             },
 
+            /* Primary + Outlined + Default. */
             {
-                // Primary + Outlined + Default.
                 variant: "Primary",
                 buttonStyle: "Outlined",
                 state: "Default",
@@ -150,38 +162,33 @@ export const buttonStyles = cva(
                 ].join(" "),
             },
 
+            /* Primary + Outlined + Active. */
             {
-                // Primary + Outlined + Active.
                 variant: "Primary",
                 buttonStyle: "Outlined",
                 state: "Active",
                 className: [
-                    "border-2",
                     "border-[var(--button-primary-outlined-active-border)]",
-                    "bg-transparent",
                     "text-[var(--button-primary-outlined-active-text)]",
                     "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.08)]",
                 ].join(" "),
             },
 
+            /* Primary + Outlined + Disabled. */
             {
-                // Primary + Outlined + Disabled.
                 variant: "Primary",
                 buttonStyle: "Outlined",
                 state: "Disabled",
                 className: [
-                    "bg-transparent",
-                    "border-2",
                     "border-[var(--button-primary-outlined-disabled-border)]",
                     "text-[var(--button-primary-outlined-disabled-text)]",
                     "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
-                    "cursor-not-allowed",
                 ].join(" "),
             },
 
-            /* =========== COMBINACIONES CTA COLOR =========== */
+            /* =========== COMBINACIONES CTA =========== */
+            /* CTA + Filled + Default. */
             {
-                // CTA + Filled + Default.
                 variant: "CTA",
                 buttonStyle: "Filled",
                 state: "Default",
@@ -192,8 +199,8 @@ export const buttonStyles = cva(
                 ].join(" "),
             },
 
+            /* CTA + Filled + Active. */
             {
-                // CTA + Filled + Active.
                 variant: "CTA",
                 buttonStyle: "Filled",
                 state: "Active",
@@ -204,8 +211,8 @@ export const buttonStyles = cva(
                 ].join(" "),
             },
 
+            /* CTA + Filled + Disabled. */
             {
-                // CTA + Filled + Disabled.
                 variant: "CTA",
                 buttonStyle: "Filled",
                 state: "Disabled",
@@ -216,7 +223,7 @@ export const buttonStyles = cva(
                 ].join(" "),
             },
 
-            //CTA + Outlined + Default.
+            /* CTA + Outlined + Default. */
             {
                 variant: "CTA",
                 buttonStyle: "Outlined",
@@ -228,32 +235,29 @@ export const buttonStyles = cva(
                 ].join(" "),
             },
 
+            /* CTA + Outlined + Active. */
             {
-                // CTA + Outlined + Active.
                 variant: "CTA",
                 buttonStyle: "Outlined",
                 state: "Active",
                 className: [
-                    "border-2",
                     "border-[var(--button-cta-outlined-active-border)]",
-                    "bg-transparent",
                     "text-[var(--button-cta-outlined-active-text)]",
-                    "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.25)]",
+                    "shadow-[inset_0_4px_4px_rgba(0,0,0,0.35),inset_100px_100px_100px_rgba(255,255,255,0.08)]",
                 ].join(" "),
             },
 
+            /* CTA + Outlined + Disabled. */
             {
-                // CTA + Outlined + Disabled.
                 variant: "CTA",
                 buttonStyle: "Outlined",
                 state: "Disabled",
                 className: [
-                    "bg-transparent",
-                    "border-2",
                     "border-[var(--button-cta-outlined-disabled-border)]",
                     "text-[var(--button-cta-outlined-disabled-text)]",
                     "shadow-[5px_5px_5px_rgba(0,0,0,0.20)]",
                 ].join(" "),
             },
         ],
-    });
+    }
+);

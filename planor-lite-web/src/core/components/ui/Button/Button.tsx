@@ -6,9 +6,15 @@
  * 2. Solicitar las clases CSS a button.styles.ts.
  * 3. Renderizar un elemento <button> con los estilos correspondientes.*/
 
-import { useState, type ButtonHTMLAttributes } from "react";
+import {
+  useState,
+  type ButtonHTMLAttributes,
+  type PointerEvent,
+} from "react";
+
 import { buttonStyles } from "./Button.styles";
 import { ButtonIcon } from "./ButtonIcon";
+
 import type {
   ButtonVariant,
   ButtonStyle,
@@ -20,13 +26,16 @@ import type {
 /*      INTERFAZ DEL COMPONENTE         */
 /****************************************/
 /* Extiende todas las propiedades nativas de un botón HTML (onClick, type, disabled, aria-label, etc.) y agrega las propiedades personalizadas del sistema de diseño. */
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+
+interface PropiedadesButton
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+
   variant?: ButtonVariant; // Color.
   buttonStyle?: ButtonStyle; // Estilo (filled u outlined).
   size?: ButtonSize; // Tamaño.
   state?: ButtonState; // Estado visual.
-  leftIcon?: string; // Icono a la izquierda del texto.
-  rightIcon?: string; // Icono a la derecha del texto.
+  iconoIzquierdo?: string; // Icono a la izquierda del texto.
+  iconoDerecho?: string; // Icono a la derecha del texto.
 }
 
 /****************************************/
@@ -38,27 +47,72 @@ export function Button({
   buttonStyle = "Filled",
   size = "XS",
   state = "Default",
-  leftIcon,
-  rightIcon,
+  iconoIzquierdo,
+  iconoDerecho,
   disabled,
   className,
+  onPointerDown,
+  onPointerUp,
+  onPointerLeave,
   ...props
-}: ButtonProps) {
+}: PropiedadesButton) {
+
   /* =========== Estado interno durante el clic =========== */
   const [estaActivo, setEstaActivo] = useState(false);
 
   /* =========== Estado deshabilitado =========== */
-  /* El botón queda deshabilitado cuando se recibe disabled={true} o el estado visual es "Disabled" */
-  const estaDeshabilitado = disabled || state === "Disabled";
+  /* El botón queda deshabilitado cuando se recibe disabled={true} o el estado visual es "Disabled". */
 
+  const estaDeshabilitado =
+    disabled || state === "Disabled";
+
+  /* =========== Estado visual =========== */
   /* Determina el estado visual del botón según las propiedades recibidas y el estado interno. */
+
   let estadoVisual: ButtonState = "Default";
+
   if (estaDeshabilitado) {
     estadoVisual = "Disabled";
   } else if (estaActivo) {
     estadoVisual = "Active";
   }
 
+  /* =========== Eventos de interacción =========== */
+  /* Mantiene el estado visual Active durante la interacción con mouse, touch o stylus.
+   * Los handlers externos continúan ejecutándose sin sobrescribir la lógica interna. */
+  const manejarPointerDown = (
+    evento: PointerEvent<HTMLButtonElement>
+  ) => {
+    if (!estaDeshabilitado) {
+      setEstaActivo(true);
+    }
+
+    if (onPointerDown) {
+      onPointerDown(evento);
+    }
+  };
+
+  const manejarPointerUp = (
+    evento: PointerEvent<HTMLButtonElement>
+  ) => {
+    setEstaActivo(false);
+
+    if (onPointerUp) {
+      onPointerUp(evento);
+    }
+  };
+
+  const manejarPointerLeave = (
+    evento: PointerEvent<HTMLButtonElement>
+  ) => {
+    setEstaActivo(false);
+
+    if (onPointerLeave) {
+      onPointerLeave(evento);
+    }
+  };
+
+  /* =========== Render =========== */
   return (
     <button
       className={buttonStyles({
@@ -69,17 +123,19 @@ export function Button({
         className,
       })}
       disabled={estaDeshabilitado}
-      onMouseDown={() => setEstaActivo(true)}
-      onMouseUp={() => setEstaActivo(false)}
-      onMouseLeave={() => setEstaActivo(false)}
+      onPointerDown={manejarPointerDown}
+      onPointerUp={manejarPointerUp}
+      onPointerLeave={manejarPointerLeave}
       {...props}
     >
-      {leftIcon && (
-        <ButtonIcon icon={leftIcon} />
+      {iconoIzquierdo && (
+        <ButtonIcon icon={iconoIzquierdo} />
       )}
+
       {children}
-      {rightIcon && (
-        <ButtonIcon icon={rightIcon} />
+
+      {iconoDerecho && (
+        <ButtonIcon icon={iconoDerecho} />
       )}
     </button>
   );

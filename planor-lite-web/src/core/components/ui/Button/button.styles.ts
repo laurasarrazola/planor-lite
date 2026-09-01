@@ -47,7 +47,6 @@ export const buttonStyles = cva(
     /* Las variants representan propiedades independientes entre sí. Cada propiedad agrega clases CSS de forma aislada y aporta únicamente la parte del estilo que le corresponde. */
     {
         variants: {
-
             /* =========== Tamaños del botón =========== */
             /* Cada tamaño mantiene una escala visual estable. La adaptación responsive se controla principalmente mediante el contenedor que utiliza el botón. */
 

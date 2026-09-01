@@ -23,11 +23,10 @@ export const headerStyles = [
     "relative",
     "flex",
     "w-full",
-    "min-h-[80px]",
+    "min-h-[70px]",
     "items-center",
     "justify-between",
     "px-[clamp(12px,2vw,20px)]",
-    "py-[16px]",
     "bg-[#111519]",
 ].join(" ");
 
@@ -74,8 +73,8 @@ export const actionsStyles = [
     "items-center",
     "justify-center",
     "gap-[clamp(8px,1.2vw,16px)]",
-    "px-[10px]",
-    "py-[10px]",
+    "px-[6px]",
+    "py-[6px]",
     "md:flex",
 ].join(" ");
 

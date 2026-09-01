@@ -124,6 +124,7 @@ export function Header({
         acciones = (
             <>
                 <Button
+                    size="M"
                     variant="CTA"
                     buttonStyle="Outlined"
                     onClick={() => ejecutarAccion(alIniciarSesion)}
@@ -132,6 +133,7 @@ export function Header({
                 </Button>
 
                 <Button
+                    size="M"
                     variant="Primary"
                     buttonStyle="Filled"
                     onClick={() => ejecutarAccion(alRegistrar)}
@@ -200,7 +202,6 @@ export function Header({
         <header className={headerStyles}>
 
             {/* ========== LOGO ========== */}
-
             <img
                 src={logo}
                 alt="Planor"

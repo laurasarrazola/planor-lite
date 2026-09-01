@@ -10,18 +10,33 @@ export const modalStyles = cva(
     [
         "flex",
         "flex-col",
+        "w-[calc(100vw-32px)]",
+        "max-w-[640px]",
+        "max-h-[calc(100vh-32px)]",
+        "overflow-hidden",
         "rounded-[10px]",
         "border",
         "bg-[var(--modal-background)]",
         "border-[var(--modal-border)]",
         "shadow-[0_0_36px_0_var(--modal-shadow)]",
-        "p-[24px]",
+        "p-[16px]",
+        "sm:w-[calc(100vw-48px)]",
+        "sm:max-h-[calc(100vh-48px)]",
+        "sm:p-[20px]",
+        "md:p-[24px]",
     ],
     {
         variants: {
             size: {
-                Small: "w-[420px] items-start",
-                Medium: "w-[640px] items-center",
+                Small: [
+                    "max-w-[420px]",
+                    "items-start",
+                ].join(" "),
+
+                Medium: [
+                    "max-w-[640px]",
+                    "items-center",
+                ].join(" "),
             },
         },
     }
@@ -33,17 +48,41 @@ export const modalStyles = cva(
 export const modalCloseActionStyles = [
     "flex",
     "justify-end",
-    "items-start",
+    "items-center",
     "self-stretch",
+    "shrink-0",
+].join(" ");
+
+/************************************/
+/*         CLOSE BUTTON             */
+/************************************/
+export const modalCloseButtonStyles = [
+    "flex",
+    "h-[40px]",
+    "w-[40px]",
+    "shrink-0",
+    "items-center",
+    "justify-center",
+    "rounded-[6px]",
+    "border-0",
+    "bg-transparent",
+    "p-0",
+    "transition-colors",
+    "hover:bg-white/5",
+    "focus-visible:outline-none",
+    "focus-visible:ring-2",
+    "focus-visible:ring-[var(--color-zafiro-lavanda)]",
 ].join(" ");
 
 /************************************/
 /*          ICONO CERRAR            */
 /************************************/
 export const modalCloseIconStyles = [
-    "w-[24px]",
     "h-[24px]",
+    "w-[24px]",
+    "shrink-0",
     "text-[var(--modal-close-icon)]",
+    "transition-opacity",
 ].join(" ");
 
 /************************************/
@@ -51,11 +90,15 @@ export const modalCloseIconStyles = [
 /************************************/
 export const modalContentStyles = [
     "flex",
+    "min-h-0",
+    "flex-1",
     "flex-col",
     "items-start",
     "gap-[6px]",
     "self-stretch",
-    "px-[10px]",
+    "overflow-y-auto",
+    "px-[4px]",
+    "sm:px-[8px]",
 ].join(" ");
 
 /************************************/
@@ -68,6 +111,7 @@ export const modalHeaderStyles = cva(
         "items-start",
         "gap-[8px]",
         "self-stretch",
+        "shrink-0",
     ],
     {
         variants: {
@@ -86,14 +130,25 @@ export const modalTitleStyles = cva(
     [
         "font-sans",
         "text-[var(--modal-title)]",
-        "leading-[100%]",
+        "leading-[1.2]",
+        "break-words",
         "self-stretch",
     ],
     {
         variants: {
             size: {
-                Small: "text-[24px] font-semibold",
-                Medium: "text-[32px] font-medium",
+                Small: [
+                    "text-[20px]",
+                    "font-semibold",
+                    "sm:text-[24px]",
+                ].join(" "),
+
+                Medium: [
+                    "text-[24px]",
+                    "font-medium",
+                    "sm:text-[28px]",
+                    "md:text-[32px]",
+                ].join(" "),
             },
         },
     }
@@ -106,14 +161,23 @@ export const modalDescriptionStyles = cva(
     [
         "font-sans",
         "text-[var(--modal-description)]",
-        "leading-[100%]",
+        "leading-[1.4]",
+        "break-words",
         "self-stretch",
     ],
     {
         variants: {
             size: {
-                Small: "text-[14px] font-light",
-                Medium: "text-[16px] font-normal",
+                Small: [
+                    "text-[14px]",
+                    "font-light",
+                ].join(" "),
+
+                Medium: [
+                    "text-[15px]",
+                    "font-normal",
+                    "sm:text-[16px]",
+                ].join(" "),
             },
         },
     }
@@ -125,17 +189,19 @@ export const modalDescriptionStyles = cva(
 export const modalBodyStyles = cva(
     [
         "flex",
+        "min-h-0",
         "flex-col",
         "items-start",
         "gap-[16px]",
         "self-stretch",
-        "p-[10px]",
+        "p-[8px]",
+        "sm:p-[10px]",
     ],
     {
         variants: {
             size: {
-                Small: "h-[120px]",
-                Medium: "p-[20px]",
+                Small: "",
+                Medium: "p-[16px] sm:p-[20px]",
             },
         },
     }
@@ -146,9 +212,13 @@ export const modalBodyStyles = cva(
 /************************************/
 export const modalActionsStyles = [
     "flex",
+    "w-full",
+    "flex-wrap",
     "justify-end",
     "items-center",
-    "gap-[12px]",
+    "gap-[8px]",
     "self-stretch",
-    "p-[10px]",
+    "p-[8px]",
+    "sm:gap-[12px]",
+    "sm:p-[10px]",
 ].join(" ");

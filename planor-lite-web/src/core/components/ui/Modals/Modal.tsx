@@ -20,6 +20,7 @@ import {
     modalDescriptionStyles,
     modalBodyStyles,
     modalActionsStyles,
+    modalCloseButtonStyles,
 } from "./Modal.styles";
 
 import type { ModalSize } from "./Modal.types";
@@ -43,12 +44,18 @@ export function Modal({
 }: ModalProps) {
 
     return (
-        <div className={modalStyles({ size })}>
+        <div
+            className={modalStyles({ size })}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+        >
 
             {/* ========== CLOSE ACTION ========== */}
             <div className={modalCloseActionStyles}>
                 <button
                     type="button"
+                    className={modalCloseButtonStyles}
                     onClick={onClose}
                     aria-label="Cerrar modal"
                 >
@@ -63,7 +70,10 @@ export function Modal({
             <div className={modalContentStyles}>
                 {/* ========== HEADER ========== */}
                 <div className={modalHeaderStyles({ size })}>
-                    <h2 className={modalTitleStyles({ size })}>
+                    <h2
+                        id="modal-title"
+                        className={modalTitleStyles({ size })}
+                    >
                         {title}
                     </h2>
                     {description && (

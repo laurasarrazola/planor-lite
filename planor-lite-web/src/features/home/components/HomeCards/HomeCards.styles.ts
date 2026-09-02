@@ -11,6 +11,8 @@ export const homeCardStyles = cva(
         "flex",
         "w-full",
         "max-w-[300px]",
+        "md:max-w-[340px]",
+        "xl:max-w-[300px]",
         "min-w-0",
         "min-h-[220px]",
         "h-auto",
@@ -22,7 +24,7 @@ export const homeCardStyles = cva(
         "border-[0.5px]",
         "border-[var(--color-obsidiana)]",
         "bg-[#272E35]",
-        "p-[24px]",
+        "p-[8px]",
         "box-border",
         "shadow-[2px_5px_5px_0_rgba(0,0,0,0.40)]",
     ],
@@ -91,15 +93,18 @@ export const homeCardTextContentStyles = [
 /*              TITLE               */
 /************************************/
 export const homeCardTitleStyles = [
-    "self-stretch",
+    "w-full",
     "min-w-0",
     "font-sans",
-    "text-[24px]",
-    "font-normal",
-    "leading-[28px]",
+    "text-[20px]",
+    "leading-[24px]",
     "text-center",
     "text-[var(--color-vainilla)]",
     "break-words",
+    "sm:text-[22px]",
+    "sm:leading-[26px]",
+    "md:text-[24px]",
+    "md:leading-[28px]",
 ].join(" ");
 
 /************************************/

@@ -1,11 +1,13 @@
 export const homePageStyles = [
-  "flex",
-  "min-h-screen",
-  "w-full",
-  "flex-col",
-  "items-stretch",
-  "bg-[#16191C]",
-  "text-[var(--color-vainilla)]",
+    "flex",
+    "min-h-screen",
+    "w-full",
+    "min-w-0",
+    "flex-col",
+    "items-stretch",
+    "overflow-x-clip",
+    "bg-[#16191C]",
+    "text-[var(--color-vainilla)]",
 ].join(" ");
 
 /****************************************/
@@ -14,6 +16,7 @@ export const homePageStyles = [
 export const homeMainStyles = [
     "flex",
     "w-full",
+    "min-w-0",
     "flex-col",
     "items-center",
 ].join(" ");
@@ -24,22 +27,26 @@ export const homeMainStyles = [
 export const homeHeroStyles = [
     "flex",
     "w-full",
+    "min-w-0",
     "flex-col",
     "items-center",
-    "gap-[40px]",
+    "gap-[36px]",
     "border-b",
     "border-[rgba(255,255,255,0.08)]",
     "px-[16px]",
     "py-[40px]",
+    "box-border",
+    "sm:gap-[40px]",
     "sm:px-[24px]",
     "sm:py-[45px]",
+    "md:gap-[48px]",
     "md:px-[40px]",
     "md:py-[50px]",
     "lg:flex-row",
     "lg:items-center",
-    "lg:gap-[60px]",
+    "lg:gap-[56px]",
     "lg:px-[50px]",
-    "xl:gap-[80px]",
+    "xl:gap-[72px]",
 ].join(" ");
 
 /****************************************/
@@ -49,10 +56,12 @@ export const homeHeroContentStyles = [
     "flex",
     "w-full",
     "min-w-0",
-    "flex-1",
+    "max-w-[670px]",
     "flex-col",
     "gap-[28px]",
-    "lg:max-w-[670px]",
+    "box-border",
+    "sm:gap-[30px]",
+    "lg:flex-1",
     "lg:gap-[32px]",
 ].join(" ");
 
@@ -63,6 +72,7 @@ export const homeHeroBadgeStyles = [
     "flex",
     "w-fit",
     "max-w-full",
+    "min-w-0",
     "items-center",
     "justify-center",
     "gap-[6px]",
@@ -70,8 +80,9 @@ export const homeHeroBadgeStyles = [
     "border",
     "border-[rgba(66,13,75,0.50)]",
     "bg-[rgba(66,13,75,0.20)]",
-    "px-[16px]",
-    "py-[10px]",
+    "px-[14px]",
+    "py-[9px]",
+    "box-border",
     "font-sans",
     "text-[13px]",
     "font-normal",
@@ -105,11 +116,16 @@ export const homeHeroBadgeIconStyles = [
 export const homeHeroTitleStyles = [
     "w-full",
     "max-w-[670px]",
+    "min-w-0",
     "font-sans",
-    "text-[clamp(40px,7vw,60px)]",
+    "text-[40px]",
     "font-bold",
     "leading-[110%]",
     "break-words",
+    "sm:text-[46px]",
+    "md:text-[52px]",
+    "lg:text-[56px]",
+    "xl:text-[60px]",
 ].join(" ");
 
 /****************************************/
@@ -123,23 +139,31 @@ export const homeHeroTitleAccentStyles = [
 /*          HERO DESCRIPTION            */
 /****************************************/
 export const homeHeroDescriptionStyles = [
- "w-full",
+    "w-full",
     "max-w-[670px]",
+    "min-w-0",
     "font-sans",
-    "text-[clamp(18px,3vw,26px)]",
+    "text-[18px]",
     "font-normal",
     "leading-[130%]",
-    "tracking-[0.03em]",
-    "sm:tracking-[0.04em]",
-    "md:tracking-[0.05em]",
+    "tracking-[0.02em]",
+    "break-words",
+    "sm:text-[20px]",
+    "sm:tracking-[0.03em]",
+    "md:text-[22px]",
+    "md:tracking-[0.04em]",
+    "lg:text-[24px]",
+    "lg:tracking-[0.05em]",
+    "xl:text-[26px]",
 ].join(" ");
 
 /****************************************/
 /*              HERO ACTIONS            */
 /****************************************/
 export const homeHeroActionsStyles = [
-  "flex",
+    "flex",
     "w-full",
+    "min-w-0",
     "flex-col",
     "gap-[8px]",
 ].join(" ");
@@ -150,10 +174,12 @@ export const homeHeroActionsStyles = [
 export const homeHeroButtonsStyles = [
     "flex",
     "w-full",
+    "min-w-0",
     "flex-col",
     "items-stretch",
     "gap-[12px]",
     "py-[10px]",
+    "box-border",
     "sm:flex-row",
     "sm:flex-wrap",
     "sm:items-center",
@@ -167,11 +193,15 @@ export const homeHeroButtonsStyles = [
 export const homeHeroBenefitsStyles = [
     "flex",
     "w-full",
+    "min-w-0",
     "flex-wrap",
     "items-center",
-    "gap-x-[20px]",
+    "justify-center",
+    "gap-x-[16px]",
     "gap-y-[12px]",
     "py-[10px]",
+    "box-border",
+    "sm:justify-start",
     "sm:gap-x-[24px]",
 ].join(" ");
 
@@ -182,6 +212,7 @@ export const homeHeroBenefitsStyles = [
 export const homeHeroBenefitStyles = [
     "flex",
     "min-w-0",
+    "max-w-full",
     "items-center",
     "gap-[5px]",
 ].join(" ");
@@ -203,16 +234,21 @@ export const homeHeroImageContainerStyles = [
     "flex",
     "w-full",
     "min-w-0",
+    "max-w-[620px]",
     "items-center",
     "justify-center",
+    "box-border",
     "lg:flex-1",
+    "lg:max-w-none",
     "lg:self-stretch",
 ].join(" ");
 
 export const homeHeroImageStyles = [
+    "block",
     "h-auto",
     "w-full",
     "max-w-[520px]",
+    "min-w-0",
     "object-contain",
     "sm:max-w-[560px]",
     "md:max-w-[600px]",
@@ -226,6 +262,7 @@ export const homeHeroImageStyles = [
 export const homeFeaturesStyles = [
     "flex",
     "w-full",
+    "min-w-0",
     "flex-col",
     "items-center",
     "gap-[28px]",
@@ -233,7 +270,9 @@ export const homeFeaturesStyles = [
     "border-[rgba(255,255,255,0.08)]",
     "px-[16px]",
     "py-[50px]",
+    "box-border",
     "sm:px-[24px]",
+    "md:gap-[32px]",
     "md:px-[40px]",
     "md:py-[60px]",
     "lg:px-[50px]",
@@ -245,12 +284,16 @@ export const homeFeaturesStyles = [
 export const homeFeaturesTitleStyles = [
     "w-full",
     "max-w-[900px]",
+    "min-w-0",
     "text-center",
     "font-sans",
-    "text-[clamp(20px,3vw,24px)]",
+    "text-[24px]",
     "font-semibold",
     "leading-[120%]",
+    "break-words",
     "text-[var(--color-vainilla)]",
+    "sm:text-[28px]",
+    "md:text-[34px]",
 ].join(" ");
 
 /****************************************/
@@ -260,7 +303,9 @@ export const homeFeaturesCardsStyles = [
     "grid",
     "w-full",
     "max-w-[1320px]",
+    "min-w-0",
     "grid-cols-1",
+    "justify-items-center",
     "gap-[20px]",
     "md:grid-cols-2",
     "md:gap-[24px]",
@@ -273,11 +318,13 @@ export const homeFeaturesCardsStyles = [
 export const homeCtaStyles = [
     "flex",
     "w-full",
+    "min-w-0",
     "flex-col",
     "items-center",
     "justify-center",
     "px-[16px]",
     "py-[50px]",
+    "box-border",
     "sm:px-[24px]",
     "md:px-[40px]",
     "md:py-[60px]",
@@ -291,12 +338,12 @@ export const homeCtaContentStyles = [
     "flex",
     "w-full",
     "max-w-[800px]",
+    "min-w-0",
     "flex-col",
     "items-center",
     "justify-center",
     "gap-[20px]",
     "text-center",
-
 ].join(" ");
 
 /****************************************/
@@ -304,11 +351,16 @@ export const homeCtaContentStyles = [
 /****************************************/
 export const homeCtaTitleStyles = [
     "w-full",
+    "min-w-0",
     "font-sans",
-    "text-[clamp(28px,5vw,40px)]",
+    "text-[28px]",
     "font-semibold",
     "leading-[110%]",
+    "break-words",
     "text-[var(--color-amatista)]",
+    "sm:text-[32px]",
+    "md:text-[36px]",
+    "lg:text-[40px]",
 ].join(" ");
 
 /****************************************/
@@ -316,12 +368,18 @@ export const homeCtaTitleStyles = [
 /****************************************/
 export const homeCtaDescriptionStyles = [
     "w-full",
+    "min-w-0",
     "font-sans",
-    "text-[clamp(18px,3vw,24px)]",
+    "text-[18px]",
     "font-normal",
-    "leading-[115%]",
-    "tracking-[0.03em]",
+    "leading-[125%]",
+    "tracking-[0.02em]",
+    "break-words",
     "text-white",
-    "sm:tracking-[0.04em]",
-    "md:tracking-[0.05em]",
+    "sm:text-[20px]",
+    "sm:tracking-[0.03em]",
+    "md:text-[22px]",
+    "md:tracking-[0.04em]",
+    "lg:text-[24px]",
+    "lg:tracking-[0.05em]",
 ].join(" ");

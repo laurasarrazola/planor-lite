@@ -15,12 +15,16 @@ import {
     homeCardDescriptionStyles,
 } from "./HomeCards.styles";
 import type { HomeCardProps } from "./HomeCards.types";
+
 export function HomeCard({
     accent = "Amatista",
     icon,
     title,
     description,
 }: HomeCardProps) {
+/************************************/
+/*           RENDERIZADO            */
+/************************************/
     return (
         <article className={homeCardStyles({ accent })}>
 

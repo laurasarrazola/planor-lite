@@ -74,7 +74,7 @@ export const buttonStyles = cva(
                     "px-[16px]",
                     "py-[10px]",
                     "gap-[8px]",
-                    "text-[16px]",
+                    "text-[18px]",
                     "leading-[20px]",
                 ].join(" "),
 
@@ -83,7 +83,7 @@ export const buttonStyles = cva(
                     "px-[20px]",
                     "py-[12px]",
                     "gap-[8px]",
-                    "text-[16px]",
+                    "text-[20px]",
                     "leading-[24px]",
                 ].join(" "),
             },

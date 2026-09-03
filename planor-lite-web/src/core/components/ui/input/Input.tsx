@@ -16,7 +16,6 @@ import {
 import {
     inputStyles,
     inputLabelStyles,
-    inputContainerStyles,
     inputValueStyles,
     helperTextStyles,
 } from "./Input.styles";
@@ -92,10 +91,7 @@ export function Input({
                 >
                     {label}
                 </label>
-            )}
-
-            {/* =========== INPUT CONTAINER =========== */}
-            <div className={inputContainerStyles({ state: estadoVisual })}>
+            )}           
 
                 {/* =========== INPUT =========== */}
                 <input
@@ -106,8 +102,7 @@ export function Input({
                     onBlur={manejarDesenfoque}
                     {...props}
                 />
-            </div>
-
+       
             {/* =========== HELPER TEXT =========== */}
             {helperText && (
                 <span

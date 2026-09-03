@@ -57,63 +57,20 @@ export const inputLabelStyles = cva(
 );
 
 /************************************/
-/*      ESTILOS DEL CONTENEDOR      */
-/************************************/
-export const inputContainerStyles = cva(
-    [
-        "flex",
-        "min-h-[44px]",
-        "w-full",
-        "min-w-0",
-        "items-center",
-        "gap-[12px]",
-        "self-stretch",
-        "rounded-[8px]",
-        "px-[16px]",
-        "py-[10px]",
-    ],
-    {
-        variants: {
-            state: {
-                Default: "",
-                Focus: "",
-                Disabled: "",
-            },
-        },
-        compoundVariants: [
-            {
-                state: "Default",
-                className: "border border-[var(--input-border-default)]",
-            },
-            {
-                state: "Focus",
-                className: [
-                    "border-2",
-                    "border-[var(--input-border-focus)]",
-                    "shadow-[1px_1px_6px_0_var(--input-border-focus)]"
-                ].join(" "),
-            },
-            {
-                state: "Disabled",
-                className: "border border-[var(--input-border-disabled)]",
-            },
-        ],
-    }
-);
-
-/************************************/
 /*       ESTILOS DEL INPUT         */
 /************************************/
 export const inputValueStyles = cva(
     [
+        "flex",
+        "h-[44px]",
         "w-full",
         "min-w-0",
+        "items-center",
+        "rounded-[8px]",
+        "px-[16px]",
+        "py-[10px]",
         "bg-transparent",
-        "border-none",
         "outline-none",
-        "ring-0",
-        "focus:outline-none",
-        "focus:ring-0",
         "font-sans",
         "text-[16px]",
         "font-normal",
@@ -128,11 +85,12 @@ export const inputValueStyles = cva(
                 Disabled: "",
             },
         },
-
         compoundVariants: [
             {
                 state: "Default",
                 className: [
+                    "border",
+                    "border-[var(--input-border-default)]",
                     "text-[var(--color-vainilla)]",
                     "placeholder:text-[var(--input-text-default)]",
                 ].join(" "),
@@ -140,6 +98,9 @@ export const inputValueStyles = cva(
             {
                 state: "Focus",
                 className: [
+                    "border-2",
+                    "border-[var(--input-border-focus)]",
+                    "shadow-[1px_1px_6px_0_var(--input-border-focus)]",
                     "text-[var(--color-vainilla)]",
                     "placeholder:text-[var(--input-text-focus)]",
                 ].join(" "),
@@ -147,6 +108,8 @@ export const inputValueStyles = cva(
             {
                 state: "Disabled",
                 className: [
+                    "border",
+                    "border-[var(--input-border-disabled)]",
                     "text-[var(--input-text-disabled)]",
                     "placeholder:text-[var(--input-text-disabled)]",
                 ].join(" "),
@@ -163,7 +126,7 @@ export const helperTextStyles = cva(
         "w-full",
         "min-w-0",
         "break-words",
-        "text-[14px]",
+        "text-[12px]",
         "font-light",
         "leading-[20px]",
         "text-left",

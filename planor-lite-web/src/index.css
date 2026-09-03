@@ -138,6 +138,20 @@
 --modal-close-icon: var(--color-vainilla);
 }
 
+/* =========== SCROLL =========== */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #272E35 transparent;
+}
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
 /* =========== ESTILOS GLOBALES ROOT =========== */
 #root {
   min-height: 100vh;

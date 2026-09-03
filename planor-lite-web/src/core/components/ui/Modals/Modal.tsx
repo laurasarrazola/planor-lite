@@ -7,9 +7,12 @@
  * 3. Utilizar Button como asset.
  * 4. Utilizar Iconify para el icono de cerrar.*/
 
-import type { ReactNode } from "react";
+import {
+    useId,
+    type ReactNode,
+    type MouseEvent,
+} from "react";
 import { Icon } from "@iconify/react";
-
 import {
     modalStyles,
     modalCloseActionStyles,
@@ -21,8 +24,8 @@ import {
     modalBodyStyles,
     modalActionsStyles,
     modalCloseButtonStyles,
+    modalOverlayStyles,
 } from "./Modal.styles";
-
 import type { ModalSize } from "./Modal.types";
 
 interface ModalProps {
@@ -43,59 +46,76 @@ export function Modal({
     onClose,
 }: ModalProps) {
 
+    const idTitulo = useId();
+
+    function manejarClickOverlay(
+        event: MouseEvent<HTMLDivElement>
+    ): void {
+        if (event.target === event.currentTarget) {
+            onClose();
+        }
+    }
+
     return (
         <div
-            className={modalStyles({ size })}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="modal-title"
+            className={modalOverlayStyles}
+            onClick={manejarClickOverlay}
         >
-
-            {/* ========== CLOSE ACTION ========== */}
-            <div className={modalCloseActionStyles}>
-                <button
-                    type="button"
-                    className={modalCloseButtonStyles}
-                    onClick={onClose}
-                    aria-label="Cerrar modal"
-                >
-                    <Icon
-                        icon="mdi:close"
-                        className={modalCloseIconStyles}
-                    />
-                </button>
-            </div>
-
-            {/* ========== MODAL CONTENT ========== */}
-            <div className={modalContentStyles}>
-                {/* ========== HEADER ========== */}
-                <div className={modalHeaderStyles({ size })}>
-                    <h2
-                        id="modal-title"
-                        className={modalTitleStyles({ size })}
+            <div
+                className={modalStyles({ size })}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={idTitulo}
+            >
+                {/* ========== CLOSE ACTION ========== */}
+                <div className={modalCloseActionStyles}>
+                    <button
+                        type="button"
+                        className={modalCloseButtonStyles}
+                        onClick={onClose}
+                        aria-label="Cerrar modal"
                     >
-                        {title}
-                    </h2>
-                    {description && (
-                        <p className={modalDescriptionStyles({ size })}>
-                            {description}
-                        </p>
+                        <Icon
+                            icon="mdi:close"
+                            className={modalCloseIconStyles}
+                        />
+                    </button>
+                </div>
+
+                {/* ========== MODAL CONTENT ========== */}
+                <div className={modalContentStyles}>
+
+                    {/* ========== HEADER ========== */}
+                    <div className={modalHeaderStyles({ size })}>
+                        <h2
+                            id={idTitulo}
+                            className={modalTitleStyles({ size })}
+                        >
+                            {title}
+                        </h2>
+
+                        {description && (
+                            <p
+                                className={modalDescriptionStyles({ size })}
+                            >
+                                {description}
+                            </p>
+                        )}
+                    </div>
+
+                    {/* ========== BODY ========== */}
+                    <div className={modalBodyStyles({ size })}>
+                        {children}
+                    </div>
+
+                    {/* ========== ACTIONS ========== */}
+                    {actions && (
+                        <div className={modalActionsStyles}>
+                            {actions}
+                        </div>
                     )}
                 </div>
-
-                {/* ========== BODY ========== */}
-                <div className={modalBodyStyles({ size })}>
-                    {children}
-                </div>
-
-                {/* ========== ACTIONS ========== */}
-                {actions && (
-                    <div className={modalActionsStyles}>
-                        {actions}
-                    </div>
-                )}
             </div>
-
         </div>
     );
 }

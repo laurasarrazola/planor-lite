@@ -12,7 +12,7 @@ import {
   type PointerEvent,
 } from "react";
 
-import { buttonStyles } from "./Button.styles";
+import { buttonStyles } from "./button.styles";
 import { ButtonIcon } from "./ButtonIcon";
 
 import type {

@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { RegisterModal } from "@/features/auth/components/RegisterModal/RegisterModal";
 import { Icon } from "@iconify/react";
 import { Header } from "@/core/components/layout/Header/Header";
 import { Footer } from "@/core/components/layout/Footer/Footer";
@@ -85,6 +87,15 @@ const beneficiosHeroInicio = [
 /************************************/
 // `HomePage` es el componente principal de inicio. Renderiza el encabezado, Hero, características, llamada a la acción y pie de página, además de gestionar la navegación hacia las distintas secciones mediante desplazamiento suave.
 export function HomePage() {
+    const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
+
+    function manejarAbrirModalRegistro(): void {
+        setMostrarModalRegistro(true);
+    }
+
+    function manejarCerrarModalRegistro(): void {
+        setMostrarModalRegistro(false);
+    }
 
     /************************************/
     /*         HEADER NAVIGATION        */
@@ -118,7 +129,7 @@ export function HomePage() {
             {/* ========== HEADER ========== */}
             <Header
                 modo="Guest"
-                alHacerClickNavegacion={manejarClicNavegacion}/>
+                alHacerClickNavegacion={manejarClicNavegacion} />
 
             {/* ========== MAIN ========== */}
             <main className={homeMainStyles}>
@@ -137,7 +148,7 @@ export function HomePage() {
                             <Icon
                                 icon="hugeicons:stars"
                                 className={homeHeroBadgeIconStyles}
-                                aria-hidden="true"/>
+                                aria-hidden="true" />
                             <span>
                                 Tu espacio, tus tareas, tu enfoque
                             </span>
@@ -169,7 +180,8 @@ export function HomePage() {
                                 <Button
                                     variant="Primary"
                                     buttonStyle="Filled"
-                                    size="L">
+                                    size="L"
+                                    onClick={manejarAbrirModalRegistro}>
                                     Comienza gratis
                                 </Button>
 
@@ -210,7 +222,7 @@ export function HomePage() {
                     <div className={homeHeroImageContainerStyles}>
                         <img
                             src={heroImage}
-                            className={homeHeroImageStyles}/>
+                            className={homeHeroImageStyles} />
                     </div>
 
                 </section>
@@ -230,7 +242,7 @@ export function HomePage() {
                                 accent={caracteristica.accent}
                                 icon={caracteristica.icon}
                                 title={caracteristica.title}
-                                description={caracteristica.description}/>
+                                description={caracteristica.description} />
                         ))}
                     </div>
                 </section>
@@ -253,7 +265,8 @@ export function HomePage() {
                         <Button
                             variant="Primary"
                             buttonStyle="Filled"
-                            size="L">
+                            size="L"
+                            onClick={manejarAbrirModalRegistro}>
                             Comienza gratis
                         </Button>
                     </div>
@@ -261,8 +274,14 @@ export function HomePage() {
 
             </main>
 
-            {/* ========== FOOTER ========== */}
+            {/* ========== REGISTER MODAL ========== */}
+            {mostrarModalRegistro && (
+                <RegisterModal
+                    onClose={manejarCerrarModalRegistro}
+                />
+            )}
 
+            {/* ========== FOOTER ========== */}
             <Footer />
 
         </div>

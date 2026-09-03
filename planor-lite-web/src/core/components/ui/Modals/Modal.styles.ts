@@ -96,7 +96,6 @@ export const modalContentStyles = [
     "items-start",
     "gap-[6px]",
     "self-stretch",
-    "overflow-y-auto",
     "px-[4px]",
     "sm:px-[8px]",
 ].join(" ");
@@ -109,7 +108,7 @@ export const modalHeaderStyles = cva(
         "flex",
         "flex-col",
         "items-start",
-        "gap-[8px]",
+        "gap-[4px]",
         "self-stretch",
         "shrink-0",
     ],
@@ -164,6 +163,7 @@ export const modalDescriptionStyles = cva(
         "leading-[1.4]",
         "break-words",
         "self-stretch",
+        "pb-[6px]",
     ],
     {
         variants: {
@@ -190,10 +190,12 @@ export const modalBodyStyles = cva(
     [
         "flex",
         "min-h-0",
+        "flex-1",
         "flex-col",
         "items-start",
         "gap-[16px]",
         "self-stretch",
+        "overflow-y-auto",
         "p-[8px]",
         "sm:p-[10px]",
     ],
@@ -201,11 +203,27 @@ export const modalBodyStyles = cva(
         variants: {
             size: {
                 Small: "",
-                Medium: "p-[16px] sm:p-[20px]",
+                Medium: "p-[8px] sm:p-[10px]",
             },
         },
     }
 );
+
+/************************************/
+/*          MODAL OVERLAY           */
+/************************************/
+export const modalOverlayStyles = [
+    "fixed",
+    "inset-0",
+    "z-50",
+    "flex",
+    "items-center",
+    "justify-center",
+    "bg-[var(--color-amatista)]/40",
+    "backdrop-blur-sm",
+    "p-[16px]",
+    "sm:p-[24px]",
+].join(" ");
 
 /************************************/
 /*          MODAL ACTIONS           */
@@ -218,6 +236,7 @@ export const modalActionsStyles = [
     "items-center",
     "gap-[8px]",
     "self-stretch",
+    "shrink-0",
     "p-[8px]",
     "sm:gap-[12px]",
     "sm:p-[10px]",

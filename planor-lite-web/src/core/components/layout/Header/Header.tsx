@@ -15,6 +15,7 @@ import type { ReactNode } from "react";
 import { Icon } from "@iconify/react";
 import logo from "@/assets/logo/Planor-logo.svg";
 import { Button } from "../../ui/Button/Button";
+import { RegisterModal } from "@/features/auth/components/RegisterModal/RegisterModal";
 import {
     headerStyles,
     logoStyles,
@@ -53,7 +54,6 @@ export function Header({
     alHacerClickNavegacion,
     alHacerClickPerfil,
     alIniciarSesion,
-    alRegistrar,
 }: PropiedadesHeader) {
 
     /****************************************/
@@ -136,7 +136,7 @@ export function Header({
                     size="M"
                     variant="Primary"
                     buttonStyle="Filled"
-                    onClick={() => ejecutarAccion(alRegistrar)}
+                    onClick={manejarAbrirModalRegistro}
                 >
                     Registrarse
                 </Button>
@@ -187,12 +187,25 @@ export function Header({
                 <button
                     type="button"
                     className={mobileMenuItemStyles}
-                    onClick={() => ejecutarAccion(alRegistrar)}
+                    onClick={manejarAbrirModalRegistro}
                 >
                     Registrarse
                 </button>
             </>
         );
+    }
+
+    /****************************************/
+    /*        MODAL DE REGISTRO            */
+    /****************************************/
+    const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
+
+    function manejarAbrirModalRegistro(): void {
+        setMostrarModalRegistro(true);
+    }
+
+    function manejarCerrarModalRegistro(): void {
+        setMostrarModalRegistro(false);
     }
 
     /****************************************/
@@ -273,6 +286,15 @@ export function Header({
 
                 </nav>
             )}
+
+            {/* ========== REGISTER MODAL ========== */}
+            {mostrarModalRegistro && (
+                <RegisterModal
+                    onClose={manejarCerrarModalRegistro}
+                />
+            )}
+
         </header>
     );
+
 }

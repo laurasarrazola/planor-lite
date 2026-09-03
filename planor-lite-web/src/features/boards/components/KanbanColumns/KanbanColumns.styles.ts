@@ -19,7 +19,6 @@ export const kanbanColumnStyles = [
     "bg-[#191B1F]",
     "px-[20px]",
     "py-[8px]",
-    "box-border",
     "shadow-[0_4px_36px_0_rgba(33,6,53,0.50)]",
     "shrink-0",
 ].join(" ");
@@ -81,7 +80,6 @@ export const kanbanColumnStateInfoStyles = [
 export const kanbanColumnStateNameStyles = [
     "min-w-0",
     "text-[16px]",
-    "font-normal",
     "leading-[20px]",
     "text-white",
     "break-words",
@@ -120,7 +118,6 @@ export const kanbanColumnTaskListStyles = [
     "overflow-x-hidden",
     "px-[10px]",
     "py-[10px]",
-    "box-border",
 ].join(" ");
 
 /************************************/

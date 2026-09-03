@@ -5,7 +5,6 @@ const menuItemBaseStyles = [
     "cursor-pointer",
     "border-0",
     "bg-transparent",
-    "font-normal",
     "text-[var(--color-vainilla)]",
     "transition-colors",
     "hover:bg-white/5",

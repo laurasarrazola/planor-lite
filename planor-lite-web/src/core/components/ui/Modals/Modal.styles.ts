@@ -173,7 +173,6 @@ export const modalDescriptionStyles = cva(
 
                 Medium: [
                     "text-[15px]",
-                    "font-normal",
                     "sm:text-[16px]",
                 ].join(" "),
             },

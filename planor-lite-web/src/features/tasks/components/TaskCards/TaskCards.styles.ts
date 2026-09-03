@@ -15,7 +15,6 @@ export const taskCardStyles = [
     "border-[rgba(33,6,53,0.45)]",
     "bg-[#222930]",
     "p-[10px]",
-    "box-border",
     "shadow-[2px_2px_4px_0_rgba(33,6,53,0.20)]",
     "cursor-pointer",
 ].join(" ");

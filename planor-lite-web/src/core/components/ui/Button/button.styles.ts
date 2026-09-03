@@ -27,7 +27,6 @@ export const buttonStyles = cva(
         "whitespace-nowrap", // Mantiene el texto en una sola línea por defecto.
         "overflow-hidden", // Evita desbordamientos visuales.
         "rounded-[8px]", // Todas las variantes utilizan el mismo radio de borde.
-        "font-normal", // Todos los botones usan peso Regular (400).
         "not-italic", // El texto nunca utiliza cursiva.
         "text-center", // El texto siempre permanece centrado.
         "transition-colors", // Suaviza los cambios de color.

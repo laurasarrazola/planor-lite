@@ -43,7 +43,6 @@ export const footerNavigationStyles = [
 export const footerNavigationItemStyles = [
     "whitespace-nowrap",
     "text-[clamp(13px,1.5vw,16px)]",
-    "font-normal",
     "leading-[100%]",
     "text-center",
     "text-[var(--color-vainilla)]",
@@ -68,7 +67,6 @@ export const footerBottomStyles = [
 export const footerTextStyles = [
     "whitespace-nowrap",
     "text-[clamp(12px,1.5vw,16px)]",
-    "font-normal",
     "leading-[100%]",
     "text-center",
     "text-[var(--color-vainilla)]",

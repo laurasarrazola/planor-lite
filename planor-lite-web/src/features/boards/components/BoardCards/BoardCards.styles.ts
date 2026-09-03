@@ -23,7 +23,6 @@ export const boardCardStyles = cva(
         "border-[rgba(255,249,228,0.10)]",
         "bg-[#191E22]",
         "p-[20px]",
-        "box-border",
         "shadow-[2px_2px_4px_0_rgba(33,6,53,0.20)]",
     ],
     {
@@ -61,8 +60,7 @@ export const boardCardInfoStyles = [
     "items-center",
     "justify-center",
     "gap-[16px]",
-    "py-[13px]",
-    "box-border",
+    "py-[13px]"
 ].join(" ");
 
 /****************************************/
@@ -110,8 +108,7 @@ export const boardCardTextsStyles = [
     "flex-col",
     "items-start",
     "gap-[4px]",
-    "p-[10px]",
-    "box-border",
+    "p-[10px]"
 ].join(" ");
 
 /****************************************/
@@ -121,7 +118,6 @@ export const boardCardTitleStyles = [
     "w-full",
     "min-w-0",
     "text-[24px]",
-    "font-normal",
     "leading-[29px]",
     "text-[var(--color-vainilla)]",
     "break-words",

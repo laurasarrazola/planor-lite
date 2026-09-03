@@ -25,7 +25,6 @@ export const homeCardStyles = cva(
         "border-[var(--color-obsidiana)]",
         "bg-[#272E35]",
         "p-[8px]",
-        "box-border",
         "shadow-[2px_5px_5px_0_rgba(0,0,0,0.40)]",
     ],
     {
@@ -113,7 +112,6 @@ export const homeCardDescriptionStyles = [
     "self-stretch",
     "min-w-0",
     "text-[16px]",
-    "font-normal",
     "leading-[20px]",
     "text-center",
     "text-[var(--color-vainilla)]",

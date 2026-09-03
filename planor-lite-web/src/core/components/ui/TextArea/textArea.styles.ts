@@ -18,7 +18,6 @@ export const textAreaStyles = [
     "items-start",
     "gap-[6px]",
     "p-[10px]",
-    "box-border",
 ].join(" ");
 
 
@@ -35,7 +34,6 @@ export const textAreaContentStyles = [
     "items-start",
     "gap-[8px]",
     "p-[10px]",
-    "box-border",
 ].join(" ");
 
 /************************************/
@@ -46,7 +44,6 @@ export const textAreaLabelStyles = cva(
         "w-full",
         "min-w-0",
         "text-[16px]",
-        "font-normal",
         "leading-[20px]",
         "break-words",
     ],
@@ -85,7 +82,7 @@ export const textAreaValueStyles = cva(
         "min-w-0",
         "h-[120px]",
         "resize-none",
-        "box-border",
+
         "rounded-[6px]",
         "px-[16px]",
         "py-[12px]",
@@ -95,7 +92,6 @@ export const textAreaValueStyles = cva(
         "focus:outline-none",
         "focus:ring-0",
         "text-[16px]",
-        "font-normal",
         "leading-[20px]",
         "caret-[var(--color-vainilla)]",
     ],

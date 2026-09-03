@@ -27,7 +27,6 @@ export const inputLabelStyles = cva(
     [
         "self-stretch",
         "text-[16px]",
-        "font-normal",
         "leading-[100%]"
     ],
     {
@@ -71,7 +70,6 @@ export const inputValueStyles = cva(
         "bg-transparent",
         "outline-none",
         "text-[16px]",
-        "font-normal",
         "leading-[20px]",
         "caret-[var(--color-vainilla)]",
 

@@ -252,8 +252,9 @@ export const homeHowItWorksStyles = [
     "lg:py-[96px]",
 ].join(" ");
 
-/* ---------- HEADER ---------- */
-
+/****************************************/
+/*         HOW IT WORKS HEADER          */
+/****************************************/
 export const homeHowItWorksHeaderStyles = [
     "flex",
     "w-full",
@@ -264,6 +265,9 @@ export const homeHowItWorksHeaderStyles = [
     "text-center",
 ].join(" ");
 
+/****************************************/
+/*         HOW IT WORKS EYEBROW         */
+/****************************************/
 export const homeHowItWorksEyebrowStyles = [
     "text-[12px]",
     "font-semibold",
@@ -273,6 +277,9 @@ export const homeHowItWorksEyebrowStyles = [
     "sm:text-[13px]",
 ].join(" ");
 
+/****************************************/
+/*          HOW IT WORKS TITLE          */
+/****************************************/
 export const homeHowItWorksTitleStyles = [
     "w-full",
     "text-[28px]",
@@ -283,6 +290,9 @@ export const homeHowItWorksTitleStyles = [
     "lg:text-[42px]",
 ].join(" ");
 
+/****************************************/
+/*       HOW IT WORKS DESCRIPTION       */
+/****************************************/
 export const homeHowItWorksDescriptionStyles = [
     "w-full",
     "max-w-[720px]",
@@ -294,8 +304,9 @@ export const homeHowItWorksDescriptionStyles = [
     "md:text-[18px]",
 ].join(" ");
 
-/* ---------- STEPS ---------- */
-
+/****************************************/
+/*          HOW IT WORKS STEP           */
+/****************************************/
 export const homeHowItWorksStepsStyles = [
     "flex",
     "w-full",
@@ -307,6 +318,9 @@ export const homeHowItWorksStepsStyles = [
     "md:gap-0",
 ].join(" ");
 
+/****************************************/
+/*          HOW IT WORKS STEPS          */
+/****************************************/
 export const homeHowItWorksStepStyles = [
     "relative",
     "flex",
@@ -319,8 +333,9 @@ export const homeHowItWorksStepStyles = [
     "md:px-[12px]",
 ].join(" ");
 
-/* ---------- NUMBER ---------- */
-
+/****************************************/
+/*             STEPS NUMBER             */
+/****************************************/
 export const homeHowItWorksStepNumberStyles = [
     "text-[12px]",
     "font-semibold",
@@ -329,8 +344,9 @@ export const homeHowItWorksStepNumberStyles = [
     "text-[rgba(255,249,228,0.40)]",
 ].join(" ");
 
-/* ---------- ICON ---------- */
-
+/****************************************/
+/*    HOW IT WORKS STEPS CONTAINER      */
+/****************************************/
 export const homeHowItWorksStepIconContainerStyles = [
     "flex",
     "h-[64px]",
@@ -347,6 +363,9 @@ export const homeHowItWorksStepIconContainerStyles = [
     "sm:w-[68px]",
 ].join(" ");
 
+/****************************************/
+/*       HOW IT WORKS STEPS ICON        */
+/****************************************/
 export const homeHowItWorksStepIconStyles = [
     "h-[30px]",
     "w-[30px]",
@@ -356,8 +375,9 @@ export const homeHowItWorksStepIconStyles = [
     "sm:w-[32px]",
 ].join(" ");
 
-/* ---------- CONTENT ---------- */
-
+/****************************************/
+/*       HOW IT WORKS STEPS TITLE       */
+/****************************************/
 export const homeHowItWorksStepTitleStyles = [
     "w-full",
     "text-[18px]",
@@ -366,6 +386,9 @@ export const homeHowItWorksStepTitleStyles = [
     "sm:text-[19px]",
 ].join(" ");
 
+/****************************************/
+/*    HOW IT WORKS STEPS DESCRIPTION    */
+/****************************************/
 export const homeHowItWorksStepDescriptionStyles = [
     "w-full",
     "max-w-[220px]",
@@ -375,8 +398,10 @@ export const homeHowItWorksStepDescriptionStyles = [
     "sm:text-[15px]",
 ].join(" ");
 
-/* ---------- CONNECTOR ---------- */
 
+/****************************************/
+/*    HOW IT WORKS STEPS CONNECTOR      */
+/****************************************/
 export const homeHowItWorksConnectorStyles = [
     "h-[28px]",
     "w-px",

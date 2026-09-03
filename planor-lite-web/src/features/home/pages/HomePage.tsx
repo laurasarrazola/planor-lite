@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { RegisterModal } from "@/features/auth/components/RegisterModal/RegisterModal";
 import { LoginModal } from "@/features/auth/components/LoginModal/LoginModal";
 import { Icon } from "@iconify/react";
@@ -46,11 +45,6 @@ import {
 } from "./HomePage.styles";
 import heroImage from "@/assets/hero.png";
 import type { ElementoNavegacion } from "@/core/components/layout/Header/Header.types";
-
-/**
- * Se declaran las características y beneficios fuera de la función
- * HomePage para evitar recrearlos en cada renderizado.
- */
 
 const caracteristicasInicio = [
     {
@@ -156,9 +150,7 @@ export function HomePage() {
         setMostrarModalLogin(false);
     }
 
-    /**
-     * Desplaza suavemente la vista hacia una sección de la página.
-     */
+    /* Desplaza suavemente la vista hacia una sección de la página. */
     function desplazarASeccion(idSeccion: string): void {
         document
             .getElementById(idSeccion)
@@ -167,9 +159,7 @@ export function HomePage() {
             });
     }
 
-    /**
-     * Gestiona la navegación interna del Header.
-     */
+    /* Gestiona la navegación interna del Header. */
     function manejarClicNavegacion(
         elemento: ElementoNavegacion
     ): void {
@@ -191,8 +181,8 @@ export function HomePage() {
 
     return (
         <div className={homePageStyles}>
-            {/* ========== HEADER ========== */}
 
+            {/* ========== HEADER ========== */}
             <Header
                 modo="Guest"
                 alHacerClickNavegacion={manejarClicNavegacion}
@@ -201,44 +191,36 @@ export function HomePage() {
             />
 
             {/* ========== MAIN ========== */}
-
             <main>
-                {/* ========== HERO ========== */}
 
+                {/* ========== HERO ========== */}
                 <section
                     id="inicio"
-                    className={homeHeroStyles}
-                >
+                    className={homeHeroStyles}>
                     {/* ---------- HERO CONTENT ---------- */}
 
                     <div className={homeHeroContentStyles}>
                         {/* ---------- BADGE ---------- */}
-
                         <div className={homeHeroBadgeStyles}>
                             <Icon
                                 icon="hugeicons:stars"
                                 className={homeHeroBadgeIconStyles}
-                                aria-hidden="true"
-                            />
-
+                                aria-hidden="true" />
                             <span>
                                 Tu espacio, tus tareas, tu enfoque
                             </span>
                         </div>
 
                         {/* ---------- TITLE ---------- */}
-
                         <h1 className={homeHeroTitleStyles}>
                             Organiza tu trabajo
                             <br />
-
                             <span className={homeHeroTitleAccentStyles}>
                                 Alcanza tus metas.
                             </span>
                         </h1>
 
                         {/* ---------- DESCRIPTION ---------- */}
-
                         <p className={homeHeroDescriptionStyles}>
                             Planor es tu tablero Kanban personal para
                             planificar, organizar y completar tareas de la
@@ -248,17 +230,15 @@ export function HomePage() {
                         </p>
 
                         {/* ---------- ACTIONS ---------- */}
-
                         <div className={homeHeroActionsStyles}>
-                            {/* ---------- BUTTONS ---------- */}
 
+                            {/* ---------- BUTTONS ---------- */}
                             <div className={homeHeroButtonsStyles}>
                                 <Button
                                     variant="Primary"
                                     buttonStyle="Filled"
                                     size="L"
-                                    onClick={manejarAbrirModalRegistro}
-                                >
+                                    onClick={manejarAbrirModalRegistro}>
                                     Comienza gratis
                                 </Button>
 
@@ -266,31 +246,21 @@ export function HomePage() {
                                     variant="CTA"
                                     buttonStyle="Outlined"
                                     size="L"
-                                    onClick={() =>
-                                        desplazarASeccion(
-                                            "caracteristicas"
-                                        )
-                                    }
-                                >
+                                    onClick={() => desplazarASeccion("caracteristicas")}>
                                     Conocer más
                                 </Button>
                             </div>
 
                             {/* ---------- BENEFITS ---------- */}
-
                             <div className={homeHeroBenefitsStyles}>
                                 {beneficiosHeroInicio.map((beneficio) => (
                                     <div
                                         key={beneficio.texto}
-                                        className={homeHeroBenefitStyles}
-                                    >
+                                        className={homeHeroBenefitStyles}>
                                         <Icon
                                             icon={beneficio.icono}
-                                            className={
-                                                homeHeroBenefitIconStyles
-                                            }
-                                            aria-hidden="true"
-                                        />
+                                            className={homeHeroBenefitIconStyles}
+                                            aria-hidden="true" />
 
                                         <span>
                                             {beneficio.texto}
@@ -302,13 +272,11 @@ export function HomePage() {
                     </div>
 
                     {/* ---------- HERO IMAGE ---------- */}
-
                     <div className={homeHeroImageContainerStyles}>
                         <img
                             src={heroImage}
                             className={homeHeroImageStyles}
-                            alt="Vista previa de Planor"
-                        />
+                            alt="Vista previa de Planor" />
                     </div>
                 </section>
 
@@ -317,7 +285,7 @@ export function HomePage() {
                     id="como-funciona"
                     className={homeHowItWorksStyles}>
 
-                   <div className={homeHowItWorksHeaderStyles}>
+                    <div className={homeHowItWorksHeaderStyles}>
                         <span className={homeHowItWorksEyebrowStyles}>
                             SIMPLE Y ENFOCADO
                         </span>
@@ -330,14 +298,11 @@ export function HomePage() {
                             Planor te permite organizar tus tareas, visualizar tu progreso
                             y mantener el control de tu trabajo desde un solo lugar.
                         </p>
-                   </div>
+                    </div>
 
                     <div className={homeHowItWorksStepsStyles}>
                         {pasosComoFunciona.map((paso, indice) => (
-                            <div
-                                key={paso.numero}
-                                className={homeHowItWorksStepStyles}
-                            >
+                            <div key={paso.numero} className={homeHowItWorksStepStyles}>
                                 <div className={homeHowItWorksStepNumberStyles}>
                                     {paso.numero}
                                 </div>
@@ -346,36 +311,28 @@ export function HomePage() {
                                     <Icon
                                         icon={paso.icono}
                                         className={homeHowItWorksStepIconStyles}
-                                        aria-hidden="true"
-                                    />
+                                        aria-hidden="true" />
                                 </div>
 
-                                    <h3 className={homeHowItWorksStepTitleStyles}>
-                                        {paso.titulo}
-                                    </h3>
+                                <h3 className={homeHowItWorksStepTitleStyles}>
+                                    {paso.titulo}
+                                </h3>
 
-                                    <p className={homeHowItWorksStepDescriptionStyles}>
-                                        {paso.descripcion}
-                                    </p>
+                                <p className={homeHowItWorksStepDescriptionStyles}>
+                                    {paso.descripcion}
+                                </p>
 
                                 {indice < pasosComoFunciona.length - 1 && (
                                     <div
                                         className={homeHowItWorksConnectorStyles}
-                                        aria-hidden="true"
-                                    />
-                                )}
+                                        aria-hidden="true" />)}
                             </div>
                         ))}
                     </div>
-
                 </section>
 
                 {/* ========== FEATURES ========== */}
-
-                <section
-                    id="caracteristicas"
-                    className={homeFeaturesStyles}
-                >
+                <section id="caracteristicas" className={homeFeaturesStyles}>
                     <h2 className={homeFeaturesTitleStyles}>
                         Todo lo que necesitas para mantenerte organizado
                     </h2>
@@ -387,18 +344,13 @@ export function HomePage() {
                                 accent={caracteristica.accent}
                                 icon={caracteristica.icon}
                                 title={caracteristica.title}
-                                description={caracteristica.description}
-                            />
+                                description={caracteristica.description} />
                         ))}
                     </div>
                 </section>
 
                 {/* ========== CTA ========== */}
-
-                <section
-                    id="cta"
-                    className={homeCtaStyles}
-                >
+                <section id="cta" className={homeCtaStyles}>
                     <div className={homeCtaContentStyles}>
                         <h2 className={homeCtaTitleStyles}>
                             Comienza a organizar tu trabajo hoy.
@@ -414,8 +366,7 @@ export function HomePage() {
                             variant="Primary"
                             buttonStyle="Filled"
                             size="L"
-                            onClick={manejarAbrirModalRegistro}
-                        >
+                            onClick={manejarAbrirModalRegistro}>
                             Comienza gratis
                         </Button>
                     </div>
@@ -423,23 +374,16 @@ export function HomePage() {
             </main>
 
             {/* ========== REGISTER MODAL ========== */}
-
             {mostrarModalRegistro && (
-                <RegisterModal
-                    onClose={manejarCerrarModalRegistro}
-                />
+                <RegisterModal onClose={manejarCerrarModalRegistro} />
             )}
 
             {/* ========== LOGIN MODAL ========== */}
-
             {mostrarModalLogin && (
-                <LoginModal
-                    onClose={manejarCerrarModalLogin}
-                />
+                <LoginModal onClose={manejarCerrarModalLogin} />
             )}
 
             {/* ========== FOOTER ========== */}
-
             <Footer />
         </div>
     );

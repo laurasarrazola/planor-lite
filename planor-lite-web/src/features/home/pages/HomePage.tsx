@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { RegisterModal } from "@/features/auth/components/RegisterModal/RegisterModal";
+import { LoginModal } from "@/features/auth/components/LoginModal/LoginModal";
 import { Icon } from "@iconify/react";
 import { Header } from "@/core/components/layout/Header/Header";
 import { Footer } from "@/core/components/layout/Footer/Footer";
@@ -88,6 +89,7 @@ const beneficiosHeroInicio = [
 // `HomePage` es el componente principal de inicio. Renderiza el encabezado, Hero, características, llamada a la acción y pie de página, además de gestionar la navegación hacia las distintas secciones mediante desplazamiento suave.
 export function HomePage() {
     const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
+    const [mostrarModalLogin, setMostrarModalLogin] = useState(false);
 
     function manejarAbrirModalRegistro(): void {
         setMostrarModalRegistro(true);
@@ -95,6 +97,14 @@ export function HomePage() {
 
     function manejarCerrarModalRegistro(): void {
         setMostrarModalRegistro(false);
+    }
+
+    function manejarAbrirModalLogin(): void {
+        setMostrarModalLogin(true);
+    }
+
+    function manejarCerrarModalLogin(): void {
+        setMostrarModalLogin(false);
     }
 
     /************************************/
@@ -129,7 +139,9 @@ export function HomePage() {
             {/* ========== HEADER ========== */}
             <Header
                 modo="Guest"
-                alHacerClickNavegacion={manejarClicNavegacion} />
+                alHacerClickNavegacion={manejarClicNavegacion}
+                alIniciarSesion={manejarAbrirModalLogin}
+                alRegistrar={manejarAbrirModalRegistro} />
 
             {/* ========== MAIN ========== */}
             <main className={homeMainStyles}>
@@ -278,6 +290,13 @@ export function HomePage() {
             {mostrarModalRegistro && (
                 <RegisterModal
                     onClose={manejarCerrarModalRegistro}
+                />
+            )}
+
+            {/* ========== LOGIN MODAL ========== */}
+            {mostrarModalLogin && (
+                <LoginModal
+                    onClose={manejarCerrarModalLogin}
                 />
             )}
 

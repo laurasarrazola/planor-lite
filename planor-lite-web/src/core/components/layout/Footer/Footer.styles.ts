@@ -42,7 +42,6 @@ export const footerNavigationStyles = [
 /* ========== NAVIGATION ITEM ========== */
 export const footerNavigationItemStyles = [
     "whitespace-nowrap",
-    "font-sans",
     "text-[clamp(13px,1.5vw,16px)]",
     "font-normal",
     "leading-[100%]",
@@ -68,7 +67,6 @@ export const footerBottomStyles = [
 /* ========== FOOTER TEXT ========== */
 export const footerTextStyles = [
     "whitespace-nowrap",
-    "font-sans",
     "text-[clamp(12px,1.5vw,16px)]",
     "font-normal",
     "leading-[100%]",

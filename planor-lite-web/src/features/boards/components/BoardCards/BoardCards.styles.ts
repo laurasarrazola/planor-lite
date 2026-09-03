@@ -120,7 +120,6 @@ export const boardCardTextsStyles = [
 export const boardCardTitleStyles = [
     "w-full",
     "min-w-0",
-    "font-sans",
     "text-[24px]",
     "font-normal",
     "leading-[29px]",
@@ -134,7 +133,6 @@ export const boardCardTitleStyles = [
 export const boardCardDescriptionStyles = [
     "w-full",
     "min-w-0",
-    "font-sans",
     "text-[14px]",
     "font-light",
     "leading-[20px]",

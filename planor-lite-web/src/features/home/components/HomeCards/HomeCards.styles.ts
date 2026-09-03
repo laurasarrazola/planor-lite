@@ -95,7 +95,6 @@ export const homeCardTextContentStyles = [
 export const homeCardTitleStyles = [
     "w-full",
     "min-w-0",
-    "font-sans",
     "text-[20px]",
     "leading-[24px]",
     "text-center",
@@ -113,7 +112,6 @@ export const homeCardTitleStyles = [
 export const homeCardDescriptionStyles = [
     "self-stretch",
     "min-w-0",
-    "font-sans",
     "text-[16px]",
     "font-normal",
     "leading-[20px]",

@@ -1,24 +1,9 @@
 export const homePageStyles = [
     "flex",
     "min-h-screen",
-    "w-full",
     "min-w-0",
     "flex-col",
-    "items-stretch",
     "overflow-x-clip",
-    "bg-[#16191C]",
-    "text-[var(--color-vainilla)]",
-].join(" ");
-
-/****************************************/
-/*              MAIN                    */
-/****************************************/
-export const homeMainStyles = [
-    "flex",
-    "w-full",
-    "min-w-0",
-    "flex-col",
-    "items-center",
 ].join(" ");
 
 /****************************************/
@@ -28,14 +13,15 @@ export const homeHeroStyles = [
     "flex",
     "w-full",
     "min-w-0",
+    "min-h-[calc(100vh-70px)]",
     "flex-col",
     "items-center",
+    "justify-center",
     "gap-[36px]",
     "border-b",
     "border-[rgba(255,255,255,0.08)]",
     "px-[16px]",
     "py-[40px]",
-    "box-border",
     "sm:gap-[40px]",
     "sm:px-[24px]",
     "sm:py-[45px]",
@@ -46,6 +32,7 @@ export const homeHeroStyles = [
     "lg:items-center",
     "lg:gap-[56px]",
     "lg:px-[50px]",
+    "lg:py-[40px]",
     "xl:gap-[72px]",
 ].join(" ");
 
@@ -59,7 +46,6 @@ export const homeHeroContentStyles = [
     "max-w-[670px]",
     "flex-col",
     "gap-[28px]",
-    "box-border",
     "sm:gap-[30px]",
     "lg:flex-1",
     "lg:gap-[32px]",
@@ -82,10 +68,7 @@ export const homeHeroBadgeStyles = [
     "bg-[rgba(66,13,75,0.20)]",
     "px-[14px]",
     "py-[9px]",
-    "box-border",
-    "font-sans",
     "text-[13px]",
-    "font-normal",
     "leading-[100%]",
     "text-[#C38BC5]",
     "shadow-[0_1px_9px_0_rgba(33,6,53,0.50)]",
@@ -117,11 +100,9 @@ export const homeHeroTitleStyles = [
     "w-full",
     "max-w-[670px]",
     "min-w-0",
-    "font-sans",
     "text-[40px]",
     "font-bold",
     "leading-[110%]",
-    "break-words",
     "sm:text-[46px]",
     "md:text-[52px]",
     "lg:text-[56px]",
@@ -142,12 +123,9 @@ export const homeHeroDescriptionStyles = [
     "w-full",
     "max-w-[670px]",
     "min-w-0",
-    "font-sans",
     "text-[18px]",
-    "font-normal",
     "leading-[130%]",
     "tracking-[0.02em]",
-    "break-words",
     "sm:text-[20px]",
     "sm:tracking-[0.03em]",
     "md:text-[22px]",
@@ -179,7 +157,6 @@ export const homeHeroButtonsStyles = [
     "items-stretch",
     "gap-[12px]",
     "py-[10px]",
-    "box-border",
     "sm:flex-row",
     "sm:flex-wrap",
     "sm:items-center",
@@ -200,7 +177,6 @@ export const homeHeroBenefitsStyles = [
     "gap-x-[16px]",
     "gap-y-[12px]",
     "py-[10px]",
-    "box-border",
     "sm:justify-start",
     "sm:gap-x-[24px]",
 ].join(" ");
@@ -224,7 +200,6 @@ export const homeHeroBenefitIconStyles = [
     "h-[24px]",
     "w-[24px]",
     "shrink-0",
-    "text-[var(--color-vainilla)]",
 ].join(" ");
 
 /****************************************/
@@ -237,7 +212,6 @@ export const homeHeroImageContainerStyles = [
     "max-w-[620px]",
     "items-center",
     "justify-center",
-    "box-border",
     "lg:flex-1",
     "lg:max-w-none",
     "lg:self-stretch",
@@ -257,6 +231,165 @@ export const homeHeroImageStyles = [
 ].join(" ");
 
 /****************************************/
+/*            HOW IT WORKS              */
+/****************************************/
+export const homeHowItWorksStyles = [
+    "flex",
+    "w-full",
+    "flex-col",
+    "items-center",
+    "gap-[44px]",
+    "border-b",
+    "border-[rgba(255,255,255,0.08)]",
+    "px-[16px]",
+    "py-[64px]",
+    "sm:gap-[52px]",
+    "sm:px-[24px]",
+    "sm:py-[72px]",
+    "md:px-[40px]",
+    "md:py-[84px]",
+    "lg:px-[50px]",
+    "lg:py-[96px]",
+].join(" ");
+
+/* ---------- HEADER ---------- */
+
+export const homeHowItWorksHeaderStyles = [
+    "flex",
+    "w-full",
+    "max-w-[850px]",
+    "flex-col",
+    "items-center",
+    "gap-[12px]",
+    "text-center",
+].join(" ");
+
+export const homeHowItWorksEyebrowStyles = [
+    "text-[12px]",
+    "font-semibold",
+    "leading-[120%]",
+    "tracking-[0.12em]",
+    "text-[var(--color-zafiro-lavanda)]",
+    "sm:text-[13px]",
+].join(" ");
+
+export const homeHowItWorksTitleStyles = [
+    "w-full",
+    "text-[28px]",
+    "font-semibold",
+    "leading-[115%]",
+    "sm:text-[32px]",
+    "md:text-[38px]",
+    "lg:text-[42px]",
+].join(" ");
+
+export const homeHowItWorksDescriptionStyles = [
+    "w-full",
+    "max-w-[720px]",
+    "text-[16px]",
+    "leading-[145%]",
+    "tracking-[0.01em]",
+    "text-[rgba(255,249,228,0.65)]",
+    "sm:text-[17px]",
+    "md:text-[18px]",
+].join(" ");
+
+/* ---------- STEPS ---------- */
+
+export const homeHowItWorksStepsStyles = [
+    "flex",
+    "w-full",
+    "max-w-[1320px]",
+    "flex-col",
+    "items-stretch",
+    "gap-[28px]",
+    "md:flex-row",
+    "md:gap-0",
+].join(" ");
+
+export const homeHowItWorksStepStyles = [
+    "relative",
+    "flex",
+    "w-full",
+    "flex-col",
+    "items-center",
+    "gap-[12px]",
+    "text-center",
+    "md:flex-1",
+    "md:px-[12px]",
+].join(" ");
+
+/* ---------- NUMBER ---------- */
+
+export const homeHowItWorksStepNumberStyles = [
+    "text-[12px]",
+    "font-semibold",
+    "leading-[100%]",
+    "tracking-[0.08em]",
+    "text-[rgba(255,249,228,0.40)]",
+].join(" ");
+
+/* ---------- ICON ---------- */
+
+export const homeHowItWorksStepIconContainerStyles = [
+    "flex",
+    "h-[64px]",
+    "w-[64px]",
+    "shrink-0",
+    "items-center",
+    "justify-center",
+    "rounded-full",
+    "border",
+    "border-[rgba(98,100,188,0.45)]",
+    "bg-[rgba(98,100,188,0.10)]",
+    "shadow-[0_4px_18px_0_rgba(33,6,53,0.35)]",
+    "sm:h-[68px]",
+    "sm:w-[68px]",
+].join(" ");
+
+export const homeHowItWorksStepIconStyles = [
+    "h-[30px]",
+    "w-[30px]",
+    "shrink-0",
+    "text-[var(--color-zafiro-lavanda)]",
+    "sm:h-[32px]",
+    "sm:w-[32px]",
+].join(" ");
+
+/* ---------- CONTENT ---------- */
+
+export const homeHowItWorksStepTitleStyles = [
+    "w-full",
+    "text-[18px]",
+    "font-semibold",
+    "leading-[120%]",
+    "sm:text-[19px]",
+].join(" ");
+
+export const homeHowItWorksStepDescriptionStyles = [
+    "w-full",
+    "max-w-[220px]",
+    "text-[14px]",
+    "leading-[145%]",
+    "text-[rgba(255,249,228,0.55)]",
+    "sm:text-[15px]",
+].join(" ");
+
+/* ---------- CONNECTOR ---------- */
+
+export const homeHowItWorksConnectorStyles = [
+    "h-[28px]",
+    "w-px",
+    "bg-[rgba(98,100,188,0.35)]",
+    "md:absolute",
+    "md:left-[calc(50%+34px)]",
+    "md:right-[calc(-50%+34px)]",
+    "md:top-[92px]",
+    "md:h-px",
+    "md:w-auto",
+].join(" ");
+
+/****************************************/
 /*               FEATURES               */
 /****************************************/
 export const homeFeaturesStyles = [
@@ -270,7 +403,6 @@ export const homeFeaturesStyles = [
     "border-[rgba(255,255,255,0.08)]",
     "px-[16px]",
     "py-[50px]",
-    "box-border",
     "sm:px-[24px]",
     "md:gap-[32px]",
     "md:px-[40px]",
@@ -286,12 +418,9 @@ export const homeFeaturesTitleStyles = [
     "max-w-[900px]",
     "min-w-0",
     "text-center",
-    "font-sans",
     "text-[24px]",
     "font-semibold",
     "leading-[120%]",
-    "break-words",
-    "text-[var(--color-vainilla)]",
     "sm:text-[28px]",
     "md:text-[34px]",
 ].join(" ");
@@ -324,7 +453,6 @@ export const homeCtaStyles = [
     "justify-center",
     "px-[16px]",
     "py-[50px]",
-    "box-border",
     "sm:px-[24px]",
     "md:px-[40px]",
     "md:py-[60px]",
@@ -352,11 +480,9 @@ export const homeCtaContentStyles = [
 export const homeCtaTitleStyles = [
     "w-full",
     "min-w-0",
-    "font-sans",
     "text-[28px]",
     "font-semibold",
     "leading-[110%]",
-    "break-words",
     "text-[var(--color-amatista)]",
     "sm:text-[32px]",
     "md:text-[36px]",
@@ -369,12 +495,9 @@ export const homeCtaTitleStyles = [
 export const homeCtaDescriptionStyles = [
     "w-full",
     "min-w-0",
-    "font-sans",
     "text-[18px]",
-    "font-normal",
     "leading-[125%]",
     "tracking-[0.02em]",
-    "break-words",
     "text-white",
     "sm:text-[20px]",
     "sm:tracking-[0.03em]",

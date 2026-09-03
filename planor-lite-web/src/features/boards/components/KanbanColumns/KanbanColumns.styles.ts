@@ -80,7 +80,6 @@ export const kanbanColumnStateInfoStyles = [
 /************************************/
 export const kanbanColumnStateNameStyles = [
     "min-w-0",
-    "font-sans",
     "text-[16px]",
     "font-normal",
     "leading-[20px]",

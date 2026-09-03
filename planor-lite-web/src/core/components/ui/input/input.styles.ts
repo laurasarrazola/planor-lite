@@ -26,7 +26,6 @@ export const inputStyles = [
 export const inputLabelStyles = cva(
     [
         "self-stretch",
-        "font-sans",
         "text-[16px]",
         "font-normal",
         "leading-[100%]"
@@ -71,7 +70,6 @@ export const inputValueStyles = cva(
         "py-[10px]",
         "bg-transparent",
         "outline-none",
-        "font-sans",
         "text-[16px]",
         "font-normal",
         "leading-[20px]",

@@ -52,7 +52,6 @@ export const taskCardTitleStyles = [
     "w-full",
     "min-w-0",
     "truncate",
-    "font-sans",
     "text-[16px]",
     "leading-[18px]",
     "text-[var(--color-vainilla)]",
@@ -66,7 +65,6 @@ export const taskCardDescriptionStyles = [
     "min-w-0",
     "line-clamp-2",
     "break-words",
-    "font-sans",
     "text-[12px]",
     "leading-[18px]",
     "text-[var(--color-vainilla)]",
@@ -133,7 +131,6 @@ export const taskCardDueDateIconStyles = [
 /************************************/
 export const taskCardDueDateTextStyles = [
     "min-w-0",
-    "font-sans",
     "text-[12px]",
     "font-light",
     "leading-[16px]",

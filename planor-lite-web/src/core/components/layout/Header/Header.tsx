@@ -71,8 +71,8 @@ export function Header({
     } else {
         elementosNavegacion = [
             { label: "Inicio" },
-            { label: "Características" },
             { label: "Cómo funciona" },
+            { label: "Características" },
         ];
     }
 

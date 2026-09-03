@@ -127,7 +127,6 @@ export const modalHeaderStyles = cva(
 /************************************/
 export const modalTitleStyles = cva(
     [
-        "font-sans",
         "text-[var(--modal-title)]",
         "leading-[1.2]",
         "break-words",
@@ -158,7 +157,6 @@ export const modalTitleStyles = cva(
 /************************************/
 export const modalDescriptionStyles = cva(
     [
-        "font-sans",
         "text-[var(--modal-description)]",
         "leading-[1.4]",
         "break-words",

@@ -45,7 +45,6 @@ export const textAreaLabelStyles = cva(
     [
         "w-full",
         "min-w-0",
-        "font-sans",
         "text-[16px]",
         "font-normal",
         "leading-[20px]",
@@ -95,7 +94,6 @@ export const textAreaValueStyles = cva(
         "ring-0",
         "focus:outline-none",
         "focus:ring-0",
-        "font-sans",
         "text-[16px]",
         "font-normal",
         "leading-[20px]",
@@ -150,7 +148,6 @@ export const textAreaHelperTextStyles = cva(
     [
         "w-full",
         "min-w-0",
-        "font-sans",
         "text-[14px]",
         "font-light",
         "leading-[20px]",

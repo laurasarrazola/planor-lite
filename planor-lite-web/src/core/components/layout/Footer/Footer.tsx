@@ -22,14 +22,6 @@ export function Footer() {
 
                 {/* ========== FOOTER NAVIGATION ========== */}
                 <nav className={footerNavigationStyles} aria-label="Navegación del footer">
-                    <a href="#caracteristicas" className={footerNavigationItemStyles}>
-                        Características
-                    </a>
-
-                    <a href="#como-funciona" className={footerNavigationItemStyles}>
-                        Cómo funciona
-                    </a>
-
                     <a href="#contacto" className={footerNavigationItemStyles}>
                         Contacto
                     </a>

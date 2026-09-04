@@ -66,7 +66,7 @@ export const footerBottomStyles = [
 /* ========== FOOTER TEXT ========== */
 export const footerTextStyles = [
     "whitespace-nowrap",
-    "text-[clamp(12px,1.5vw,16px)]",
+    "text-[clamp(6px,1.5vw,10px)]",
     "leading-[100%]",
     "text-center",
     "text-[var(--color-vainilla)]",

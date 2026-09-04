@@ -22,6 +22,7 @@ export const homeHeroStyles = [
     "border-[rgba(255,255,255,0.08)]",
     "px-[16px]",
     "py-[40px]",
+    "scroll-mt-[70px]",
     "sm:gap-[40px]",
     "sm:px-[24px]",
     "sm:py-[45px]",
@@ -243,6 +244,7 @@ export const homeHowItWorksStyles = [
     "border-[rgba(255,255,255,0.08)]",
     "px-[16px]",
     "py-[64px]",
+    "scroll-mt-[150px]",
     "sm:gap-[52px]",
     "sm:px-[24px]",
     "sm:py-[72px]",
@@ -428,6 +430,7 @@ export const homeFeaturesStyles = [
     "border-[rgba(255,255,255,0.08)]",
     "px-[16px]",
     "py-[50px]",
+   "scroll-mt-[50px]",
     "sm:px-[24px]",
     "md:gap-[32px]",
     "md:px-[40px]",
@@ -440,7 +443,7 @@ export const homeFeaturesStyles = [
 /****************************************/
 export const homeFeaturesTitleStyles = [
     "w-full",
-    "max-w-[900px]",
+    "max-w-[1100px]",
     "min-w-0",
     "text-center",
     "text-[24px]",

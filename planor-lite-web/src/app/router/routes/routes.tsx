@@ -6,6 +6,7 @@ import App from "@/app/App";
 import { LoginPage } from "@/features/auth";
 import { HomePage } from "@/features/home";
 import { Pruebas } from "@/features/pruebas";
+import { BoardsPage } from "@/features/boards";
 
 
 export const router = createBrowserRouter([
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: "/pruebas",
         element: <Pruebas />
+      },
+      {
+        path: "/boards",
+        element: <BoardsPage />
       }
     ]
   }

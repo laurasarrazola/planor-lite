@@ -14,10 +14,10 @@ export interface RequestOptions {
 
 // La interfaz `ErrorResponse` modela la estructura de las respuestas de error de la API.
 export interface ErrorResponse {
-  //mensaje de error legible para mostrar al usuario.
-  msg?: string
-  errorId?: string
-  //permite campos adicionales (por ejemplo errors, code, details).
+    statusCode?: number;
+    message?: string | string[];
+    error?: string;
+    errorId?: string;
   [key: string]: unknown
 }
 

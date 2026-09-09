@@ -9,11 +9,18 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 // La función bootstrap() es la función principal que se ejecuta al iniciar la aplicación.
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   // Crea una instancia de la aplicación Nest utilizando el módulo raíz AppModule (automaticamente generado por Nest CLI).
   const app = await NestFactory.create(AppModule, {
     logger: ['log', 'debug', 'error', 'warn', 'verbose'],
   });
+  app.setGlobalPrefix('api/v1');
+
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    credentials: false,
+  });
+
   // ValidationPipe globalmente para validar los datos de entrada en las solicitudes HTTP. whitelist: true permite solo los campos definidos en los DTOs, forbidNonWhitelisted: true rechaza los campos no definidos, y transform: true transforma automáticamente los datos de entrada a los tipos definidos en los DTOs.
   app.useGlobalPipes(
     new ValidationPipe({

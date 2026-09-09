@@ -142,6 +142,11 @@ export function HomePage() {
         setMostrarModalRegistro(false);
     }
 
+    function manejarRegistroExitoso(): void {
+        setMostrarModalRegistro(false);
+        setMostrarModalLogin(true);
+    }
+
     function manejarAbrirModalLogin(): void {
         setMostrarModalLogin(true);
     }
@@ -375,7 +380,10 @@ export function HomePage() {
 
             {/* ========== REGISTER MODAL ========== */}
             {mostrarModalRegistro && (
-                <RegisterModal onClose={manejarCerrarModalRegistro} />
+                <RegisterModal
+                    onClose={manejarCerrarModalRegistro}
+                    onRegistered={manejarRegistroExitoso}
+                />
             )}
 
             {/* ========== LOGIN MODAL ========== */}

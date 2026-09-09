@@ -139,11 +139,18 @@ export class UsuariosService {
       'La contraseña y la confirmación no coinciden',
     );
 
-    // Hashea la contraseña
-    const hashed = await bcrypt.hash(crearUsuarioDto.contrasena, 10);
+    // Extraer los datos del DTO y crear un nuevo usuario en la base de datos.
+    const { nombreUsuario, apellidoUsuario, email, contrasena } =
+      crearUsuarioDto;
 
-    const usuarioNuevo = this.usuariosRepository.create(crearUsuarioDto);
-    usuarioNuevo.contrasena = hashed;
+    const hashed = await bcrypt.hash(contrasena, 10);
+
+    const usuarioNuevo = this.usuariosRepository.create({
+      nombreUsuario,
+      apellidoUsuario,
+      email,
+      contrasena: hashed,
+    });
 
     // Guarda el nuevo usuario en la base de datos con el método save() de TypeORM.
     const usuarioGuardado = await this.usuariosRepository.save(usuarioNuevo);

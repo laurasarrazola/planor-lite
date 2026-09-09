@@ -8,7 +8,7 @@ class RequestService {
   private readonly DEFAULT_OPTIONS: RequestOptions = {
     showLoader: true, // por defecto mostrar un loader en la UI
     showToast: true, // por defecto mostrar notificaciones tras la respuesta
-    withCredentials: true, // enviar cookies (útil para cookies HTTP-only)
+    withCredentials: false, // por defecto no enviar cookies ni credenciales
     headers: {
       'Content-Type': 'application/json', // header por defecto para APIs REST JSON
     },

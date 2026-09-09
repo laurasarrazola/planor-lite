@@ -49,19 +49,7 @@ export class UsuariosController {
     status: status.BAD_REQUEST,
     description: 'El usuario no pudo ser creado',
   })
-  @ApiConsumes('application/x-www-form-urlencoded')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        nombreUsuario: { type: 'string', example: '' },
-        apellidoUsuario: { type: 'string', example: '' },
-        email: { type: 'string', format: 'email', example: '' },
-        contrasena: { type: 'string', example: '' },
-        confirmarContrasena: { type: 'string', example: '' },
-      },
-    },
-  })
+  @ApiBody({ type: CrearUsuarioDto })
   @Post()
   async crearUsuario(
     @Body() crearUsuarioDto: CrearUsuarioDto,

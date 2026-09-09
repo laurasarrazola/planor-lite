@@ -8,10 +8,20 @@
 export const API_ENDPOINTS = {
   // Endpoints relacionados con la autenticación y gestión de cuentas
   AUTH: {
-    LOGIN: 'api/accounts/web-login/',
-    REGISTER: 'api/accounts/register/',
-    LOGOUT: 'api/accounts/logout/',
-    PROFILE: 'api/accounts/profile/',
+    LOGIN: '/auth/login',
+    LOGOUT: '/auth/logout',
   },
-} as const
 
+  USERS: {
+    REGISTER: '/usuarios',
+    PROFILE: '/usuarios/perfil',
+  },
+
+  BOARDS: {
+    // posteriormente
+  },
+
+  TASKS: {
+    // posteriormente
+  },
+} as const;

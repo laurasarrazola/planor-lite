@@ -41,21 +41,21 @@ export function RegisterModal({
                 onSubmit={manejarEnvio}>
                 <Input
                     label="Ingresa tu nombre"
-                    name="nombre"
+                    name="nombreUsuario"
                     type="text"
                     autoComplete="given-name"
                     required/>
 
                 <Input
                     label="Ingresa tu apellido"
-                    name="apellido"
+                    name="apellidoUsuario"
                     type="text"
                     autoComplete="family-name"
                     required/>
 
                 <Input
                     label="Correo electrónico"
-                    name="correo"
+                    name="email"
                     type="email"
                     autoComplete="email"
                     required/>

@@ -14,7 +14,7 @@ export class CrearTableroDto {
     description: 'Nombre del tablero',
     required: true,
     minLength: 1,
-    maxLength: 150,
+    maxLength: 60,
   })
   @Transform(({ value }) => {
     if (typeof value === 'string') {
@@ -23,7 +23,7 @@ export class CrearTableroDto {
   })
   @IsString()
   @IsNotEmpty()
-  @Length(1, 150)
+  @Length(1, 60)
   nombreTablero!: string;
 
   /* Validación de la descripción del tablero */

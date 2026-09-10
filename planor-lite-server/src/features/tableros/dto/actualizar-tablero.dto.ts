@@ -8,7 +8,7 @@ export class ActualizarTableroDto {
     description: 'Nombre del tablero',
     required: false,
     minLength: 1,
-    maxLength: 150,
+    maxLength: 60,
   })
   @Transform(({ value }) => {
     if (typeof value !== 'string') return undefined;
@@ -18,7 +18,7 @@ export class ActualizarTableroDto {
   })
   @IsString()
   @IsOptional()
-  @Length(1, 150)
+  @Length(1, 60)
   nombreTablero?: string;
 
   /* Validación de la descripción del tablero */

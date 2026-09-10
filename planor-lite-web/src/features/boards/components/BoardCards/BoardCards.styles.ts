@@ -11,13 +11,14 @@ import { cva } from "class-variance-authority";
 export const boardCardStyles = cva(
     [
         "flex",
+        "h-full",
         "w-full",
-        "max-w-[320px]",
+        "max-w-none",
         "min-w-0",
-        "min-h-[204px]",
         "flex-col",
         "items-start",
         "gap-[20px]",
+        "overflow-hidden",
         "rounded-[20px]",
         "border",
         "border-[rgba(255,249,228,0.10)]",
@@ -42,6 +43,8 @@ export const boardCardHeaderStyles = [
     "flex",
     "w-full",
     "min-w-0",
+    "min-h-0",
+    "flex-1",
     "items-start",
     "justify-between",
     "gap-[8px]",
@@ -54,13 +57,9 @@ export const boardCardInfoStyles = [
     "flex",
     "w-full",
     "min-w-0",
-    "max-w-full",
     "flex-1",
-    "min-h-[112px]",
-    "items-center",
-    "justify-center",
+    "items-start",
     "gap-[16px]",
-    "py-[13px]"
 ].join(" ");
 
 /****************************************/
@@ -101,14 +100,12 @@ export const boardCardIconStyles = [
 /****************************************/
 export const boardCardTextsStyles = [
     "flex",
-    "w-full",
     "min-w-0",
-    "max-w-full",
     "flex-1",
     "flex-col",
     "items-start",
     "gap-[4px]",
-    "p-[10px]"
+    "overflow-hidden",
 ].join(" ");
 
 /****************************************/
@@ -129,11 +126,13 @@ export const boardCardTitleStyles = [
 export const boardCardDescriptionStyles = [
     "w-full",
     "min-w-0",
+    "overflow-hidden",
     "text-[14px]",
     "font-light",
     "leading-[20px]",
     "text-[var(--color-vainilla)]",
     "break-words",
+    "line-clamp-3",
 ].join(" ");
 
 /****************************************/

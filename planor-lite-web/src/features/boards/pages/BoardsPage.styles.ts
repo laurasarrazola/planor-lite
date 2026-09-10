@@ -73,7 +73,8 @@ export const boardsSectionStyles = [
 export const boardsGridStyles = [
     "grid",
     "w-full",
-    "grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))]",
-    "justify-items-center",
+    "grid-cols-1",
     "gap-[24px]",
+    "md:grid-cols-2",
+    "xl:grid-cols-4",
 ].join(" ");

@@ -18,7 +18,7 @@ export const API_ENDPOINTS = {
   },
 
   BOARDS: {
-    // posteriormente
+     MY_BOARDS: '/tableros/usuario',
   },
 
   TASKS: {

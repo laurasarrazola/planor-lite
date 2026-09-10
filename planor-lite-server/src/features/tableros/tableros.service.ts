@@ -115,7 +115,10 @@ export class TablerosService {
    */
   async obtenerTablerosUsuario(idPropietario: number): Promise<Tableros[]> {
     return await this.tablerosRepository.find({
-      where: { propietario: { idUsuario: idPropietario } },
+      where: {
+        propietario: { idUsuario: idPropietario },
+        tableroActivo: true,
+      },
       relations: ['propietario'],
     });
   }

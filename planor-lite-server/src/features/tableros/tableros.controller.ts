@@ -101,6 +101,7 @@ export class TablerosController {
     description: 'Error al obtener los tableros',
   })
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get('usuario')
   async obtenerTablerosUsuario(
     @GetUser() usuario: Usuarios,

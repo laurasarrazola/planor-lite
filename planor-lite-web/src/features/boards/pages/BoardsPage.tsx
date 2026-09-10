@@ -12,8 +12,37 @@ import {
     boardsPageTitleStyles,
     boardsSectionStyles,
 } from "./BoardsPage.styles";
+import { useEffect, useState } from "react";
+import { boardService } from "../services";
+import { BoardCard } from "../components/BoardCards/BoardCards";
+import type { Board } from "../types/board.types";
 
 export function BoardsPage() {
+    const [tableros, establecerTableros] = useState<Board[]>([]);
+    const [cargando, establecerCargando] = useState(true);
+    const [error, establecerError] = useState<string | null>(null);
+
+    useEffect(() => {
+        async function cargarTableros(): Promise<void> {
+            try {
+                establecerCargando(true);
+                establecerError(null);
+
+                const datos = await boardService.obtenerTableros();
+
+                establecerTableros(datos);
+            } catch {
+                establecerError(
+                    "No fue posible cargar tus tableros. Intenta nuevamente."
+                );
+            } finally {
+                establecerCargando(false);
+            }
+        }
+
+        cargarTableros();
+    }, []);
+
     return (
         <div className={boardsPageStyles}>
             <Header modo="Authenticated" />
@@ -42,7 +71,44 @@ export function BoardsPage() {
 
                 <section className={boardsSectionStyles}>
                     <div className={boardsGridStyles}>
-                        {/* BoardCards */}
+                        {cargando && (
+                            <p className="text-(--color-vainilla)">
+                                Cargando tus tableros...
+                            </p>
+                        )}
+
+                        {!cargando && error && (
+                            <p
+                                className="text-(--color-vainilla)"
+                                role="alert"
+                            >
+                                {error}
+                            </p>
+                        )}
+
+                        {!cargando && !error && tableros.length === 0 && (
+                            <p className="text-(--color-vainilla)">
+                                Aún no tienes tableros creados.
+                            </p>
+                        )}
+
+                        {!cargando &&
+                            !error &&
+                            tableros.map((tablero, indice) => (
+                                <BoardCard
+                                    key={tablero.idTablero}
+                                    accent={
+                                        indice % 2 === 0
+                                            ? "Amatista"
+                                            : "ZafiroLavanda"
+                                    }
+                                    title={tablero.nombreTablero}
+                                    description={
+                                        tablero.descripcionTablero ??
+                                        "Sin descripción."
+                                    }
+                                />
+                            ))}
                     </div>
                 </section>
             </main>

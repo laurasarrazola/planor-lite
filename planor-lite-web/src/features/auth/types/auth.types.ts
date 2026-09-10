@@ -17,3 +17,14 @@ export interface RegistrarUsuarioResponse {
   usuarioActivo: boolean;
   rolSistema: string;
 }
+
+export interface IniciarSesionRequest {
+  email: string;
+  contrasena: string;
+}
+
+export interface IniciarSesionResponse {
+  token: string;
+  email: string;
+  idUsuario: number;
+}

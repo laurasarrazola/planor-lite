@@ -18,7 +18,7 @@ export const AuthGuard = () => {
 
   // Si no está autenticado, redirige al login y reemplaza la entrada en el historial
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/home" replace />
   }
 
   // Si está autenticado, renderiza la ruta hija correspondiente (Outlet representa el <Route> hijo)

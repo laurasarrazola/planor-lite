@@ -2,10 +2,15 @@
 import { storageService } from "./storage.service"
 import { STORAGE_KEYS } from '@/core/constants'
 
-// Modelo simple de usuario usado por este servicio
 export interface User {
   email: string
   name: string
+}
+
+export interface AuthSession {
+  token: string
+  email: string
+  idUsuario: number
 }
 
 class AuthStorageService {
@@ -29,7 +34,17 @@ class AuthStorageService {
     return storageService.get<User>(STORAGE_KEYS.USER)
   }
 
-  // Guarda la estructura del menú (puede ser cualquier tipo)
+  // Guarda el token JWT de la sesión actual
+  setToken(token: string): void {
+    storageService.set(STORAGE_KEYS.TOKEN, token)
+  }
+
+  // Recupera el token JWT de la sesión actual
+  getToken(): string | null {
+    return storageService.get<string>(STORAGE_KEYS.TOKEN)
+  }
+
+  // Guarda la estructura del menú
   setMenu(menu: unknown): void {
     storageService.set(STORAGE_KEYS.MENU, menu)
   }
@@ -44,24 +59,30 @@ class AuthStorageService {
     return this.getIsAuth()
   }
 
-  // Borra todos los datos de autenticación (logout local)
+  // Borra todos los datos de autenticación
   clearAuth(): void {
     storageService.remove(STORAGE_KEYS.IS_AUTH)
+    storageService.remove(STORAGE_KEYS.TOKEN)
     storageService.remove(STORAGE_KEYS.USER)
     storageService.remove(STORAGE_KEYS.MENU)
   }
 
-  // Helper para establecer toda la sesión en una sola llamada
-  setSession(isAuth: boolean, user: User, menu: unknown): void {
+  // Guarda el token y marca la sesión como autenticada
+  setSession(token: string, isAuth: boolean): void {
+    this.setToken(token)
     this.setIsAuth(isAuth)
-    this.setUser(user)
-    this.setMenu(menu)
   }
 
-  // Devuelve el estado completo de la sesión (isAuth, user, menu)
-  getSession(): { isAuth: boolean; user: User | null; menu: unknown | null } {
+  // Devuelve el estado completo de la sesión
+  getSession(): {
+    isAuth: boolean
+    token: string | null
+    user: User | null
+    menu: unknown | null
+  } {
     return {
       isAuth: this.getIsAuth(),
+      token: this.getToken(),
       user: this.getUser(),
       menu: this.getMenu(),
     }

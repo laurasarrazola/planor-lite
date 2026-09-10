@@ -1,13 +1,7 @@
 import { Body, Controller, Post, HttpStatus, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import {
-  ApiBody,
-  ApiConsumes,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 import { RespuestaLoginDto } from './dto/respuesta-login.dto';
 
@@ -30,7 +24,6 @@ export class AuthController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Credenciales inválidas',
   })
-  @ApiConsumes('application/x-www-form-urlencoded')
   @ApiBody({
     schema: {
       type: 'object',

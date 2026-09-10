@@ -36,7 +36,7 @@ export class AuthService {
       loginDto.email,
     );
     if (!usuarioLogin) {
-      throw new UnauthorizedException('Usuario no encontrado');
+      throw new UnauthorizedException('Credenciales inválidas');
     }
     // Verificar que el usuario tenga una contraseña registrada
     if (!usuarioLogin.contrasena)
@@ -48,7 +48,7 @@ export class AuthService {
       usuarioLogin.contrasena,
     );
     if (!contrasenaCorrecta) {
-      throw new UnauthorizedException('Contraseña incorrecta');
+      throw new UnauthorizedException('Credenciales inválidas');
     }
 
     // payload es la información que se incluirá en el token JWT, en este caso el email y el ID del usuario autenticado

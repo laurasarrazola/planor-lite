@@ -3,7 +3,7 @@ import App from "@/app/App";
 import { HomePage } from "@/features/home";
 import { Pruebas } from "@/features/pruebas";
 import { BoardsPage } from "@/features/boards";
-
+import { AuthGuard } from "@/app/router/guards/AuthGuard";
 
 export const router = createBrowserRouter([
   {
@@ -19,8 +19,13 @@ export const router = createBrowserRouter([
         element: <Pruebas />
       },
       {
-        path: "/boards",
-        element: <BoardsPage />
+        element: <AuthGuard />,
+        children: [
+          {
+            path: "/boards",
+            element: <BoardsPage />
+          }
+        ]
       }
     ]
   }

@@ -4,6 +4,8 @@ import { requestService } from "@/core/services";
 import type {
     RegistrarUsuarioRequest,
     RegistrarUsuarioResponse,
+    IniciarSesionRequest,
+    IniciarSesionResponse,
 } from "../types/auth.types";
 
 class AuthService {
@@ -12,6 +14,19 @@ class AuthService {
     ): Promise<RegistrarUsuarioResponse> {
         return requestService.post<RegistrarUsuarioResponse>(
             API_ENDPOINTS.USERS.REGISTER,
+            datos,
+            {
+                showLoader: true,
+                showToast: false,
+            }
+        );
+    }
+
+    async iniciarSesion(
+        datos: IniciarSesionRequest
+    ): Promise<IniciarSesionResponse> {
+        return requestService.post<IniciarSesionResponse>(
+            API_ENDPOINTS.AUTH.LOGIN,
             datos,
             {
                 showLoader: true,

@@ -1,13 +1,9 @@
-/**
- * Storage Keys
- * Constants for sessionStorage/localStorage keys
- * Note: Tokens are managed via HTTP-only cookies
- */
-
+// En este archivo se definen las claves de almacenamiento utilizadas en la aplicación para guardar datos en el almacenamiento local o de sesión del navegador. Estas claves se utilizan para acceder y manipular datos relacionados con la autenticación, la sesión del usuario, el estado de la interfaz de usuario y datos temporales.
 export const STORAGE_KEYS = {
-  // Auth (tokens managed via HTTP-only cookies)
+  // Auth
   IS_AUTH: 'isAuth',
   USER: 'user',
+  TOKEN: 'token',
   MENU: 'menu',
   
   // Session

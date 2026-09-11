@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 import { boardService } from "../services";
 import { BoardCard } from "../components/BoardCards/BoardCards";
 import { CreateBoardModal } from "../components/CreateBoardModal/CreateBoardModal";
+import { EditBoardModal } from "../components/EditBoardModal/EditBoardModal";
+import { DeleteBoardModal } from "../components/DeleteBoardModal/DeleteBoardModal";
 import type { Board } from "../types/board.types";
 
 export function BoardsPage() {
@@ -23,6 +25,12 @@ export function BoardsPage() {
     const [cargando, establecerCargando] = useState(true);
     const [error, establecerError] = useState<string | null>(null);
     const [mostrarModalCrear, establecerMostrarModalCrear] = useState(false);
+
+    const [tableroEditar, establecerTableroEditar] =
+        useState<Board | null>(null);
+
+    const [tableroEliminar, establecerTableroEliminar] =
+        useState<Board | null>(null);
 
     useEffect(() => {
         async function cargarTableros(): Promise<void> {
@@ -110,6 +118,8 @@ export function BoardsPage() {
                                         tablero.descripcionTablero ??
                                         "Sin descripción."
                                     }
+                                    onEditClick={() => establecerTableroEditar(tablero)}
+                                    onDeleteClick={() => establecerTableroEliminar(tablero)}
                                 />
                             ))}
                     </div>
@@ -126,6 +136,41 @@ export function BoardsPage() {
                             ...tablerosActuales,
                             tablero,
                         ]);
+                    }}
+                />
+            )}
+            
+            {tableroEditar && (
+                <EditBoardModal
+                    tablero={tableroEditar}
+                    onClose={() => establecerTableroEditar(null)}
+                    onUpdated={(tableroActualizado) => {
+                        establecerTableros((tablerosActuales) =>
+                            tablerosActuales.map((tablero) => {
+                                if (
+                                    tablero.idTablero ===
+                                    tableroActualizado.idTablero
+                                ) {
+                                    return tableroActualizado;
+                                }
+
+                                return tablero;
+                            })
+                        );
+                    }}
+                />
+            )}
+
+            {tableroEliminar && (
+                <DeleteBoardModal
+                    tablero={tableroEliminar}
+                    onClose={() => establecerTableroEliminar(null)}
+                    onDeleted={(idTablero) => {
+                        establecerTableros((tablerosActuales) =>
+                            tablerosActuales.filter(
+                                (tablero) => tablero.idTablero !== idTablero
+                            )
+                        );
                     }}
                 />
             )}

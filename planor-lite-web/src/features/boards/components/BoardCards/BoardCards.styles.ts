@@ -10,6 +10,7 @@ import { cva } from "class-variance-authority";
 /****************************************/
 export const boardCardStyles = cva(
     [
+        "relative",
         "flex",
         "h-full",
         "w-full",
@@ -18,7 +19,7 @@ export const boardCardStyles = cva(
         "flex-col",
         "items-start",
         "gap-[20px]",
-        "overflow-hidden",
+        "overflow-visible",
         "rounded-[20px]",
         "border",
         "border-[rgba(255,249,228,0.10)]",
@@ -147,6 +148,43 @@ export const boardCardMenuStyles = [
     "p-0",
     "text-[var(--color-vainilla)]",
     "cursor-pointer",
+].join(" ");
+
+/*****************************************/
+/*          CONTENEDOR DEL MENÚ          */
+/*****************************************/
+export const boardCardDropdownStyles = [
+    "absolute",
+    "right-[20px]",
+    "top-[52px]",
+    "z-20",
+    "flex",
+    "w-[140px]",
+    "flex-col",
+    "overflow-hidden",
+    "rounded-[8px]",
+    "border",
+    "border-[rgba(255,249,228,0.10)]",
+    "bg-[#191E22]",
+    "shadow-[2px_2px_8px_0_rgba(33,6,53,0.30)]",
+].join(" ");
+
+/*****************************************/
+/*             OPCIONES DEL MENÚ         */
+/*****************************************/
+export const boardCardDropdownOptionStyles = [
+    "flex",
+    "w-full",
+    "items-center",
+    "px-[16px]",
+    "py-[10px]",
+    "border-0",
+    "bg-transparent",
+    "text-left",
+    "text-[14px]",
+    "text-[var(--color-vainilla)]",
+    "cursor-pointer",
+    "hover:bg-white/5",
 ].join(" ");
 
 /*****************************************/

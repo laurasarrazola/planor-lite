@@ -26,6 +26,33 @@ class BoardService {
             }
         );
     }
+
+    async editarTablero(
+        idTablero: number,
+        datos: {
+            nombreTablero?: string;
+            descripcionTablero?: string;
+        }
+    ): Promise<Board> {
+        return requestService.patch<Board>(
+            API_ENDPOINTS.BOARDS.BY_ID(idTablero),
+            datos,
+            {
+                showLoader: false,
+                showToast: false,
+            }
+        );
+    }
+
+    async eliminarTablero(idTablero: number): Promise<void> {
+        await requestService.delete(
+            API_ENDPOINTS.BOARDS.BY_ID(idTablero),
+            {
+                showLoader: false,
+                showToast: false,
+            }
+        );
+    }
 }
 
 export const boardService = new BoardService();

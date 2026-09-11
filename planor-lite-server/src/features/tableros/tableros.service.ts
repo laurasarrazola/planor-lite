@@ -171,16 +171,14 @@ export class TablerosService {
     if (actualizarTableroDto.nombreTablero !== undefined) {
       tableroPropio.nombreTablero = actualizarTableroDto.nombreTablero;
     }
+
     if (actualizarTableroDto.descripcionTablero !== undefined) {
       tableroPropio.descripcionTablero =
         actualizarTableroDto.descripcionTablero;
     }
 
-    const cambios = {
-      nombreTablero: actualizarTableroDto.nombreTablero,
-      descripcionTablero: actualizarTableroDto.descripcionTablero,
-    };
-    await this.tablerosRepository.update(idTablero, cambios);
+    await this.tablerosRepository.save(tableroPropio);
+
     return this.obtenerDetallesTablero(idTablero, idUsuario);
   }
 

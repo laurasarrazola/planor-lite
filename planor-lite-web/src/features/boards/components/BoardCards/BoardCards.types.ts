@@ -6,6 +6,7 @@ export interface BoardCardProps {
     accent?: BoardCardAccent;
     title: string;
     description: string;
-    onMenuClick?: () => void;
+    onEditClick?: () => void;
+    onDeleteClick?: () => void;
     onOpenClick?: () => void;
 }

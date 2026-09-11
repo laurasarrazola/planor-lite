@@ -15,12 +15,14 @@ import {
 import { useEffect, useState } from "react";
 import { boardService } from "../services";
 import { BoardCard } from "../components/BoardCards/BoardCards";
+import { CreateBoardModal } from "../components/CreateBoardModal/CreateBoardModal";
 import type { Board } from "../types/board.types";
 
 export function BoardsPage() {
     const [tableros, establecerTableros] = useState<Board[]>([]);
     const [cargando, establecerCargando] = useState(true);
     const [error, establecerError] = useState<string | null>(null);
+    const [mostrarModalCrear, establecerMostrarModalCrear] = useState(false);
 
     useEffect(() => {
         async function cargarTableros(): Promise<void> {
@@ -63,6 +65,7 @@ export function BoardsPage() {
                         variant="Primary"
                         buttonStyle="Filled"
                         size="S"
+                        onClick={() => establecerMostrarModalCrear(true)}
                     >
                         <Icon icon="lucide:plus" />
                         Crear nuevo tablero
@@ -114,6 +117,18 @@ export function BoardsPage() {
             </main>
 
             <Footer />
+
+            {mostrarModalCrear && (
+                <CreateBoardModal
+                    onClose={() => establecerMostrarModalCrear(false)}
+                    onCreated={(tablero) => {
+                        establecerTableros((tablerosActuales) => [
+                            ...tablerosActuales,
+                            tablero,
+                        ]);
+                    }}
+                />
+            )}
         </div>
     );
 }

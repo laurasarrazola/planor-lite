@@ -78,11 +78,9 @@ export const textAreaLabelStyles = cva(
 export const textAreaValueStyles = cva(
     [
         "w-full",
-        "max-w-[320px]",
         "min-w-0",
         "h-[120px]",
         "resize-none",
-
         "rounded-[6px]",
         "px-[16px]",
         "py-[12px]",

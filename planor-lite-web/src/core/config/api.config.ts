@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
 
   BOARDS: {
      MY_BOARDS: '/tableros/usuario',
+      CREATE: '/tableros',
   },
 
   TASKS: {

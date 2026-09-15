@@ -14,12 +14,13 @@ export const badgePriorityStyles = cva(
         "flex",
         "w-[77px]",
         "h-[20px]",
+        "shrink-0",
         "items-center",
         "justify-center",
-        "gap-[10px]",
+        "gap-[5px]",
         "rounded-[6px]",
-        "px-[10px]",
-        "py-[10px]",
+        "px-[6px]",
+        "py-0",
     ],
     {
         variants: {
@@ -40,6 +41,7 @@ export const badgeIconStyles = [
     "w-[15px]",
     "h-[15px]",
     "shrink-0",
+    "text-[var(--badge-priority-text)]",
 ].join(" ");
 
 /****************************************/

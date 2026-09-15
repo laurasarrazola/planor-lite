@@ -24,6 +24,6 @@ export const API_ENDPOINTS = {
   },
 
   TASKS: {
-    // posteriormente
+    BY_BOARD: (idTablero: number) => `/tareas/tablero/${idTablero}`,
   },
 } as const;

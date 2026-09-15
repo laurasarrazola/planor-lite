@@ -13,6 +13,7 @@ import {
     boardsSectionStyles,
 } from "./BoardsPage.styles";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { boardService } from "../../services";
 import { BoardCard } from "../../components/BoardCards/BoardCards";
 import { CreateBoardModal } from "../../components/CreateBoardModal/CreateBoardModal";
@@ -21,6 +22,7 @@ import { DeleteBoardModal } from "../../components/DeleteBoardModal/DeleteBoardM
 import type { Board } from "../../types/board.types";
 
 export function BoardsPage() {
+    const navigate = useNavigate();
     const [tableros, establecerTableros] = useState<Board[]>([]);
     const [cargando, establecerCargando] = useState(true);
     const [error, establecerError] = useState<string | null>(null);
@@ -120,6 +122,9 @@ export function BoardsPage() {
                                     }
                                     onEditClick={() => establecerTableroEditar(tablero)}
                                     onDeleteClick={() => establecerTableroEliminar(tablero)}
+                                    onOpenClick={() =>
+                                        navigate(`/boards/${tablero.idTablero}`)
+                                    }
                                 />
                             ))}
                     </div>
@@ -139,7 +144,7 @@ export function BoardsPage() {
                     }}
                 />
             )}
-            
+
             {tableroEditar && (
                 <EditBoardModal
                     tablero={tableroEditar}

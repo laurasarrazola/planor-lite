@@ -28,7 +28,7 @@ const priorityIcons: Record<BadgePriorityType, string> = {
 /****************************************/
 /*      INTERFAZ DEL COMPONENTE         */
 /****************************************/
-/*  Define el contrato del componente: indica qué propiedades puede recibir, el tipo de dato permitido para cada una y las propiedades personalizadas del sistema de diseño. */  
+/*  Define el contrato del componente: indica qué propiedades puede recibir, el tipo de dato permitido para cada una y las propiedades personalizadas del sistema de diseño. */
 interface BadgePriorityProps {
     priority: BadgePriorityType;
 }

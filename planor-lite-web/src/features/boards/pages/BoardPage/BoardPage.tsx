@@ -1,7 +1,13 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Header } from "@/core/components/layout/Header/Header";
 import { Breadcrumb } from "../../components/Breadcrumb/Breadcrumb";
 import { BoardHeader } from "../../components/BoardHeader/BoardHeader";
 import { KanbanBoard } from "../../components/KanbanBoard/KanbanBoard";
+import { boardService } from "../../services";
+import type { Board } from "../../types/board.types";
+import { taskService } from "@/features/tasks/services/task.service";
+import type { Task } from "@/features/tasks/types/task.types";
 
 import {
     boardPageStyles,
@@ -9,23 +15,93 @@ import {
 } from "./BoardPage.styles";
 
 export function BoardPage() {
-    const nombreTablero = "Mi tablero";
-    const descripcionTablero =
-        "Organiza y administra las tareas de este tablero.";
+    const { idTablero } = useParams();
+
+    const [tablero, establecerTablero] = useState<Board | null>(null);
+    const [cargando, establecerCargando] = useState(true);
+    const [error, establecerError] = useState<string | null>(null);
+    const [tareas, establecerTareas] = useState<Task[]>([]);
+
+    useEffect(() => {
+        async function cargarTablero(): Promise<void> {
+            try {
+                establecerCargando(true);
+                establecerError(null);
+
+                if (!idTablero) {
+                    establecerError("No se encontró el tablero.");
+                    return;
+                }
+
+                const datos = await boardService.obtenerTableroPorId(
+                    Number(idTablero)
+                );
+
+                const tareasDelTablero = await taskService.obtenerTareasPorTablero(
+                    Number(idTablero)
+                );
+
+                establecerTablero(datos);
+                establecerTareas(tareasDelTablero);
+            } catch {
+                establecerError(
+                    "No fue posible cargar el tablero."
+                );
+            } finally {
+                establecerCargando(false);
+            }
+        }
+
+        cargarTablero();
+    }, [idTablero]);
+
+    if (cargando) {
+        return (
+            <div className={boardPageStyles}>
+                <Header modo="Authenticated" />
+
+                <main className={boardPageMainStyles}>
+                    <p className="text-(--color-vainilla)">
+                        Cargando tablero...
+                    </p>
+                </main>
+            </div>
+        );
+    }
+
+    if (error || !tablero) {
+        return (
+            <div className={boardPageStyles}>
+                <Header modo="Authenticated" />
+
+                <main className={boardPageMainStyles}>
+                    <p
+                        className="text-(--color-vainilla)"
+                        role="alert"
+                    >
+                        {error ?? "No se encontró el tablero."}
+                    </p>
+                </main>
+            </div>
+        );
+    }
 
     return (
         <div className={boardPageStyles}>
             <Header modo="Authenticated" />
 
             <main className={boardPageMainStyles}>
-                <Breadcrumb boardName={nombreTablero} />
+                <Breadcrumb boardName={tablero.nombreTablero} />
 
                 <BoardHeader
-                    title={nombreTablero}
-                    description={descripcionTablero}
+                    title={tablero.nombreTablero}
+                    description={
+                        tablero.descripcionTablero ??
+                        "Sin descripción."
+                    }
                 />
 
-                <KanbanBoard />
+                <KanbanBoard tareas={tareas} />
             </main>
         </div>
     );

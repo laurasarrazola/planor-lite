@@ -36,11 +36,11 @@ export class RespuestaTareaDto {
 
   @ApiProperty({
     description: 'Prioridad de la tarea',
-    enum: ['baja', 'media', 'alta'],
-    example: 'media',
+    enum: ['Baja', 'Media', 'Alta'],
+    example: 'Media',
     nullable: true,
   })
-  prioridad!: 'baja' | 'media' | 'alta' | null;
+  prioridad!: 'Baja' | 'Media' | 'Alta' | null;
 
   @ApiProperty({
     description: 'Fecha de vencimiento de la tarea',

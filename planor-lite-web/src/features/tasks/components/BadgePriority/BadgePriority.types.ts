@@ -1,4 +1,4 @@
 export type BadgePriorityType =
-  | "Alta"
-  | "Media"
-  | "Baja";
+    | "Baja"
+    | "Media"
+    | "Alta";

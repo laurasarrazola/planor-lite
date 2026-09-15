@@ -27,6 +27,16 @@ class BoardService {
         );
     }
 
+    async obtenerTableroPorId(idTablero: number): Promise<Board> {
+    return requestService.get<Board>(
+        API_ENDPOINTS.BOARDS.BY_ID(idTablero),
+        {
+            showLoader: true,
+            showToast: false,
+        }
+    );
+}
+
     async editarTablero(
         idTablero: number,
         datos: {

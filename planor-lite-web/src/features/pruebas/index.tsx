@@ -1,1 +1,1 @@
-export {Pruebas} from './App'
+// export {Pruebas} from './App'

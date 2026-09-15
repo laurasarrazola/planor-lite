@@ -4,7 +4,7 @@
 
 export type KanbanColumnState =
     | "Pendiente"
-    | "En ejecución"
+    | "En_ejecucion"
     | "Terminado"
     | "Aprobado";
 

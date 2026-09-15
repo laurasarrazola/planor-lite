@@ -58,8 +58,8 @@ export class TareasController {
         },
         prioridad: {
           type: 'string',
-          enum: ['baja', 'media', 'alta'],
-          example: 'media',
+          enum: ['Baja', 'Media', 'Alta'],
+          example: 'Media',
         },
         fechaVencimientoTarea: {
           type: 'string',

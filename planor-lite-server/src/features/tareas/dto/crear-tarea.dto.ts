@@ -63,16 +63,16 @@ export class CrearTareaDto {
   @ApiProperty({
     description: 'Prioridad de la tarea.',
     required: false,
-    enum: ['baja', 'media', 'alta'],
+    enum: ['Baja', 'Media', 'Alta'],
   })
   @Transform(({ value }: { value: unknown }) =>
     value === '' || value === null ? undefined : value,
   )
   @IsOptional()
-  @IsEnum(['baja', 'media', 'alta'], {
-    message: 'La prioridad debe ser baja, media o alta.',
+  @IsEnum(['Baja', 'Media', 'Alta'], {
+    message: 'La prioridad debe ser Baja, Media o Alta.',
   })
-  prioridad?: 'baja' | 'media' | 'alta';
+  prioridad?: 'Baja' | 'Media' | 'Alta';
 
   /* Validación de la fecha de vencimiento */
   @ApiProperty({

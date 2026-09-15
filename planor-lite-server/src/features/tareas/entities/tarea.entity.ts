@@ -53,11 +53,11 @@ export class Tareas {
 
   @Column({
     type: 'enum',
-    enum: ['baja', 'media', 'alta'],
+    enum: ['Baja', 'Media', 'Alta'],
     nullable: true,
     name: 'Prioridad',
   })
-  prioridad!: 'baja' | 'media' | 'alta' | null;
+  prioridad!: 'Baja' | 'Media' | 'Alta' | null;
 
   @Column({
     type: 'datetime',

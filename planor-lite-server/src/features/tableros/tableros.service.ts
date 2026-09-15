@@ -133,7 +133,11 @@ export class TablerosService {
     idUsuario: number,
   ): Promise<Tableros> {
     const tableroPropio = await this.tablerosRepository.findOne({
-      where: { idTablero, propietario: { idUsuario } },
+      where: {
+        idTablero,
+        propietario: { idUsuario },
+        tableroActivo: true,
+      },
       relations: ['propietario'],
     });
     if (tableroPropio) return tableroPropio;

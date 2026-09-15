@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Button } from "@/core/components/ui/Button/Button"
+import { Button } from "@/core/components/ui/Button/Button";
 import {
     kanbanColumnStyles,
     kanbanColumnHeaderStyles,
@@ -12,24 +12,31 @@ import {
 } from "./KanbanColumns.styles";
 import type { KanbanColumnProps } from "./KanbanColumns.types";
 
+const nombresEstado = {
+    Pendiente: "Pendiente",
+    En_ejecucion: "En ejecución",
+    Terminado: "Terminado",
+    Aprobado: "Aprobado",
+};
 
 export const KanbanColumn = ({
     state,
     children,
     onAddTask,
 }: KanbanColumnProps) => {
-
     return (
         <section className={kanbanColumnStyles}>
 
-            {/***************HEADER***************/}
+            {/*************** HEADER ***************/}
             <header className={kanbanColumnHeaderStyles}>
                 <div className={kanbanColumnStateInfoStyles}>
                     <span
                         className={kanbanColumnStatusDotStyles({ state })}
-                        aria-hidden="true" />
+                        aria-hidden="true"
+                    />
+
                     <h2 className={kanbanColumnStateNameStyles}>
-                        {state}
+                        {nombresEstado[state]}
                     </h2>
                 </div>
 
@@ -37,17 +44,18 @@ export const KanbanColumn = ({
                     type="button"
                     className={kanbanColumnAddButtonStyles}
                     aria-label={`Agregar tarea en ${state}`}
-                    onClick={onAddTask}>
+                    onClick={onAddTask}
+                >
                     <Icon icon="lucide:plus" />
                 </button>
             </header>
 
-            {/***************LISTA DE TAREAS***************/}
+            {/*************** LISTA DE TAREAS ***************/}
             <div className={kanbanColumnTaskListStyles}>
                 {children}
             </div>
 
-            {/***************ACCIÓN PRINCIPAL***************/}
+            {/*************** ACCIÓN PRINCIPAL ***************/}
             <Button
                 variant="CTA"
                 buttonStyle="Outlined"

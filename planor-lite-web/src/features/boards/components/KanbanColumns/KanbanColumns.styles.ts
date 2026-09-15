@@ -54,7 +54,7 @@ export const kanbanColumnStatusDotStyles = cva(
         variants: {
             state: {
                 Pendiente: "bg-[#C26B6D]",
-                "En ejecución": "bg-[#DCE992]",
+                En_ejecucion: "bg-[#DCE992]",
                 Terminado: "bg-[#69BEE9]",
                 Aprobado: "bg-[#8BE386]",
             },

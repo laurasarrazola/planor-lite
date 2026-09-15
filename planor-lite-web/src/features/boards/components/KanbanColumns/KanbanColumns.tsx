@@ -55,7 +55,8 @@ export const KanbanColumn = ({
                 onClick={onAddTask}
                 className={kanbanColumnButtonStyles}
             >
-                + Agregar tarea
+                <Icon icon="lucide:plus" />
+                Agregar tarea
             </Button>
 
         </section>

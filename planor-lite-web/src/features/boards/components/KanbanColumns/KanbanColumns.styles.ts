@@ -5,13 +5,14 @@ import { cva } from "class-variance-authority";
 /**************************************/
 export const kanbanColumnStyles = [
     "flex",
+    "h-full",
     "w-[min(321px,calc(100vw-32px))]",
+    "min-w-[280px]",
     "max-w-full",
-    "min-w-0",
-    "h-[670px]",
-    "max-h-[calc(100dvh-32px)]",
+    "shrink-0",
     "flex-col",
     "gap-[8px]",
+    "overflow-hidden",
     "rounded-[16px]",
     "border",
     "border-[0.5px]",
@@ -20,7 +21,6 @@ export const kanbanColumnStyles = [
     "px-[20px]",
     "py-[8px]",
     "shadow-[0_4px_36px_0_rgba(33,6,53,0.50)]",
-    "shrink-0",
 ].join(" ");
 
 /************************************/

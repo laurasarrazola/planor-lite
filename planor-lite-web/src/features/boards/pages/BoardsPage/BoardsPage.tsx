@@ -13,12 +13,12 @@ import {
     boardsSectionStyles,
 } from "./BoardsPage.styles";
 import { useEffect, useState } from "react";
-import { boardService } from "../services";
-import { BoardCard } from "../components/BoardCards/BoardCards";
-import { CreateBoardModal } from "../components/CreateBoardModal/CreateBoardModal";
-import { EditBoardModal } from "../components/EditBoardModal/EditBoardModal";
-import { DeleteBoardModal } from "../components/DeleteBoardModal/DeleteBoardModal";
-import type { Board } from "../types/board.types";
+import { boardService } from "../../services";
+import { BoardCard } from "../../components/BoardCards/BoardCards";
+import { CreateBoardModal } from "../../components/CreateBoardModal/CreateBoardModal";
+import { EditBoardModal } from "../../components/EditBoardModal/EditBoardModal";
+import { DeleteBoardModal } from "../../components/DeleteBoardModal/DeleteBoardModal";
+import type { Board } from "../../types/board.types";
 
 export function BoardsPage() {
     const [tableros, establecerTableros] = useState<Board[]>([]);

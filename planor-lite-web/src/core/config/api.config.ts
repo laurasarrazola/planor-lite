@@ -18,12 +18,17 @@ export const API_ENDPOINTS = {
   },
 
   BOARDS: {
-     MY_BOARDS: '/tableros/usuario',
-      CREATE: '/tableros',
-      BY_ID: (idTablero: number) => `/tableros/${idTablero}`,
+    MY_BOARDS: '/tableros/usuario',
+    CREATE: '/tableros',
+    BY_ID: (idTablero: number) => `/tableros/${idTablero}`,
   },
+
+  STATES: {
+    BY_BOARD: (idTablero: number) => `/estados/${idTablero}`,
+},
 
   TASKS: {
     BY_BOARD: (idTablero: number) => `/tareas/tablero/${idTablero}`,
+    MOVE: (idTarea: number) => `/tareas/${idTarea}/mover`,
   },
 } as const;

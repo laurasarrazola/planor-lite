@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { ComponentType, Dispatch, SetStateAction } from "react";
 import { useParams } from "react-router-dom";
 import { Header } from "@/core/components/layout/Header/Header";
 import { Breadcrumb } from "../../components/Breadcrumb/Breadcrumb";
@@ -8,11 +9,18 @@ import { boardService } from "../../services";
 import type { Board } from "../../types/board.types";
 import { taskService } from "@/features/tasks/services/task.service";
 import type { Task } from "@/features/tasks/types/task.types";
-
+import { estadoService } from "../../services/estado.service";
+import type { BoardState } from "../../types/estado.types";
 import {
     boardPageStyles,
     boardPageMainStyles,
 } from "./BoardPage.styles";
+
+const KanbanBoardComponent = KanbanBoard as unknown as ComponentType<{
+    tareas: Task[];
+    estados: BoardState[];
+    establecerTareas: Dispatch<SetStateAction<Task[]>>;
+}>;
 
 export function BoardPage() {
     const { idTablero } = useParams();
@@ -21,6 +29,7 @@ export function BoardPage() {
     const [cargando, establecerCargando] = useState(true);
     const [error, establecerError] = useState<string | null>(null);
     const [tareas, establecerTareas] = useState<Task[]>([]);
+    const [estados, establecerEstados] = useState<BoardState[]>([]);
 
     useEffect(() => {
         async function cargarTablero(): Promise<void> {
@@ -41,8 +50,14 @@ export function BoardPage() {
                     Number(idTablero)
                 );
 
+                const estadosDelTablero =
+                    await estadoService.obtenerEstadosPorTablero(
+                        Number(idTablero)
+                    );
+
                 establecerTablero(datos);
                 establecerTareas(tareasDelTablero);
+                establecerEstados(estadosDelTablero);
             } catch {
                 establecerError(
                     "No fue posible cargar el tablero."
@@ -101,7 +116,11 @@ export function BoardPage() {
                     }
                 />
 
-                <KanbanBoard tareas={tareas} />
+                <KanbanBoardComponent
+                    tareas={tareas}
+                    estados={estados}
+                    establecerTareas={establecerTareas}
+                />
             </main>
         </div>
     );

@@ -11,19 +11,17 @@ import {
     kanbanColumnButtonStyles,
 } from "./KanbanColumns.styles";
 import type { KanbanColumnProps } from "./KanbanColumns.types";
-
-const nombresEstado = {
-    Pendiente: "Pendiente",
-    En_ejecucion: "En ejecución",
-    Terminado: "Terminado",
-    Aprobado: "Aprobado",
-};
+import { useDroppable } from "@dnd-kit/core";
 
 export const KanbanColumn = ({
     state,
+    idEstadoKanban,
     children,
     onAddTask,
 }: KanbanColumnProps) => {
+    const { setNodeRef } = useDroppable({
+        id: `estado-${idEstadoKanban}`,
+    });
     return (
         <section className={kanbanColumnStyles}>
 
@@ -36,7 +34,9 @@ export const KanbanColumn = ({
                     />
 
                     <h2 className={kanbanColumnStateNameStyles}>
-                        {nombresEstado[state]}
+                        {state === "En_ejecucion"
+                            ? "En ejecución"
+                            : state}
                     </h2>
                 </div>
 
@@ -51,7 +51,10 @@ export const KanbanColumn = ({
             </header>
 
             {/*************** LISTA DE TAREAS ***************/}
-            <div className={kanbanColumnTaskListStyles}>
+            <div
+                ref={setNodeRef}
+                className={kanbanColumnTaskListStyles}
+            >
                 {children}
             </div>
 

@@ -13,8 +13,11 @@ import {
     taskCardDueDateTextStyles,
 } from "./TaskCards.styles";
 import type { TaskCardProps } from "./TaskCards.types";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 export function TaskCard({
+    id,
     title,
     description,
     dueDate,
@@ -23,13 +26,37 @@ export function TaskCard({
     onMenuClick,
 }: TaskCardProps) {
 
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({
+        id,
+    });
+
+    const estiloTarjeta = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    };
+
     const manejarClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation(); // Evita que el click en el botón propague el evento al artículo padre
         onMenuClick?.();
     };
 
     return (
-        <article className={taskCardStyles} onClick={onOpenClick}>
+        <article
+            ref={setNodeRef}
+            style={estiloTarjeta}
+            className={taskCardStyles}
+            onClick={onOpenClick}
+            {...attributes}
+            {...listeners}
+        >
 
             {/* ========== HEADER ========== */}
             <header className={taskCardHeaderStyles}>
@@ -47,6 +74,7 @@ export function TaskCard({
                 {/* Menú de acciones */}
                 <button
                     type="button"
+                    onPointerDown={(event) => event.stopPropagation()}
                     aria-label={`Acciones de la tarea ${title}`}
                     className={taskCardMenuStyles}
                     onClick={manejarClickMenu}>

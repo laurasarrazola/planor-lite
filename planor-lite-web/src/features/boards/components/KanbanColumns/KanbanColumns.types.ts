@@ -10,6 +10,7 @@ export type KanbanColumnState =
 
 export interface KanbanColumnProps {
     state: KanbanColumnState;
+    idEstadoKanban: number;
     children?: React.ReactNode;
     onAddTask?: () => void;
 }

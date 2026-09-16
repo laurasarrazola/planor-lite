@@ -1,4 +1,12 @@
 import { Icon } from "@iconify/react";
+import {
+    useState,
+    type KeyboardEvent,
+    type MouseEvent,
+    type PointerEvent,
+} from "react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { BadgePriority } from "../BadgePriority/BadgePriority";
 import {
     taskCardStyles,
@@ -7,14 +15,14 @@ import {
     taskCardTitleStyles,
     taskCardDescriptionStyles,
     taskCardMenuStyles,
+    taskCardDropdownStyles,
+    taskCardDropdownOptionStyles,
     taskCardFooterStyles,
     taskCardDueDateStyles,
     taskCardDueDateIconStyles,
     taskCardDueDateTextStyles,
 } from "./TaskCards.styles";
 import type { TaskCardProps } from "./TaskCards.types";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 
 export function TaskCard({
     id,
@@ -23,9 +31,11 @@ export function TaskCard({
     dueDate,
     priority,
     onOpenClick,
-    onMenuClick,
+    onEditClick,
+    onDeleteClick,
     esVistaPrevia = false,
 }: TaskCardProps) {
+    const [mostrarMenu, establecerMostrarMenu] = useState(false);
 
     const {
         attributes,
@@ -45,10 +55,48 @@ export function TaskCard({
         opacity: isDragging ? 0.5 : 1,
     };
 
-    const manejarClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation(); // Evita que el click en el botón propague el evento al artículo padre
-        onMenuClick?.();
-    };
+    function manejarClickMenu(evento: MouseEvent<HTMLButtonElement>): void {
+        evento.stopPropagation();
+        establecerMostrarMenu(!mostrarMenu);
+    }
+
+    function manejarEditar(): void {
+        establecerMostrarMenu(false);
+
+        if (onEditClick) {
+            onEditClick();
+        }
+    }
+
+    function detenerPropagacionInicioMenu(
+        evento: PointerEvent<HTMLDivElement | HTMLButtonElement>
+    ): void {
+        evento.stopPropagation();
+    }
+
+    function manejarEliminar(): void {
+        establecerMostrarMenu(false);
+
+        if (onDeleteClick) {
+            onDeleteClick();
+        }
+    }
+
+    function manejarInicioArrastre(evento: PointerEvent<HTMLElement>): void {
+        const manejadorInicioArrastre = listeners?.onPointerDown;
+
+        if (manejadorInicioArrastre) {
+            manejadorInicioArrastre(evento);
+        }
+    }
+
+    function manejarTeclaArrastre(evento: KeyboardEvent<HTMLElement>): void {
+        const manejadorTeclaArrastre = listeners?.onKeyDown;
+
+        if (manejadorTeclaArrastre) {
+            manejadorTeclaArrastre(evento);
+        }
+    }
 
     return (
         <article
@@ -56,8 +104,14 @@ export function TaskCard({
             style={estiloTarjeta}
             className={taskCardStyles}
             onClick={onOpenClick}
-            {...attributes}
-            {...listeners}
+            role={attributes.role}
+            tabIndex={attributes.tabIndex}
+            aria-disabled={attributes["aria-disabled"]}
+            aria-pressed={attributes["aria-pressed"]}
+            aria-roledescription={attributes["aria-roledescription"]}
+            aria-describedby={attributes["aria-describedby"]}
+            onPointerDown={manejarInicioArrastre}
+            onKeyDown={manejarTeclaArrastre}
         >
 
             {/* ========== HEADER ========== */}
@@ -65,24 +119,50 @@ export function TaskCard({
 
                 {/* Información de la tarea */}
                 <div className={taskCardTextsStyles}>
-                    <h3 className={taskCardTitleStyles}>
-                        {title}
-                    </h3>
+                    <h3 className={taskCardTitleStyles}>{title}</h3>
+
                     <p className={taskCardDescriptionStyles}>
                         {description}
                     </p>
                 </div>
-
                 {/* Menú de acciones */}
-                <button
-                    type="button"
-                    onPointerDown={(event) => event.stopPropagation()}
-                    aria-label={`Acciones de la tarea ${title}`}
-                    className={taskCardMenuStyles}
-                    onClick={manejarClickMenu}>
-                    <Icon icon="lucide:ellipsis-vertical" />
-                </button>
+                <div onPointerDown={detenerPropagacionInicioMenu}>
+                    <button
+                        type="button"
+                        aria-label={`Acciones de la tarea ${title}`}
+                        aria-expanded={mostrarMenu}
+                        className={taskCardMenuStyles}
+                        onClick={manejarClickMenu}
+                    >
+                        <Icon icon="lucide:ellipsis-vertical" />
+                    </button>
 
+                    {mostrarMenu && (
+                        <div
+                            className={taskCardDropdownStyles}
+                            role="menu"
+                            onPointerDown={detenerPropagacionInicioMenu}
+                        >
+                            <button
+                                type="button"
+                                className={taskCardDropdownOptionStyles}
+                                role="menuitem"
+                                onClick={manejarEditar}
+                            >
+                                Editar
+                            </button>
+
+                            <button
+                                type="button"
+                                className={taskCardDropdownOptionStyles}
+                                role="menuitem"
+                                onClick={manejarEliminar}
+                            >
+                                Eliminar
+                            </button>
+                        </div>
+                    )}
+                </div>
             </header>
 
 
@@ -94,7 +174,9 @@ export function TaskCard({
                     <div className={taskCardDueDateStyles}>
                         <Icon
                             icon="lucide:calendar"
-                            className={taskCardDueDateIconStyles} />
+                            className={taskCardDueDateIconStyles}
+                        />
+
                         <span className={taskCardDueDateTextStyles}>
                             {dueDate}
                         </span>
@@ -103,9 +185,7 @@ export function TaskCard({
 
                 {/* Prioridad */}
                 <BadgePriority priority={priority} />
-
             </footer>
-
         </article>
     );
 }

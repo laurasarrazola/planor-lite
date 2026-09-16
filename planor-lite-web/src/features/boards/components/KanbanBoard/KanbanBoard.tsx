@@ -16,6 +16,8 @@ import type { KanbanColumnState } from "../KanbanColumns/KanbanColumns.types";
 import { taskService } from "@/features/tasks/services/task.service";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { kanbanBoardStyles } from "./KanbanBoard.styles";
+import { EditTaskModal } from "@/features/tasks/components/EditTaskModal/EditTaskModal";
+import { DeleteTaskModal } from "@/features/tasks/components/DeleteTaskModal/DeleteTaskModal";
 
 /* La interface se crea con la finalidad de definir las propiedades que recibe el componente KanbanBoard */
 interface KanbanBoardProps {
@@ -31,6 +33,12 @@ export function KanbanBoard({
     establecerTareas,
 }: KanbanBoardProps) {
     const [tareaArrastrada, establecerTareaArrastrada] =
+        useState<Task | null>(null);
+
+    const [tareaEditar, establecerTareaEditar] =
+        useState<Task | null>(null);
+
+    const [tareaEliminar, establecerTareaEliminar] =
         useState<Task | null>(null);
 
     /* Función que obtiene las tareas de un estado específico */
@@ -341,6 +349,11 @@ export function KanbanBoard({
                                         priority={
                                             tarea.prioridad ?? "Media"
                                         }
+                                        dueDate={
+                                            tarea.fechaVencimientoTarea ?? undefined
+                                        }
+                                        onEditClick={() => establecerTareaEditar(tarea)}
+                                        onDeleteClick={() => establecerTareaEliminar(tarea)}
                                     />
                                 ))}
                             </KanbanColumn>
@@ -352,6 +365,38 @@ export function KanbanBoard({
             <DragOverlay>
                 {tarjetaArrastrada}
             </DragOverlay>
+
+            {tareaEditar && (
+                <EditTaskModal
+                    tarea={tareaEditar}
+                    onClose={() => establecerTareaEditar(null)}
+                    onUpdated={(tareaActualizada) => {
+                        establecerTareas((tareasActuales) =>
+                            tareasActuales.map((tarea) => {
+                                if (tarea.idTarea === tareaActualizada.idTarea) {
+                                    return tareaActualizada;
+                                }
+
+                                return tarea;
+                            })
+                        );
+                    }}
+                />
+            )}
+
+            {tareaEliminar && (
+                <DeleteTaskModal
+                    tarea={tareaEliminar}
+                    onClose={() => establecerTareaEliminar(null)}
+                    onDeleted={(idTarea) => {
+                        establecerTareas((tareasActuales) =>
+                            tareasActuales.filter(
+                                (tarea) => tarea.idTarea !== idTarea
+                            )
+                        );
+                    }}
+                />
+            )}
         </DndContext>
     );
 }

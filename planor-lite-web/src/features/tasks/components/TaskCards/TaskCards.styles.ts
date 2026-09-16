@@ -2,7 +2,7 @@
 /* ESTILOS DEL COMPONENTE TASK CARD */
 /************************************/
 export const taskCardStyles = [
-"flex",
+    "flex",
     "w-full",
     "max-w-[261px]",
     "min-w-0",
@@ -136,4 +136,37 @@ export const taskCardDueDateTextStyles = [
     "text-center",
     "text-[var(--color-vainilla)]",
     "break-words",
+].join(" ");
+
+/************************************/
+/*          MENÚ DESPLEGABLE         */
+/************************************/
+export const taskCardDropdownStyles = [
+    "absolute", 
+    "right-0", 
+    "top-[36px]", 
+    "z-10", 
+    "flex", 
+    "min-w-[112px]", 
+    "flex-col",
+    "rounded-[6px]", 
+    "border", 
+    "border-[rgba(33,6,53,0.45)]", 
+    "bg-[#222930]", 
+    "p-[4px]", 
+    "shadow-lg",
+].join(" ");
+
+export const taskCardDropdownOptionStyles = [
+    "rounded-[4px]", 
+    "px-[10px]", 
+    "py-[8px]", 
+    "text-left", 
+    "text-[14px]", 
+    "text-[var(--color-vainilla)]",
+    "cursor-pointer", 
+    "hover:bg-white/5", 
+    "focus-visible:outline-none", 
+    "focus-visible:ring-2", 
+    "focus-visible:ring-[var(--color-zafiro-lavanda)]",
 ].join(" ");

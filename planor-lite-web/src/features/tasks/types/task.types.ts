@@ -18,3 +18,10 @@ export interface Task {
     ordenEnEstado: number;
     estado: TaskState;
 }
+
+export interface EditTaskData {
+    titulo: string;
+    descripcion: string;
+    prioridad: 'Baja' | 'Media' | 'Alta' | null;
+    fechaVencimientoTarea: string | null;
+}

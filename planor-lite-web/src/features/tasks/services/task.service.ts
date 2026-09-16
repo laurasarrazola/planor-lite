@@ -1,6 +1,6 @@
-import { API_ENDPOINTS } from "@/core/config";
-import { requestService } from "@/core/services";
-import type { Task } from "../types/task.types";
+import { API_ENDPOINTS } from '@/core/config';
+import { requestService } from '@/core/services';
+import type { Task, EditTaskData } from '../types/task.types';
 
 class TaskService {
     /**
@@ -19,33 +19,69 @@ class TaskService {
     }
 
     /**
+     * Edita los datos básicos de una tarea.
+     *
+     * @param idTarea Identificador de la tarea.
+     * @param datos Datos que se desean modificar.
+     * @returns Tarea actualizada.
+     */
+    async editarTarea(
+        idTarea: number,
+        datos: EditTaskData
+    ): Promise<Task> {
+        return requestService.patch<Task>(
+            API_ENDPOINTS.TASKS.BY_ID(idTarea),
+            datos,
+            {
+                showLoader: false,
+                showToast: false,
+            }
+        );
+    }
+
+    /**
+     * Elimina lógicamente una tarea.
+     *
+     * @param idTarea Identificador de la tarea.
+     */
+    async eliminarTarea(idTarea: number): Promise<void> {
+        await requestService.delete(
+            API_ENDPOINTS.TASKS.BY_ID(idTarea),
+            {
+                showLoader: false,
+                showToast: false,
+            }
+        );
+    }
+
+    /**
      * Mueve una tarea a un nuevo estado y orden dentro de ese estado.
      * @param idTarea - El ID de la tarea a mover.
      * @param idEstadoKanban - El ID del estado al que se desea mover la tarea.
      * @param ordenEnEstado - El orden de la tarea dentro del nuevo estado.
      */
     async moverTarea(
-    idTarea: number,
-    idEstadoKanban: number,
-    ordenEnEstado: number
-): Promise<void> {
-    const datos = new URLSearchParams();
+        idTarea: number,
+        idEstadoKanban: number,
+        ordenEnEstado: number
+    ): Promise<void> {
+        const datos = new URLSearchParams();
 
-    datos.append("idEstadoKanban", String(idEstadoKanban));
-    datos.append("ordenEnEstado", String(ordenEnEstado));
+        datos.append('idEstadoKanban', String(idEstadoKanban));
+        datos.append('ordenEnEstado', String(ordenEnEstado));
 
-    await requestService.patch(
-        API_ENDPOINTS.TASKS.MOVE(idTarea),
-        datos,
-        {
-            showLoader: false,
-            showToast: false,
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-        }
-    );
-}
+        await requestService.patch(
+            API_ENDPOINTS.TASKS.MOVE(idTarea),
+            datos,
+            {
+                showLoader: false,
+                showToast: false,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            }
+        );
+    }
 }
 
 export const taskService = new TaskService();

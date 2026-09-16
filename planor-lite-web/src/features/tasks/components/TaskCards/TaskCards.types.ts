@@ -7,6 +7,7 @@ export interface TaskCardProps {
     priority: BadgePriorityType;
     dueDate?: string;
     onOpenClick?: () => void;
-    onMenuClick?: () => void;
+    onEditClick?: () => void;
+    onDeleteClick?: () => void;
     esVistaPrevia?: boolean;
 }

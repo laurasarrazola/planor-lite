@@ -125,7 +125,7 @@ export class EditarTareaDto {
       return undefined;
     }
 
-    return texto.toLowerCase();
+    return texto;
   })
   @IsOptional()
   @IsEnum(['Baja', 'Media', 'Alta'], {

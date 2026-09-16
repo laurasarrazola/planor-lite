@@ -39,6 +39,9 @@ interface BadgePriorityProps {
 export function BadgePriority({
     priority,
 }: BadgePriorityProps) {
+    console.log("Prioridad recibida:", priority);
+    console.log("Icono:", priorityIcons[priority]);
+    console.log("Clases:", badgePriorityStyles({ priority }));
     return (
         <div className={badgePriorityStyles({ priority })}>
 

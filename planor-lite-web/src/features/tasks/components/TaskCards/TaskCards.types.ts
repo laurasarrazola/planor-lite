@@ -8,4 +8,5 @@ export interface TaskCardProps {
     dueDate?: string;
     onOpenClick?: () => void;
     onMenuClick?: () => void;
+    esVistaPrevia?: boolean;
 }

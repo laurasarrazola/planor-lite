@@ -24,6 +24,7 @@ export function TaskCard({
     priority,
     onOpenClick,
     onMenuClick,
+    esVistaPrevia = false,
 }: TaskCardProps) {
 
     const {
@@ -35,6 +36,7 @@ export function TaskCard({
         isDragging,
     } = useSortable({
         id,
+        disabled: esVistaPrevia,
     });
 
     const estiloTarjeta = {

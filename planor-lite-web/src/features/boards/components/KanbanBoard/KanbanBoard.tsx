@@ -1,8 +1,9 @@
-
 import {
     DndContext,
+    DragOverlay,
     closestCorners,
     type DragEndEvent,
+    type DragStartEvent,
 } from "@dnd-kit/core";
 import {
     SortableContext,
@@ -13,7 +14,7 @@ import type { Task } from "@/features/tasks/types/task.types";
 import type { BoardState } from "../../types/estado.types";
 import type { KanbanColumnState } from "../KanbanColumns/KanbanColumns.types";
 import { taskService } from "@/features/tasks/services/task.service";
-import type { Dispatch, SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { kanbanBoardStyles } from "./KanbanBoard.styles";
 
 /* La interface se crea con la finalidad de definir las propiedades que recibe el componente KanbanBoard */
@@ -29,6 +30,9 @@ export function KanbanBoard({
     estados,
     establecerTareas,
 }: KanbanBoardProps) {
+    const [tareaArrastrada, establecerTareaArrastrada] =
+        useState<Task | null>(null);
+
     /* Función que obtiene las tareas de un estado específico */
     const obtenerTareasEstado = (idEstadoKanban: number): Task[] => {
         return tareas
@@ -42,53 +46,90 @@ export function KanbanBoard({
             );
     };
 
+    /* Función que identifica la tarea que comenzó a arrastrarse */
+    const manejarDragStart = (evento: DragStartEvent): void => {
+        const idTareaArrastrada = Number(evento.active.id);
+
+        const tareaEncontrada = tareas.find(
+            (tarea) => tarea.idTarea === idTareaArrastrada
+        );
+
+        if (tareaEncontrada) {
+            establecerTareaArrastrada(tareaEncontrada);
+        }
+    };
+
+    /* Función que limpia la tarea cuando se cancela el arrastre */
+    const manejarDragCancel = (): void => {
+        establecerTareaArrastrada(null);
+    };
+
     /* Función que maneja el evento de arrastre finalizado */
     const manejarDragEnd = async (evento: DragEndEvent): Promise<void> => {
-        /* Se obtiene el elemento activo (la tarea que se está moviendo) y el elemento sobre el que se soltó la tarea (over) */
+        /* Se obtiene la tarea movida y el elemento sobre el que se soltó */
         const { active, over } = evento;
 
-        /* Si no hay un elemento sobre el que se haya soltado la tarea, se retorna */
+        /* Se limpia la tarea mostrada en el DragOverlay */
+        establecerTareaArrastrada(null);
+
+        /* Si no existe un elemento destino, no se realiza ningún cambio */
         if (!over) {
             return;
         }
 
-        /* idTareaMovida es el id de la tarea que se está moviendo y tareaMovida es la tarea en sí */
+        /* Se obtiene el ID de la tarea que se está moviendo */
         const idTareaMovida = Number(active.id);
+
+        /* Se busca la tarea dentro del estado actual */
         const tareaMovida = tareas.find(
             (tarea) => tarea.idTarea === idTareaMovida
         );
 
-        /* Si no se encuentra la tarea que se está moviendo, se retorna */
+        /* Si no se encuentra la tarea, se termina la operación */
         if (!tareaMovida) {
             return;
         }
 
-        /* idEstadoDestino es el id del estado al que se está moviendo la tarea */
+        /* Si se suelta sobre la misma tarea, no se realiza ningún cambio */
+        if (Number(over.id) === idTareaMovida) {
+            return;
+        }
+
+        /* Se obtiene el estado actual de la tarea */
+        const idEstadoOrigen =
+            tareaMovida.estado.idEstadoKanban;
+
+        /* Se determina el estado destino */
         let idEstadoDestino: number | null = null;
 
-        /* Si el elemento sobre el que se soltó la tarea es un estado, se obtiene su id. Si es otra tarea, se obtiene el id del estado de esa tarea */
+        /* Si se soltó directamente sobre una columna */
         if (String(over.id).startsWith("estado-")) {
             idEstadoDestino = Number(
                 String(over.id).replace("estado-", "")
             );
         } else {
+            /* Si se soltó sobre otra tarea, se obtiene su estado */
             const tareaSobre = tareas.find(
-                (tarea) => tarea.idTarea === Number(over.id)
+                (tarea) =>
+                    tarea.idTarea === Number(over.id)
             );
 
-            /* Si se encuentra la tarea sobre la que se soltó la tarea, se obtiene su id de estado */
             if (tareaSobre) {
                 idEstadoDestino =
                     tareaSobre.estado.idEstadoKanban;
             }
         }
 
-        /* Si no se encuentra un estado destino, se retorna */
+        /* Si no se pudo determinar el estado destino, se termina la operación */
         if (idEstadoDestino === null) {
             return;
         }
 
-        /* Se obtienen las tareas del estado destino, excluyendo la tarea que se está moviendo */
+        /* Se determina si la tarea permanece en el mismo estado */
+        const esMismoEstado =
+            idEstadoOrigen === idEstadoDestino;
+
+        /* Se obtienen las tareas del estado destino sin la tarea movida */
         const tareasDestino = obtenerTareasEstado(
             idEstadoDestino
         ).filter(
@@ -96,52 +137,176 @@ export function KanbanBoard({
                 tarea.idTarea !== idTareaMovida
         );
 
-        /* Se determina el nuevo orden de la tarea movida. Si se soltó sobre otra tarea, se coloca antes de esa tarea. Si no, se coloca al final del estado destino */
-        let nuevoOrden = tareasDestino.length + 1;
-        /* Se busca el índice de la tarea sobre la que se soltó la tarea movida */
-        const indiceTareaSobre = tareasDestino.findIndex(
-            (tarea) =>
-                tarea.idTarea === Number(over.id)
-        );
+        /* Se determina la lista que se utilizará para insertar la tarea */
+        let tareasParaReordenar: Task[];
 
-        /* Si se encontró la tarea sobre la que se soltó la tarea movida, se coloca después de esa tarea */
-        if (indiceTareaSobre !== -1) {
-            nuevoOrden = indiceTareaSobre + 1;
+        if (esMismoEstado) {
+            tareasParaReordenar =
+                obtenerTareasEstado(idEstadoOrigen).filter(
+                    (tarea) =>
+                        tarea.idTarea !== idTareaMovida
+                );
+        } else {
+            tareasParaReordenar = tareasDestino;
         }
 
-        /* Se actualiza el estado de las tareas localmente para reflejar el cambio de estado y orden */
-        const tareasAnteriores = tareas;
-        const tareasActualizadas = tareas.map((tarea) => {
-            if (tarea.idTarea === idTareaMovida) {
-                return {
-                    ...tarea,
-                    estado: {
-                        ...tarea.estado,
-                        idEstadoKanban: idEstadoDestino,
-                    },
-                    ordenEnEstado: nuevoOrden,
-                };
+        /* Por defecto la tarea se coloca al final */
+        let nuevoOrden = tareasParaReordenar.length + 1;
+
+        /* Se busca la tarea sobre la que se soltó */
+        const indiceTareaSobre =
+            tareasParaReordenar.findIndex(
+                (tarea) =>
+                    tarea.idTarea === Number(over.id)
+            );
+
+        if (indiceTareaSobre !== -1) {
+            /* Obtener la posición visual de la tarjeta sobre la que se soltó */
+            const rectTareaSobre = over.rect;
+
+            /* Obtener la posición actual de la tarjeta que se está arrastrando */
+            const rectTareaArrastrada =
+                evento.active.rect.current.translated;
+
+            if (rectTareaArrastrada) {
+                /* Calcular el centro vertical de ambas tarjetas */
+                const centroTareaArrastrada =
+                    rectTareaArrastrada.top +
+                    rectTareaArrastrada.height / 2;
+
+                const centroTareaSobre =
+                    rectTareaSobre.top +
+                    rectTareaSobre.height / 2;
+
+                /* Si la tarjeta está debajo del centro, se inserta después */
+                if (
+                    centroTareaArrastrada >
+                    centroTareaSobre
+                ) {
+                    nuevoOrden = indiceTareaSobre + 2;
+                } else {
+                    /* Si está encima del centro, se inserta antes */
+                    nuevoOrden = indiceTareaSobre + 1;
+                }
             }
+        }
 
-            return tarea;
-        });
+        /* Evitar que la posición supere el último lugar disponible */
+        nuevoOrden = Math.min(
+            nuevoOrden,
+            tareasParaReordenar.length + 1
+        );
 
-        /* Se actualiza el estado de las tareas con las tareas actualizadas */
+        /* Se crea una nueva lista con la tarea en su nueva posición */
+        const tareasReordenadas = [
+            ...tareasParaReordenar,
+        ];
+
+        tareasReordenadas.splice(
+            nuevoOrden - 1,
+            0,
+            tareaMovida
+        );
+
+        /* Se guardan las tareas anteriores para poder recuperar el estado */
+        const tareasAnteriores = tareas;
+
+        /* Se obtienen las tareas del estado de origen sin la tarea movida */
+        const tareasOrigen = obtenerTareasEstado(
+            idEstadoOrigen
+        ).filter(
+            (tarea) =>
+                tarea.idTarea !== idTareaMovida
+        );
+
+        /* Se actualizan las tareas localmente */
+        const tareasActualizadas = tareas.map(
+            (tarea) => {
+                /* Buscar la posición de la tarea dentro del estado destino */
+                const indiceDestino =
+                    tareasReordenadas.findIndex(
+                        (tareaReordenada) =>
+                            tareaReordenada.idTarea ===
+                            tarea.idTarea
+                    );
+
+                /* Actualizar las tareas del estado destino */
+                if (indiceDestino !== -1) {
+                    return {
+                        ...tarea,
+                        estado: {
+                            ...tarea.estado,
+                            idEstadoKanban:
+                                idEstadoDestino,
+                        },
+                        ordenEnEstado:
+                            indiceDestino + 1,
+                    };
+                }
+
+                /* Si cambió de estado, reorganizar el estado de origen */
+                if (!esMismoEstado) {
+                    const indiceOrigen =
+                        tareasOrigen.findIndex(
+                            (tareaOrigen) =>
+                                tareaOrigen.idTarea ===
+                                tarea.idTarea
+                        );
+
+                    if (indiceOrigen !== -1) {
+                        return {
+                            ...tarea,
+                            ordenEnEstado:
+                                indiceOrigen + 1,
+                        };
+                    }
+                }
+
+                return tarea;
+            }
+        );
+
+        /* Se actualiza inmediatamente la interfaz */
         establecerTareas(tareasActualizadas);
+
         try {
+            /* Se guarda el cambio en la base de datos */
             await taskService.moverTarea(
                 idTareaMovida,
                 idEstadoDestino,
                 nuevoOrden
             );
         } catch {
+            /* Si falla el servidor, se recupera el estado anterior */
             establecerTareas(tareasAnteriores);
         }
     };
 
+    let tarjetaArrastrada: React.ReactNode = null;
+
+    /* Se muestra la tarjeta que se está arrastrando en el DragOverlay */
+    if (tareaArrastrada) {
+        tarjetaArrastrada = (
+            <TaskCard
+                id={tareaArrastrada.idTarea}
+                title={tareaArrastrada.titulo}
+                description={
+                    tareaArrastrada.descripcion ??
+                    "Sin descripción."
+                }
+                priority={
+                    tareaArrastrada.prioridad ?? "Media"
+                }
+                esVistaPrevia
+            />
+        );
+    }
+
     return (
         <DndContext
             collisionDetection={closestCorners}
+            onDragStart={manejarDragStart}
+            onDragCancel={manejarDragCancel}
             onDragEnd={manejarDragEnd}
         >
             <div className={kanbanBoardStyles}>
@@ -183,6 +348,10 @@ export function KanbanBoard({
                     );
                 })}
             </div>
+
+            <DragOverlay>
+                {tarjetaArrastrada}
+            </DragOverlay>
         </DndContext>
     );
 }

@@ -107,7 +107,7 @@ export const kanbanColumnAddButtonStyles = [
 /************************************/
 export const kanbanColumnTaskListStyles = [
     "flex",
-    "min-h-0",
+    "min-h-[120px]",
     "w-full",
     "min-w-0",
     "flex-1",

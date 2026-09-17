@@ -351,10 +351,12 @@ export class TareasService {
     crearTareaDto: CrearTareaDto,
     idSolicitante: number,
     idTablero: number,
-  ): Promise<Tareas> {
+  ): Promise<RespuestaTareaDto> {
     // se utiliza una transacción para garantizar la consistencia de los datos durante la creación de la tarea.
     return await this.dataSource.transaction(
-      async (administradorTransaccion: EntityManager): Promise<Tareas> => {
+      async (
+        administradorTransaccion: EntityManager,
+      ): Promise<RespuestaTareaDto> => {
         const repositorioTareas =
           administradorTransaccion.getRepository(Tareas);
 
@@ -402,8 +404,10 @@ export class TareasService {
           estadoKanban: estadoEncontrado,
         });
 
-        // Guardar tarea
-        return await repositorioTareas.save(nuevaTarea);
+        // Guardar tarea y construir la respuesta pública.
+        const tareaCreada: Tareas = await repositorioTareas.save(nuevaTarea);
+
+        return this.construirRespuestaTarea(tareaCreada);
       },
     );
   }

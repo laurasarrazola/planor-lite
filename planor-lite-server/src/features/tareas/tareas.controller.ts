@@ -26,7 +26,6 @@ import { CrearTareaDto } from './dto/crear-tarea.dto';
 import { EditarTareaDto } from './dto/editar-tarea.dto';
 import { MoverTareaDto } from './dto/mover-tarea.dto';
 import { ReordenarTareaDto } from './dto/reordenar-tarea.dto';
-import { Tareas } from './entities/tarea.entity';
 
 @ApiTags('tareas')
 @Controller('tareas')
@@ -75,7 +74,7 @@ export class TareasController {
     @GetUser() usuario: Usuarios,
     @Body() crearTareaDto: CrearTareaDto,
     @Param('idTablero') idTablero: number,
-  ): Promise<Tareas> {
+  ): Promise<RespuestaTareaDto> {
     return await this.tareasService.crearTarea(
       crearTareaDto,
       usuario.idUsuario,

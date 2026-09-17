@@ -9,6 +9,7 @@
 
 import {
     useId,
+    useRef,
     type ReactNode,
     type MouseEvent,
 } from "react";
@@ -47,11 +48,22 @@ export function Modal({
 }: ModalProps) {
 
     const idTitulo = useId();
+    const elClickInicioEnElOverlay = useRef(false);
+
+    function manejarInicioClickOverlay(
+        event: MouseEvent<HTMLDivElement>
+    ): void {
+        elClickInicioEnElOverlay.current =
+            event.target === event.currentTarget;
+    }
 
     function manejarClickOverlay(
         event: MouseEvent<HTMLDivElement>
     ): void {
-        if (event.target === event.currentTarget) {
+        if (
+            elClickInicioEnElOverlay.current &&
+            event.target === event.currentTarget
+        ) {
             onClose();
         }
     }
@@ -59,6 +71,7 @@ export function Modal({
     return (
         <div
             className={modalOverlayStyles}
+            onMouseDown={manejarInicioClickOverlay}
             onClick={manejarClickOverlay}
         >
             <div

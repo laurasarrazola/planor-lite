@@ -60,7 +60,8 @@ export function TaskCard({
         establecerMostrarMenu(!mostrarMenu);
     }
 
-    function manejarEditar(): void {
+    function manejarEditar(evento: MouseEvent<HTMLButtonElement>): void {
+        evento.stopPropagation();
         establecerMostrarMenu(false);
 
         if (onEditClick) {
@@ -74,7 +75,8 @@ export function TaskCard({
         evento.stopPropagation();
     }
 
-    function manejarEliminar(): void {
+    function manejarEliminar(evento: MouseEvent<HTMLButtonElement>): void {
+        evento.stopPropagation();
         establecerMostrarMenu(false);
 
         if (onDeleteClick) {

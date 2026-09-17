@@ -1,7 +1,10 @@
 import {
     DndContext,
     DragOverlay,
+    PointerSensor,
     closestCorners,
+    useSensor,
+    useSensors,
     type DragEndEvent,
     type DragStartEvent,
 } from "@dnd-kit/core";
@@ -18,6 +21,7 @@ import { useState, type Dispatch, type SetStateAction } from "react";
 import { kanbanBoardStyles } from "./KanbanBoard.styles";
 import { EditTaskModal } from "@/features/tasks/components/EditTaskModal/EditTaskModal";
 import { DeleteTaskModal } from "@/features/tasks/components/DeleteTaskModal/DeleteTaskModal";
+import { TaskDetailModal } from "@/features/tasks/components/TaskDetailModal/TaskDetailModal";
 
 /* La interface se crea con la finalidad de definir las propiedades que recibe el componente KanbanBoard */
 interface KanbanBoardProps {
@@ -32,6 +36,14 @@ export function KanbanBoard({
     estados,
     establecerTareas,
 }: KanbanBoardProps) {
+    const sensorArrastreTarjetas = useSensor(PointerSensor, {
+        activationConstraint: {
+            distance: 8,
+        },
+    });
+
+    const sensoresArrastreTarjetas = useSensors(sensorArrastreTarjetas);
+
     const [tareaArrastrada, establecerTareaArrastrada] =
         useState<Task | null>(null);
 
@@ -39,6 +51,9 @@ export function KanbanBoard({
         useState<Task | null>(null);
 
     const [tareaEliminar, establecerTareaEliminar] =
+        useState<Task | null>(null);
+
+    const [tareaDetalle, establecerTareaDetalle] =
         useState<Task | null>(null);
 
     /* Función que obtiene las tareas de un estado específico */
@@ -313,6 +328,7 @@ export function KanbanBoard({
     return (
         <DndContext
             collisionDetection={closestCorners}
+            sensors={sensoresArrastreTarjetas}
             onDragStart={manejarDragStart}
             onDragCancel={manejarDragCancel}
             onDragEnd={manejarDragEnd}
@@ -352,6 +368,7 @@ export function KanbanBoard({
                                         dueDate={
                                             tarea.fechaVencimientoTarea ?? undefined
                                         }
+                                        onOpenClick={() => establecerTareaDetalle(tarea)}
                                         onEditClick={() => establecerTareaEditar(tarea)}
                                         onDeleteClick={() => establecerTareaEliminar(tarea)}
                                     />
@@ -365,6 +382,13 @@ export function KanbanBoard({
             <DragOverlay>
                 {tarjetaArrastrada}
             </DragOverlay>
+
+            {tareaDetalle && (
+                <TaskDetailModal
+                    tarea={tareaDetalle}
+                    onClose={() => establecerTareaDetalle(null)}
+                />
+            )}
 
             {tareaEditar && (
                 <EditTaskModal

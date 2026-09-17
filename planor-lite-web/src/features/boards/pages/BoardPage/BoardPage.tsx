@@ -21,6 +21,7 @@ const KanbanBoardComponent = KanbanBoard as unknown as ComponentType<{
     tareas: Task[];
     estados: BoardState[];
     establecerTareas: Dispatch<SetStateAction<Task[]>>;
+    onAddTask: (idEstadoKanban: number) => void;
 }>;
 
 export function BoardPage() {
@@ -31,8 +32,25 @@ export function BoardPage() {
     const [error, establecerError] = useState<string | null>(null);
     const [tareas, establecerTareas] = useState<Task[]>([]);
     const [estados, establecerEstados] = useState<BoardState[]>([]);
-    const [mostrarModalCrearTarea, establecerMostrarModalCrearTarea] =
-        useState(false);
+    const [mostrarModalCrearTarea, establecerMostrarModalCrearTarea] = useState(false);
+    const [idEstadoKanbanInicial, establecerIdEstadoKanbanInicial] = useState<number | null>(null);
+
+    function manejarAbrirModalCrearTarea(): void {
+        establecerIdEstadoKanbanInicial(null);
+        establecerMostrarModalCrearTarea(true);
+    }
+
+    function manejarAbrirModalCrearTareaEnEstado(
+        idEstadoKanban: number
+    ): void {
+        establecerIdEstadoKanbanInicial(idEstadoKanban);
+        establecerMostrarModalCrearTarea(true);
+    }
+
+    function manejarCerrarModalCrearTarea(): void {
+        establecerMostrarModalCrearTarea(false);
+        establecerIdEstadoKanbanInicial(null);
+    }
 
     useEffect(() => {
         async function cargarTablero(): Promise<void> {
@@ -117,20 +135,22 @@ export function BoardPage() {
                         tablero.descripcionTablero ??
                         "Sin descripción."
                     }
-                    onNewTask={() => establecerMostrarModalCrearTarea(true)}
+                    onNewTask={manejarAbrirModalCrearTarea}
                 />
 
                 <KanbanBoardComponent
                     tareas={tareas}
                     estados={estados}
                     establecerTareas={establecerTareas}
+                    onAddTask={manejarAbrirModalCrearTareaEnEstado}
                 />
 
                 {mostrarModalCrearTarea && (
                     <CreateTaskModal
                         idTablero={tablero.idTablero}
                         estados={estados}
-                        onClose={() => establecerMostrarModalCrearTarea(false)}
+                        idEstadoKanbanInicial={idEstadoKanbanInicial}
+                        onClose={manejarCerrarModalCrearTarea}
                         onCreated={(tareaCreada) => {
                             establecerTareas((tareasActuales) => {
                                 const tareasConNuevaTarea: Task[] = [];

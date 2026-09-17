@@ -66,7 +66,11 @@ export class EditarTareaDto {
     minLength: 1,
     maxLength: 200,
   })
-  @Transform(({ value }) => {
+  @Transform(({ value }: { value: unknown }) => {
+    if (value === null) {
+      return null;
+    }
+
     if (typeof value !== 'string') {
       return undefined;
     }
@@ -74,7 +78,7 @@ export class EditarTareaDto {
     const texto = value.trim();
 
     if (texto === '') {
-      return undefined;
+      return null;
     }
 
     return texto;
@@ -114,7 +118,11 @@ export class EditarTareaDto {
     required: false,
     enum: ['Baja', 'Media', 'Alta'],
   })
-  @Transform(({ value }) => {
+  @Transform(({ value }: { value: unknown }) => {
+    if (value === null) {
+      return null;
+    }
+
     if (typeof value !== 'string') {
       return undefined;
     }
@@ -122,7 +130,7 @@ export class EditarTareaDto {
     const texto = value.trim();
 
     if (texto === '') {
-      return undefined;
+      return null;
     }
 
     return texto;
@@ -131,7 +139,7 @@ export class EditarTareaDto {
   @IsEnum(['Baja', 'Media', 'Alta'], {
     message: 'La prioridad debe ser Baja, Media o Alta.',
   })
-  prioridad?: 'Baja' | 'Media' | 'Alta';
+  prioridad?: 'Baja' | 'Media' | 'Alta' | null;
 
   /* Validación de la fecha de vencimiento */
   @ApiProperty({

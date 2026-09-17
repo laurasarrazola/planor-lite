@@ -186,7 +186,7 @@ export function TaskCard({
                 )} */}
 
                 {/* Prioridad */}
-                <BadgePriority priority={priority} />
+                {priority && <BadgePriority priority={priority} />}
             </footer>
         </article>
     );

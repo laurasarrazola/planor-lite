@@ -23,6 +23,7 @@ import {
 interface CreateTaskModalProps {
     idTablero: number;
     estados: BoardState[];
+    idEstadoKanbanInicial: number | null;
     onClose: () => void;
     onCreated: (tarea: Task) => void;
 }
@@ -34,6 +35,7 @@ interface RespuestaErrorApi {
 export function CreateTaskModal({
     idTablero,
     estados,
+    idEstadoKanbanInicial,
     onClose,
     onCreated,
 }: CreateTaskModalProps) {
@@ -202,7 +204,7 @@ export function CreateTaskModal({
 
                     <select
                         name="idEstadoKanban"
-                        defaultValue=""
+                        defaultValue={idEstadoKanbanInicial ?? ""}
                         required
                         disabled={cargando}
                         className={createTaskModalSelectStyles}

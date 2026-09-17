@@ -4,7 +4,7 @@ export interface TaskCardProps {
     id: number;
     title: string;
     description: string;
-    priority: BadgePriorityType;
+    priority: BadgePriorityType | null;
     dueDate?: string;
     onOpenClick?: () => void;
     onEditClick?: () => void;

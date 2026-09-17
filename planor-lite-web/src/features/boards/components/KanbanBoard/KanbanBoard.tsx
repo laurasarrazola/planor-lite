@@ -28,6 +28,7 @@ interface KanbanBoardProps {
     tareas: Task[];
     estados: BoardState[];
     establecerTareas: Dispatch<SetStateAction<Task[]>>;
+    onAddTask: (idEstadoKanban: number) => void;
 }
 
 /*La función que define el componente KanbanBoard */
@@ -35,6 +36,7 @@ export function KanbanBoard({
     tareas,
     estados,
     establecerTareas,
+    onAddTask,
 }: KanbanBoardProps) {
     const sensorArrastreTarjetas = useSensor(PointerSensor, {
         activationConstraint: {
@@ -317,9 +319,7 @@ export function KanbanBoard({
                     tareaArrastrada.descripcion ??
                     "Sin descripción."
                 }
-                priority={
-                    tareaArrastrada.prioridad ?? "Media"
-                }
+                priority={tareaArrastrada.prioridad}
                 esVistaPrevia
             />
         );
@@ -352,6 +352,9 @@ export function KanbanBoard({
                                     estado.nombreEstado as KanbanColumnState
                                 }
                                 idEstadoKanban={estado.idEstadoKanban}
+                                onAddTask={() =>
+                                    onAddTask(estado.idEstadoKanban)
+                                }
                             >
                                 {tareasDelEstado.map((tarea) => (
                                     <TaskCard
@@ -362,9 +365,7 @@ export function KanbanBoard({
                                             tarea.descripcion ??
                                             "Sin descripción."
                                         }
-                                        priority={
-                                            tarea.prioridad ?? "Media"
-                                        }
+                                        priority={tarea.prioridad}
                                         dueDate={
                                             tarea.fechaVencimientoTarea ?? undefined
                                         }

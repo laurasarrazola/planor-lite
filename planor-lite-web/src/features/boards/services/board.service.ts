@@ -57,6 +57,7 @@ class BoardService {
     async eliminarTablero(idTablero: number): Promise<void> {
         await requestService.delete(
             API_ENDPOINTS.BOARDS.BY_ID(idTablero),
+            {},
             {
                 showLoader: false,
                 showToast: false,

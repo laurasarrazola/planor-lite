@@ -61,6 +61,7 @@ class TaskService {
     async eliminarTarea(idTarea: number): Promise<void> {
         await requestService.delete(
             API_ENDPOINTS.TASKS.BY_ID(idTarea),
+            {},
             {
                 showLoader: false,
                 showToast: false,

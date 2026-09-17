@@ -61,9 +61,11 @@ class RequestService {
   }
 
   // Método DELETE tipado para eliminar recursos
-  async delete<T = unknown>(url: string, options: RequestOptions = {}): Promise<T> {
+  async delete<T = unknown>(url: string, body: unknown = {}, options: RequestOptions = {}): Promise<T> {
     const config = { ...this.DEFAULT_OPTIONS, ...options } // combinar opciones
-    return this.executeRequest<T>(() => apiClient.delete(url, this.buildAxiosConfig(config)), config) // ejecutar DELETE
+    const configuracionAxios = this.buildAxiosConfig(config)
+    configuracionAxios.data = body
+    return this.executeRequest<T>(() => apiClient.delete(url, configuracionAxios), config) // ejecutar DELETE
   }
 }
 

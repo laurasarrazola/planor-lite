@@ -44,3 +44,17 @@ export class RespuestaUsuarioDto {
   })
   rolSistema!: 'admin' | 'usuario';
 }
+
+export class RespuestaPerfilUsuarioDto extends RespuestaUsuarioDto {
+  @ApiProperty({
+    description: 'Cantidad de tableros activos del usuario',
+    example: 3,
+  })
+  cantidadTableros!: number;
+
+  @ApiProperty({
+    description: 'Cantidad de tareas activas en los tableros del usuario',
+    example: 12,
+  })
+  cantidadTareas!: number;
+}

@@ -8,12 +8,17 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuarios } from './entity/usuario.entity';
+import { Tableros } from '../tableros/entities/tablero.entity';
+import { Tareas } from '../tareas/entities/tarea.entity';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 import { ObtenerUsuariosDto } from './dto/obtener-usuarios.dto';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
 import { CambiarContrasenaDto } from './dto/cambiar-contrasena.dto';
 import { EliminarUsuarioDto } from './dto/eliminar-usuario.dto';
-import { RespuestaUsuarioDto } from './dto/respuesta-usuario.dto';
+import {
+  RespuestaPerfilUsuarioDto,
+  RespuestaUsuarioDto,
+} from './dto/respuesta-usuario.dto';
 
 // @Injectable() marca la clase para la inyección de dependencias, se crea automáticamente con el CLI.
 @Injectable()
@@ -26,6 +31,10 @@ export class UsuariosService {
     @InjectRepository(Usuarios)
     // inicializamos con la variable usuaiosRepository y se debe "comportar" como un Repository de la entidad Usuarios.
     private readonly usuariosRepository: Repository<Usuarios>,
+    @InjectRepository(Tableros)
+    private readonly tablerosRepository: Repository<Tableros>,
+    @InjectRepository(Tareas)
+    private readonly tareasRepository: Repository<Tareas>,
   ) {}
 
   /* =============== MÉTODO REUTILIZABLE PARA OBTENER USUARIO ACTIVO =============== */
@@ -202,6 +211,37 @@ export class UsuariosService {
     ]);
 
     return this.construirRespuestaUsuario(usuarioObtenido);
+  }
+
+  async obtenerPerfil(idUsuario: number): Promise<RespuestaPerfilUsuarioDto> {
+    const usuario = await this.obtenerUsuarioPorId(idUsuario);
+
+    const [cantidadTableros, cantidadTareas] = await Promise.all([
+      this.tablerosRepository.count({
+        where: {
+          propietario: { idUsuario },
+          tableroActivo: true,
+        },
+      }),
+      this.tareasRepository
+        .createQueryBuilder('tarea')
+        .innerJoin('tarea.estadoKanban', 'estado')
+        .innerJoin('estado.tablero', 'tablero')
+        .where('tablero.idPropietario = :idUsuario', { idUsuario })
+        .andWhere('tablero.tableroActivo = :tableroActivo', {
+          tableroActivo: true,
+        })
+        .andWhere('tarea.tareaActiva = :tareaActiva', {
+          tareaActiva: true,
+        })
+        .getCount(),
+    ]);
+
+    return {
+      ...usuario,
+      cantidadTableros,
+      cantidadTareas,
+    };
   }
 
   /* =============== OBTENER USUARIOS CON FILTROS (QUERY PARAMS) =============== */

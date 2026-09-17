@@ -15,6 +15,8 @@ export const API_ENDPOINTS = {
   USERS: {
     REGISTER: '/usuarios',
     PROFILE: '/usuarios/perfil',
+    UPDATE_PROFILE: '/usuarios/me',
+    DELETE_ACCOUNT: '/usuarios/eliminar',
   },
 
   BOARDS: {

@@ -13,8 +13,10 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom";
 import logo from "@/assets/logo/Planor-logo.svg";
 import { Button } from "../../ui/Button/Button";
+import { MenuUsuario } from "@/features/usuarios/components/MenuUsuario/MenuUsuario";
 import {
     headerStyles,
     logoStyles,
@@ -55,6 +57,7 @@ export function Header({
     alIniciarSesion,
     alRegistrar,
 }: PropiedadesHeader) {
+    const navegar = useNavigate();
 
     /****************************************/
     /*       ESTADO DEL MENÚ MÓVIL         */
@@ -92,6 +95,12 @@ export function Header({
     };
 
     const manejarNavegacion = (elemento: ElementoNavegacion) => {
+        if (modo === "Authenticated" && elemento.label === "Mis tableros") {
+            navegar("/boards");
+            cerrarMenu();
+            return;
+        }
+
         if (alHacerClickNavegacion) {
             alHacerClickNavegacion(elemento);
         }
@@ -105,18 +114,7 @@ export function Header({
 
     if (modo === "Authenticated") {
         acciones = (
-            <button
-                type="button"
-                className="border-0 bg-transparent p-0"
-                onClick={() => ejecutarAccion(alHacerClickPerfil)}
-                aria-label="Abrir perfil"
-            >
-                <Icon
-                    icon="mingcute:user-4-fill"
-                    className={userIconStyles}
-                    aria-hidden="true"
-                />
-            </button>
+            <MenuUsuario claseIcono={userIconStyles} />
         );
     } else {
         acciones = (

@@ -91,7 +91,7 @@ export class UsuariosController {
   @UseGuards(AuthGuard)
   @Get('perfil')
   async obtenerPerfil(@GetUser('idUsuario') idUsuario: number) {
-    return await this.usuariosService.obtenerUsuarioPorId(idUsuario);
+    return await this.usuariosService.obtenerPerfil(idUsuario);
   }
 
   /* ========== OBTENER USUARIOS CON FILTROS (QUERY PARAMS) (GET) ========== */

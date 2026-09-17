@@ -6,21 +6,18 @@ import { cva } from "class-variance-authority";
 export const kanbanColumnStyles = [
     "flex",
     "h-full",
-    "w-[min(321px,calc(100vw-32px))]",
     "min-w-[280px]",
-    "max-w-full",
-    "shrink-0",
+    "flex-1",
     "flex-col",
     "gap-[8px]",
     "overflow-hidden",
     "rounded-[16px]",
     "border",
-    "border-[0.5px]",
+    "border-[1px]",
     "border-[var(--color-obsidiana)]",
     "bg-[#191B1F]",
     "px-[20px]",
     "py-[8px]",
-    "shadow-[0_4px_36px_0_rgba(33,6,53,0.50)]",
 ].join(" ");
 
 /************************************/
@@ -116,7 +113,6 @@ export const kanbanColumnTaskListStyles = [
     "gap-[12px]",
     "overflow-y-auto",
     "overflow-x-hidden",
-    "px-[10px]",
     "py-[10px]",
 ].join(" ");
 

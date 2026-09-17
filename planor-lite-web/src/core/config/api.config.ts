@@ -28,6 +28,7 @@ export const API_ENDPOINTS = {
 },
 
   TASKS: {
+    CREATE: (idTablero: number) => `/tareas/${idTablero}`,
     BY_BOARD: (idTablero: number) => `/tareas/tablero/${idTablero}`,
     BY_ID: (idTarea: number) => `/tareas/${idTarea}`,
     MOVE: (idTarea: number) => `/tareas/${idTarea}/mover`,

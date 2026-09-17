@@ -11,6 +11,7 @@ import { taskService } from "@/features/tasks/services/task.service";
 import type { Task } from "@/features/tasks/types/task.types";
 import { estadoService } from "../../services/estado.service";
 import type { BoardState } from "../../types/estado.types";
+import { CreateTaskModal } from "@/features/tasks/components/CreateTaskModal/CreateTaskModal";
 import {
     boardPageStyles,
     boardPageMainStyles,
@@ -30,6 +31,8 @@ export function BoardPage() {
     const [error, establecerError] = useState<string | null>(null);
     const [tareas, establecerTareas] = useState<Task[]>([]);
     const [estados, establecerEstados] = useState<BoardState[]>([]);
+    const [mostrarModalCrearTarea, establecerMostrarModalCrearTarea] =
+        useState(false);
 
     useEffect(() => {
         async function cargarTablero(): Promise<void> {
@@ -114,6 +117,7 @@ export function BoardPage() {
                         tablero.descripcionTablero ??
                         "Sin descripción."
                     }
+                    onNewTask={() => establecerMostrarModalCrearTarea(true)}
                 />
 
                 <KanbanBoardComponent
@@ -121,6 +125,27 @@ export function BoardPage() {
                     estados={estados}
                     establecerTareas={establecerTareas}
                 />
+
+                {mostrarModalCrearTarea && (
+                    <CreateTaskModal
+                        idTablero={tablero.idTablero}
+                        estados={estados}
+                        onClose={() => establecerMostrarModalCrearTarea(false)}
+                        onCreated={(tareaCreada) => {
+                            establecerTareas((tareasActuales) => {
+                                const tareasConNuevaTarea: Task[] = [];
+
+                                for (const tareaActual of tareasActuales) {
+                                    tareasConNuevaTarea.push(tareaActual);
+                                }
+
+                                tareasConNuevaTarea.push(tareaCreada);
+
+                                return tareasConNuevaTarea;
+                            });
+                        }}
+                    />
+                )}
             </main>
         </div>
     );

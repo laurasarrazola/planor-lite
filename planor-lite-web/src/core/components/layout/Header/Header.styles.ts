@@ -21,7 +21,7 @@ export const headerStyles = [
     "relative",
     "flex",
     "w-full",
-    "min-h-[70px]",
+    "min-h-[50px]",
     "items-center",
     "justify-between",
     "px-[clamp(12px,2vw,20px)]",

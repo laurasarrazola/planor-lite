@@ -25,3 +25,11 @@ export interface EditTaskData {
     prioridad: 'Baja' | 'Media' | 'Alta' | null;
     fechaVencimientoTarea: string | null;
 }
+
+export interface CreateTaskData {
+    idEstadoKanban: number;
+    titulo: string;
+    descripcion: string;
+    prioridad: 'Baja' | 'Media' | 'Alta' | null;
+    fechaVencimientoTarea: string | null;
+}

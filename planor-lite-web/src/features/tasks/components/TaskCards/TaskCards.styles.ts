@@ -4,7 +4,6 @@
 export const taskCardStyles = [
     "flex",
     "w-full",
-    "max-w-[261px]",
     "min-w-0",
     "min-h-[105px]",
     "h-auto",

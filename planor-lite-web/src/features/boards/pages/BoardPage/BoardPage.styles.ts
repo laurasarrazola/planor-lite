@@ -3,7 +3,6 @@ export const boardPageStyles = [
     "min-h-screen",
     "min-w-0",
     "flex-col",
-    "bg-[#16191C]",
 ].join(" ");
 
 export const boardPageMainStyles = [

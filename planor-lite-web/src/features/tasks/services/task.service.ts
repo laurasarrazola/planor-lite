@@ -1,8 +1,22 @@
 import { API_ENDPOINTS } from '@/core/config';
 import { requestService } from '@/core/services';
-import type { Task, EditTaskData } from '../types/task.types';
+import type { Task, EditTaskData, CreateTaskData } from '../types/task.types';
 
 class TaskService {
+    async crearTarea(
+        idTablero: number,
+        datosTarea: CreateTaskData
+    ): Promise<Task> {
+        return requestService.post<Task>(
+            API_ENDPOINTS.TASKS.CREATE(idTablero),
+            datosTarea,
+            {
+                showLoader: false,
+                showToast: false,
+            }
+        );
+    }
+
     /**
      * Obtiene las tareas asociadas a un tablero específico.
      * @param {number} idTablero - El ID del tablero del cual se desean obtener las tareas.

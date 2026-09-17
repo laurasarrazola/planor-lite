@@ -18,9 +18,9 @@ import {
     taskCardDropdownStyles,
     taskCardDropdownOptionStyles,
     taskCardFooterStyles,
-    taskCardDueDateStyles,
-    taskCardDueDateIconStyles,
-    taskCardDueDateTextStyles,
+    // taskCardDueDateStyles,
+    // taskCardDueDateIconStyles,
+    // taskCardDueDateTextStyles,
 } from "./TaskCards.styles";
 import type { TaskCardProps } from "./TaskCards.types";
 
@@ -28,7 +28,7 @@ export function TaskCard({
     id,
     title,
     description,
-    dueDate,
+    // dueDate,
     priority,
     onOpenClick,
     onEditClick,
@@ -169,7 +169,7 @@ export function TaskCard({
             {/* ========== FOOTER ========== */}
             <footer className={taskCardFooterStyles}>
 
-                {/* Fecha opcional */}
+                {/* Fecha opcional
                 {dueDate && (
                     <div className={taskCardDueDateStyles}>
                         <Icon
@@ -181,7 +181,7 @@ export function TaskCard({
                             {dueDate}
                         </span>
                     </div>
-                )}
+                )} */}
 
                 {/* Prioridad */}
                 <BadgePriority priority={priority} />

@@ -64,7 +64,7 @@ export const inputValueStyles = cva(
         "w-full",
         "min-w-0",
         "items-center",
-        "rounded-[8px]",
+        "rounded-[6px]",
         "px-[16px]",
         "py-[10px]",
         "bg-transparent",
@@ -95,13 +95,13 @@ export const inputValueStyles = cva(
                 state: "Default",
                 className: [
                     "border",
-                    "border-[var(--input-border-default)]",
+                    "border-[var(--textarea-border-default)]",
                     "text-[var(--color-vainilla)]",
                     "placeholder:text-[var(--input-text-default)]",
 
                     /* Autofill mantiene el borde Default */
                     "[&:-webkit-autofill]:border",
-                    "[&:-webkit-autofill]:border-[var(--input-border-default)]",
+                    "[&:-webkit-autofill]:border-[var(--textarea-border-default)]",
                 ].join(" "),
             },
 
@@ -109,15 +109,15 @@ export const inputValueStyles = cva(
                 state: "Focus",
                 className: [
                     "border-2",
-                    "border-[var(--input-border-focus)]",
-                    "shadow-[1px_1px_6px_0_var(--input-border-focus)]",
+                    "border-[var(--textarea-border-focus)]",
+                    "shadow-[1px_1px_6px_0_var(--textarea-border-focus)]",
                     "text-[var(--color-vainilla)]",
                     "placeholder:text-[var(--input-text-focus)]",
 
                     /* Autofill mantiene el borde Focus */
                     "[&:-webkit-autofill]:border-2",
-                    "[&:-webkit-autofill]:border-[var(--input-border-focus)]",
-                    "[&:-webkit-autofill]:shadow-[1px_1px_6px_0_var(--input-border-focus)]",
+                    "[&:-webkit-autofill]:border-[var(--textarea-border-focus)]",
+                    "[&:-webkit-autofill]:shadow-[1px_1px_6px_0_var(--textarea-border-focus)]",
                 ].join(" "),
             },
 
@@ -125,13 +125,13 @@ export const inputValueStyles = cva(
                 state: "Disabled",
                 className: [
                     "border",
-                    "border-[var(--input-border-disabled)]",
+                    "border-[var(--textarea-border-disabled)]",
                     "text-[var(--input-text-disabled)]",
                     "placeholder:text-[var(--input-text-disabled)]",
 
                     /* Autofill mantiene el borde Disabled */
                     "[&:-webkit-autofill]:border",
-                    "[&:-webkit-autofill]:border-[var(--input-border-disabled)]",
+                    "[&:-webkit-autofill]:border-[var(--textarea-border-disabled)]",
                 ].join(" "),
             },
         ],

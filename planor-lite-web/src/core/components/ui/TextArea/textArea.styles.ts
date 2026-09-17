@@ -17,7 +17,6 @@ export const textAreaStyles = [
     "flex-col",
     "items-start",
     "gap-[6px]",
-    "p-[10px]",
 ].join(" ");
 
 

@@ -10,6 +10,13 @@ import type {
     Task,
     TaskPriority,
 } from "../../types/task.types";
+import {
+    editTaskModalActionsStyles,
+    editTaskModalErrorStyles,
+    editTaskModalFormStyles,
+    editTaskModalLabelStyles,
+    editTaskModalSelectStyles,
+} from "./EditTaskModal.styles";
 
 interface EditTaskModalProps {
     tarea: Task;
@@ -123,7 +130,7 @@ export function EditTaskModal({
             description="Modifica la información de la tarea."
             onClose={onClose}
             actions={
-                <div>
+                <div className={editTaskModalActionsStyles}>
                     <Button
                         type="submit"
                         form={idFormulario}
@@ -139,7 +146,7 @@ export function EditTaskModal({
             <form
                 id={idFormulario}
                 onSubmit={manejarEnvio}
-                className="flex w-full flex-col gap-3"
+                className={editTaskModalFormStyles}
             >
                 <Input
                     label="Título de la tarea"
@@ -161,14 +168,14 @@ export function EditTaskModal({
                     disabled={cargando}
                 />
 
-                <label className="flex flex-col gap-1 text-sm text-(--color-vainilla)">
+                <label className={editTaskModalLabelStyles}>
                     Prioridad
 
                     <select
                         name="prioridad"
                         defaultValue={tarea.prioridad ?? ""}
                         disabled={cargando}
-                        className="rounded-[6px] border border-[rgba(33,6,53,0.45)] bg-[#222930] p-2 text-(--color-vainilla)"
+                        className={editTaskModalSelectStyles}
                     >
                         <option value="">Sin prioridad</option>
                         <option value="Baja">Baja</option>
@@ -187,7 +194,7 @@ export function EditTaskModal({
 
                 {error && (
                     <p
-                        className="text-sm text-red-400"
+                        className={editTaskModalErrorStyles}
                         role="alert"
                     >
                         {error}

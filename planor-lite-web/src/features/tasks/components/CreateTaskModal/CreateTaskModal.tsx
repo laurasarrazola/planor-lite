@@ -12,6 +12,13 @@ import type {
     TaskPriority,
 } from "../../types/task.types";
 import type { BoardState } from "@/features/boards/types/estado.types";
+import {
+    createTaskModalActionsStyles,
+    createTaskModalErrorStyles,
+    createTaskModalFormStyles,
+    createTaskModalLabelStyles,
+    createTaskModalSelectStyles,
+} from "./CreateTaskModal.styles";
 
 interface CreateTaskModalProps {
     idTablero: number;
@@ -154,7 +161,7 @@ export function CreateTaskModal({
             description="Completa la información de la tarea."
             onClose={onClose}
             actions={
-                <div className="flex w-full justify-center">
+                <div className={createTaskModalActionsStyles}>
                     <Button
                         type="submit"
                         form={idFormulario}
@@ -170,7 +177,7 @@ export function CreateTaskModal({
             <form
                 id={idFormulario}
                 onSubmit={manejarEnvio}
-                className="flex w-full flex-col gap-3"
+                className={createTaskModalFormStyles}
             >
                 <Input
                     label="Título de la tarea"
@@ -190,7 +197,7 @@ export function CreateTaskModal({
                     disabled={cargando}
                 />
 
-                <label className="flex flex-col gap-1 text-sm text-(--color-vainilla)">
+                <label className={createTaskModalLabelStyles}>
                     Estado
 
                     <select
@@ -198,7 +205,7 @@ export function CreateTaskModal({
                         defaultValue=""
                         required
                         disabled={cargando}
-                        className="rounded-[6px] border border-[rgba(33,6,53,0.45)] bg-[#222930] p-2 text-(--color-vainilla)"
+                        className={createTaskModalSelectStyles}
                     >
                         <option value="" disabled>
                             Selecciona un estado
@@ -215,14 +222,14 @@ export function CreateTaskModal({
                     </select>
                 </label>
 
-                <label className="flex flex-col gap-1 text-sm text-(--color-vainilla)">
+                <label className={createTaskModalLabelStyles}>
                     Prioridad
 
                     <select
                         name="prioridad"
                         defaultValue=""
                         disabled={cargando}
-                        className="rounded-[6px] border border-[rgba(33,6,53,0.45)] bg-[#222930] p-2 text-(--color-vainilla)"
+                        className={createTaskModalSelectStyles}
                     >
                         <option value="">Sin prioridad</option>
                         <option value="Baja">Baja</option>
@@ -240,7 +247,7 @@ export function CreateTaskModal({
 
                 {error && (
                     <p
-                        className="text-sm text-red-400"
+                        className={createTaskModalErrorStyles}
                         role="alert"
                     >
                         {error}

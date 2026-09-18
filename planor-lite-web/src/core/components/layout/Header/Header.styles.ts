@@ -77,17 +77,6 @@ export const actionsStyles = [
 ].join(" ");
 
 /****************************************/
-/*          ICONO USUARIO              */
-/****************************************/
-export const userIconStyles = [
-    "h-[40px]",
-    "w-[40px]",
-    "shrink-0",
-    "cursor-pointer",
-    "text-[var(--color-vainilla)]",
-].join(" ");
-
-/****************************************/
 /*       BOTÓN MENÚ HAMBURGUESA        */
 /****************************************/
 export const menuButtonStyles = [

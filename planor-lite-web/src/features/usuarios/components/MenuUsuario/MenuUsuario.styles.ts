@@ -8,6 +8,14 @@ export const menuUsuarioBotonStyles = [
     "p-0",
 ].join(" ");
 
+export const menuUsuarioIconoStyles = [
+    "h-[24px]",
+    "w-[24px]",
+    "shrink-0",
+    "cursor-pointer",
+    "text-[var(--color-vainilla)]",
+].join(" ");
+
 export const menuUsuarioListaStyles = [
     "absolute",
     "right-0",

@@ -52,6 +52,7 @@ export const taskCardTitleStyles = [
     "truncate",
     "text-[16px]",
     "leading-[18px]",
+    "font-semibold",
     "text-[var(--color-vainilla)]",
 ].join(" ");
 

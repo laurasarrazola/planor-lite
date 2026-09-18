@@ -34,6 +34,16 @@ class AuthService {
             }
         );
     }
+    async cerrarSesion(): Promise<{ mensaje: string }> {
+        return requestService.post<{ mensaje: string }>(
+            API_ENDPOINTS.AUTH.LOGOUT,
+            {},
+            {
+                showLoader: false,
+                showToast: false,
+            }
+        );
+    }
 }
 
 export const authService = new AuthService();

@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import { Header } from "@/core/components/layout/Header/Header";
 import { Footer } from "@/core/components/layout/Footer/Footer";
 import { Button } from "@/core/components/ui/Button/Button";
+import { authStorageService } from "@/core/services";
 import { HomeCard } from "../components/HomeCards/HomeCards";
 import {
     homePageStyles,
@@ -45,6 +46,7 @@ import {
 } from "./HomePage.styles";
 import heroImage from "@/assets/hero.png";
 import type { ElementoNavegacion } from "@/core/components/layout/Header/Header.types";
+import type { ModoPaginaInicio } from "./homePage.types";
 
 const caracteristicasInicio = [
     {
@@ -131,6 +133,15 @@ const pasosComoFunciona = [
 ];
 
 export function HomePage() {
+    let modoPaginaInicio: ModoPaginaInicio = "Guest";
+
+    if (authStorageService.isAuthenticated()) {
+        modoPaginaInicio = "Authenticated";
+    }
+
+    const usuarioEstaAutenticado =
+        modoPaginaInicio === "Authenticated";
+
     const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
     const [mostrarModalLogin, setMostrarModalLogin] = useState(false);
 
@@ -189,7 +200,7 @@ export function HomePage() {
 
             {/* ========== HEADER ========== */}
             <Header
-                modo="Guest"
+                modo={modoPaginaInicio}
                 alHacerClickNavegacion={manejarClicNavegacion}
                 alIniciarSesion={manejarAbrirModalLogin}
                 alRegistrar={manejarAbrirModalRegistro}
@@ -238,6 +249,7 @@ export function HomePage() {
                         <div className={homeHeroActionsStyles}>
 
                             {/* ---------- BUTTONS ---------- */}
+                            {!usuarioEstaAutenticado && (
                             <div className={homeHeroButtonsStyles}>
                                 <Button
                                     variant="Primary"
@@ -255,6 +267,7 @@ export function HomePage() {
                                     Conocer más
                                 </Button>
                             </div>
+                            )}
 
                             {/* ---------- BENEFITS ---------- */}
                             <div className={homeHeroBenefitsStyles}>
@@ -367,6 +380,7 @@ export function HomePage() {
                             con una experiencia simple y enfocada.
                         </p>
 
+                        {!usuarioEstaAutenticado && (
                         <Button
                             variant="Primary"
                             buttonStyle="Filled"
@@ -374,12 +388,13 @@ export function HomePage() {
                             onClick={manejarAbrirModalRegistro}>
                             Comienza gratis
                         </Button>
+                        )}
                     </div>
                 </section>
             </main>
 
             {/* ========== REGISTER MODAL ========== */}
-            {mostrarModalRegistro && (
+            {!usuarioEstaAutenticado && mostrarModalRegistro && (
                 <RegisterModal
                     onClose={manejarCerrarModalRegistro}
                     onRegistered={manejarRegistroExitoso}
@@ -387,7 +402,7 @@ export function HomePage() {
             )}
 
             {/* ========== LOGIN MODAL ========== */}
-            {mostrarModalLogin && (
+            {!usuarioEstaAutenticado && mostrarModalLogin && (
                 <LoginModal onClose={manejarCerrarModalLogin} />
             )}
 

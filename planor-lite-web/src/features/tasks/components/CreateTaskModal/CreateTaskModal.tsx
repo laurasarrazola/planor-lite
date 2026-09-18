@@ -218,7 +218,9 @@ export function CreateTaskModal({
                                 key={estado.idEstadoKanban}
                                 value={estado.idEstadoKanban}
                             >
-                                {estado.nombreEstado}
+                                {estado.nombreEstado === "En_ejecucion"
+                                    ? "En ejecución"
+                                    : estado.nombreEstado}
                             </option>
                         ))}
                     </select>

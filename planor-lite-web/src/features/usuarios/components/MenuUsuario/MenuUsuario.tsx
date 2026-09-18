@@ -6,6 +6,7 @@ import { Button } from "@/core/components/ui/Button/Button";
 import { Input } from "@/core/components/ui/Input/Input";
 import { Modal } from "@/core/components/ui/Modals/Modal";
 import { authStorageService } from "@/core/services";
+import { authService } from "@/features/auth";
 import { usuarioService } from "../../services/usuario.service";
 import type { PerfilUsuario } from "../../types/usuario.types";
 import {
@@ -19,19 +20,14 @@ import {
     menuUsuarioBotonStyles,
     menuUsuarioContenedorStyles,
     menuUsuarioEliminarStyles,
+    menuUsuarioIconoStyles,
     menuUsuarioListaStyles,
     menuUsuarioOpcionStyles,
 } from "./MenuUsuario.styles";
 
 type ModalUsuario = "informacion" | "editar" | "eliminar" | null;
 
-interface MenuUsuarioProps {
-    claseIcono: string;
-}
-
-export function MenuUsuario({
-    claseIcono,
-}: MenuUsuarioProps) {
+export function MenuUsuario() {
     const navegar = useNavigate();
 
     const [mostrarMenu, establecerMostrarMenu] = useState(false);
@@ -130,6 +126,20 @@ export function MenuUsuario({
         }
     }
 
+    async function manejarCerrarSesion(): Promise<void> {
+        try {
+            establecerCargando(true);
+            await authService.cerrarSesion();
+            authStorageService.clearAuth();
+            toast.success("Sesión cerrada correctamente.");
+            navegar("/home");
+        } catch {
+            toast.error("No fue posible cerrar la sesiÃ³n.");
+        } finally {
+            establecerCargando(false);
+        }
+    }
+
     return (
         <div className={menuUsuarioContenedorStyles}>
             <button
@@ -142,8 +152,8 @@ export function MenuUsuario({
                 aria-expanded={mostrarMenu}
             >
                 <Icon
-                    icon="mingcute:user-4-fill"
-                    className={claseIcono}
+                    icon="boxicons:user"
+                    className={menuUsuarioIconoStyles}
                     aria-hidden="true"
                 />
             </button>
@@ -167,6 +177,15 @@ export function MenuUsuario({
                         onClick={() => abrirModal("editar")}
                     >
                         Editar información
+                    </button>
+
+                    <button
+                        type="button"
+                        className={menuUsuarioOpcionStyles}
+                        onClick={manejarCerrarSesion}
+                        disabled={cargando}
+                    >
+                        Cerrar sesión
                     </button>
 
                     <button

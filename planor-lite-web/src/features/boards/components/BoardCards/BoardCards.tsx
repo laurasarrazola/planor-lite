@@ -7,8 +7,8 @@ import {
     boardCardStyles,
     boardCardHeaderStyles,
     boardCardInfoStyles,
-    boardCardIconContainerStyles,
-    boardCardIconStyles,
+    //boardCardIconContainerStyles,
+    //boardCardIconStyles,
     boardCardTextsStyles,
     boardCardTitleStyles,
     boardCardDescriptionStyles,
@@ -57,7 +57,7 @@ export function BoardCard({
                 {/* ========== INFORMACIÓN DEL TABLERO ========== */}
                 <div className={boardCardInfoStyles}>
                     {/* ========== ICONO ========== */}
-                    <div
+                    {/* <div
                         className={boardCardIconContainerStyles({
                             accent,
                         })}
@@ -66,7 +66,7 @@ export function BoardCard({
                             icon="lucide:clipboard-check"
                             className={boardCardIconStyles}
                         />
-                    </div>
+                    </div> */}
 
                     {/* ========== TEXTOS ========== */}
                     <div className={boardCardTextsStyles}>

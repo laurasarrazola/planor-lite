@@ -13,7 +13,7 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { Icon } from "@iconify/react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo/Planor-logo.svg";
 import { Button } from "../../ui/Button/Button";
 import { MenuUsuario } from "@/features/usuarios/components/MenuUsuario/MenuUsuario";
@@ -23,7 +23,6 @@ import {
     navigationStyles,
     navigationItemStyles,
     actionsStyles,
-    userIconStyles,
     menuButtonStyles,
     menuIconStyles,
     mobileMenuStyles,
@@ -70,7 +69,10 @@ export function Header({
     let elementosNavegacion: ElementoNavegacion[];
 
     if (modo === "Authenticated") {
-        elementosNavegacion = [{ label: "Mis tableros" }];
+        elementosNavegacion = [
+            { label: "Inicio" },
+            { label: "Mis tableros" },
+        ];
     } else {
         elementosNavegacion = [
             { label: "Inicio" },
@@ -101,6 +103,12 @@ export function Header({
             return;
         }
 
+        if (modo === "Authenticated" && elemento.label === "Inicio") {
+            navegar("/home");
+            cerrarMenu();
+            return;
+        }
+
         if (alHacerClickNavegacion) {
             alHacerClickNavegacion(elemento);
         }
@@ -114,7 +122,7 @@ export function Header({
 
     if (modo === "Authenticated") {
         acciones = (
-            <MenuUsuario claseIcono={userIconStyles} />
+            <MenuUsuario />
         );
     } else {
         acciones = (
@@ -198,11 +206,13 @@ export function Header({
         <header className={headerStyles}>
 
             {/* ========== LOGO ========== */}
-            <img
-                src={logo}
-                alt="Planor"
-                className={logoStyles}
-            />
+            <Link to={modo === "Authenticated" ? "/home" : "/"}>
+                <img
+                    src={logo}
+                    alt="Planor"
+                    className={logoStyles}
+                />
+            </Link>
 
             {/* ========== NAVEGACIÓN DESKTOP ========== */}
             <nav

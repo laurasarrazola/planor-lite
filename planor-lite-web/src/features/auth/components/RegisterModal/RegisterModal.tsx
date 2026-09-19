@@ -1,21 +1,22 @@
 import { useId, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type React from "react";
 import { toast } from "sonner";
 import { Modal } from "@/core/components/ui/Modals/Modal";
 import { Input } from "@/core/components/ui/Input/Input";
 import { Button } from "@/core/components/ui/Button/Button";
 import { authService } from "@/features/auth";
+import { authStorageService } from "@/core/services";
 
 interface RegisterModalProps {
     onClose: () => void;
-    onRegistered: () => void;
 }
 
 export function RegisterModal({
     onClose,
-    onRegistered,
 }: RegisterModalProps) {
     const idFormulario = useId();
+    const navegar = useNavigate();
     const [error, setError] = useState<string | null>(null);
     const [cargando, setCargando] = useState(false);
 
@@ -60,8 +61,20 @@ export function RegisterModal({
             await authService.registrarUsuario(datos);
 
             toast.success("Cuenta creada correctamente.");
+            
+            const respuestaInicioSesion =
+                await authService.iniciarSesion({
+                    email: datos.email,
+                    contrasena: datos.contrasena,
+                });
 
-            onRegistered();
+            authStorageService.setSession(
+                respuestaInicioSesion.token,
+                true
+            );
+
+            onClose();
+            navegar("/boards");
         } catch (error: unknown) {
             const mensaje = obtenerMensajeError(error);
 
@@ -155,7 +168,7 @@ export function RegisterModal({
                     name="contrasena"
                     type="password"
                     autoComplete="new-password"
-                    helperText="Debe contener mínimo ocho caracteres, una mayúscula, una minúscula, un número y un carácter especial."
+                    helperText="Ocho caracteres, una mayúscula, una minúscula, un número y un carácter especial."
                     required
                 />
 

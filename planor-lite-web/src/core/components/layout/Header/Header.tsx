@@ -10,13 +10,14 @@
  * 4. Renderizar el header.
  */
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { Icon } from "@iconify/react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo/Planor-logo.svg";
 import { Button } from "../../ui/Button/Button";
 import { MenuUsuario } from "@/features/usuarios/components/MenuUsuario/MenuUsuario";
+import { useClickFuera } from "@/core/hooks/useClickFuera";
 import {
     headerStyles,
     logoStyles,
@@ -62,6 +63,11 @@ export function Header({
     /*       ESTADO DEL MENÚ MÓVIL         */
     /****************************************/
     const [menuAbierto, establecerMenuAbierto] = useState(false);
+    const referenciaHeader = useRef<HTMLElement>(null);
+
+    useClickFuera(referenciaHeader, menuAbierto, () => {
+        establecerMenuAbierto(false);
+    });
 
     /****************************************/
     /*             NAVEGACIÓN              */
@@ -104,7 +110,7 @@ export function Header({
         }
 
         if (modo === "Authenticated" && elemento.label === "Inicio") {
-            navegar("/home");
+            navegar("/");
             cerrarMenu();
             return;
         }
@@ -203,10 +209,10 @@ export function Header({
     /*             RENDER                  */
     /****************************************/
     return (
-        <header className={headerStyles}>
+        <header ref={referenciaHeader} className={headerStyles}>
 
             {/* ========== LOGO ========== */}
-            <Link to={modo === "Authenticated" ? "/home" : "/"}>
+            <Link to={modo === "Authenticated" ? "/" : "/"}>
                 <img
                     src={logo}
                     alt="Planor"

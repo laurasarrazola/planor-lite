@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { RegisterModal } from "@/features/auth/components/RegisterModal/RegisterModal";
 import { LoginModal } from "@/features/auth/components/LoginModal/LoginModal";
 import { Icon } from "@iconify/react";
@@ -133,14 +133,18 @@ const pasosComoFunciona = [
 ];
 
 export function HomePage() {
+    const usuarioEstaAutenticado = useSyncExternalStore(
+        authStorageService.suscribirseAutenticacion.bind(
+            authStorageService
+        ),
+        authStorageService.isAuthenticated.bind(authStorageService),
+        () => false
+    );
     let modoPaginaInicio: ModoPaginaInicio = "Guest";
 
-    if (authStorageService.isAuthenticated()) {
+    if (usuarioEstaAutenticado) {
         modoPaginaInicio = "Authenticated";
     }
-
-    const usuarioEstaAutenticado =
-        modoPaginaInicio === "Authenticated";
 
     const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
     const [mostrarModalLogin, setMostrarModalLogin] = useState(false);
@@ -151,11 +155,6 @@ export function HomePage() {
 
     function manejarCerrarModalRegistro(): void {
         setMostrarModalRegistro(false);
-    }
-
-    function manejarRegistroExitoso(): void {
-        setMostrarModalRegistro(false);
-        setMostrarModalLogin(true);
     }
 
     function manejarAbrirModalLogin(): void {
@@ -397,7 +396,6 @@ export function HomePage() {
             {!usuarioEstaAutenticado && mostrarModalRegistro && (
                 <RegisterModal
                     onClose={manejarCerrarModalRegistro}
-                    onRegistered={manejarRegistroExitoso}
                 />
             )}
 

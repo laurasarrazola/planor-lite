@@ -14,9 +14,26 @@ export interface AuthSession {
 }
 
 class AuthStorageService {
+  private suscriptoresAutenticacion: Set<() => void> = new Set()
+
+  suscribirseAutenticacion(suscriptor: () => void): () => void {
+    this.suscriptoresAutenticacion.add(suscriptor)
+
+    return () => {
+      this.suscriptoresAutenticacion.delete(suscriptor)
+    }
+  }
+
+  private notificarCambioAutenticacion(): void {
+    this.suscriptoresAutenticacion.forEach((suscriptor) => {
+      suscriptor()
+    })
+  }
+
   // Guarda el flag de autenticación (true/false)
   setIsAuth(isAuth: boolean): void {
     storageService.set(STORAGE_KEYS.IS_AUTH, isAuth)
+    this.notificarCambioAutenticacion()
   }
 
   // Recupera el flag de autenticación, devuelve false si no existe
@@ -65,6 +82,7 @@ class AuthStorageService {
     storageService.remove(STORAGE_KEYS.TOKEN)
     storageService.remove(STORAGE_KEYS.USER)
     storageService.remove(STORAGE_KEYS.MENU)
+    this.notificarCambioAutenticacion()
   }
 
   // Guarda el token y marca la sesión como autenticada

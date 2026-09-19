@@ -49,7 +49,7 @@ export const taskCardTextsStyles = [
 export const taskCardTitleStyles = [
     "w-full",
     "min-w-0",
-    "truncate",
+    "line-clamp-2",
     "text-[16px]",
     "leading-[18px]",
     "font-semibold",

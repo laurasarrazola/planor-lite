@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Icon } from "@iconify/react";
+import { useClickFuera } from "@/core/hooks/useClickFuera";
 
 import { Button } from "../../../../core/components/ui/Button/Button";
 
@@ -29,6 +30,11 @@ export function BoardCard({
     onOpenClick,
 }: BoardCardProps) {
     const [mostrarMenu, establecerMostrarMenu] = useState(false);
+    const referenciaMenu = useRef<HTMLDivElement>(null);
+
+    useClickFuera(referenciaMenu, mostrarMenu, () => {
+        establecerMostrarMenu(false);
+    });
 
     function manejarMenu(): void {
         establecerMostrarMenu(!mostrarMenu);
@@ -81,7 +87,7 @@ export function BoardCard({
                 </div>
 
                 {/* ========== MENÚ ========== */}
-                <div>
+                <div ref={referenciaMenu}>
                     <button
                         type="button"
                         aria-label={`Acciones del tablero ${title}`}

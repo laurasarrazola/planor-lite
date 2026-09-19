@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/core/components/ui/Button/Button";
@@ -7,6 +7,7 @@ import { Input } from "@/core/components/ui/Input/Input";
 import { Modal } from "@/core/components/ui/Modals/Modal";
 import { authStorageService } from "@/core/services";
 import { authService } from "@/features/auth";
+import { useClickFuera } from "@/core/hooks/useClickFuera";
 import { usuarioService } from "../../services/usuario.service";
 import type { PerfilUsuario } from "../../types/usuario.types";
 import {
@@ -31,11 +32,16 @@ export function MenuUsuario() {
     const navegar = useNavigate();
 
     const [mostrarMenu, establecerMostrarMenu] = useState(false);
+    const referenciaMenu = useRef<HTMLDivElement>(null);
     const [modalUsuario, establecerModalUsuario] =
         useState<ModalUsuario>(null);
     const [usuario, establecerUsuario] = useState<PerfilUsuario | null>(null);
     const [error, establecerError] = useState<string | null>(null);
     const [cargando, establecerCargando] = useState(false);
+
+    useClickFuera(referenciaMenu, mostrarMenu, () => {
+        establecerMostrarMenu(false);
+    });
 
     async function abrirModal(
         tipoModal: ModalUsuario
@@ -62,7 +68,7 @@ export function MenuUsuario() {
     }
 
     async function manejarEdicion(
-        evento: FormEvent<HTMLFormElement>
+        evento: SyntheticEvent<HTMLFormElement>
     ): Promise<void> {
         evento.preventDefault();
 
@@ -86,7 +92,6 @@ export function MenuUsuario() {
                 ...usuario,
                 ...usuarioActualizado,
             });
-            toast.success("Información actualizada correctamente.");
             cerrarModal();
         } catch {
             establecerError(
@@ -98,7 +103,7 @@ export function MenuUsuario() {
     }
 
     async function manejarEliminacion(
-        evento: FormEvent<HTMLFormElement>
+        evento: SyntheticEvent<HTMLFormElement>
     ): Promise<void> {
         evento.preventDefault();
 
@@ -115,8 +120,7 @@ export function MenuUsuario() {
             });
 
             authStorageService.clearAuth();
-            toast.success("Cuenta eliminada correctamente.");
-            navegar("/home");
+            navegar("/");
         } catch {
             establecerError(
                 "No fue posible eliminar la cuenta. Verifica tu contraseña."
@@ -132,7 +136,7 @@ export function MenuUsuario() {
             await authService.cerrarSesion();
             authStorageService.clearAuth();
             toast.success("Sesión cerrada correctamente.");
-            navegar("/home");
+            navegar("/");
         } catch {
             toast.error("No fue posible cerrar la sesiÃ³n.");
         } finally {
@@ -141,7 +145,10 @@ export function MenuUsuario() {
     }
 
     return (
-        <div className={menuUsuarioContenedorStyles}>
+        <div
+            ref={referenciaMenu}
+            className={menuUsuarioContenedorStyles}
+        >
             <button
                 type="button"
                 className={menuUsuarioBotonStyles}

@@ -1,4 +1,4 @@
-import { useId, useState, type FormEvent } from "react";
+import { useId, useState, type SyntheticEvent } from "react";
 import { toast } from "sonner";
 import { Button } from "@/core/components/ui/Button/Button";
 import { Input } from "@/core/components/ui/Input/Input";
@@ -67,7 +67,7 @@ export function EditTaskModal({
     }
 
     async function manejarEnvio(
-        evento: FormEvent<HTMLFormElement>
+        evento: SyntheticEvent<HTMLFormElement>
     ): Promise<void> {
         evento.preventDefault();
         establecerError(null);

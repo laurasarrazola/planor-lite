@@ -1,10 +1,12 @@
 import { Icon } from "@iconify/react";
 import {
     useState,
+    useRef,
     type KeyboardEvent,
     type MouseEvent,
     type PointerEvent,
 } from "react";
+import { useClickFuera } from "@/core/hooks/useClickFuera";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { BadgePriority } from "../BadgePriority/BadgePriority";
@@ -36,6 +38,11 @@ export function TaskCard({
     esVistaPrevia = false,
 }: TaskCardProps) {
     const [mostrarMenu, establecerMostrarMenu] = useState(false);
+    const referenciaMenu = useRef<HTMLDivElement>(null);
+
+    useClickFuera(referenciaMenu, mostrarMenu, () => {
+        establecerMostrarMenu(false);
+    });
 
     const {
         attributes,
@@ -128,7 +135,10 @@ export function TaskCard({
                     </p>
                 </div>
                 {/* Menú de acciones */}
-                <div onPointerDown={detenerPropagacionInicioMenu}>
+                <div
+                    ref={referenciaMenu}
+                    onPointerDown={detenerPropagacionInicioMenu}
+                >
                     <button
                         type="button"
                         aria-label={`Acciones de la tarea ${title}`}

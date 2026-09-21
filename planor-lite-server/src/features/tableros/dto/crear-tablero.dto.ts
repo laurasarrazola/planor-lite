@@ -30,7 +30,7 @@ export class CrearTableroDto {
   @ApiProperty({
     description: 'Descripción del tablero',
     required: false,
-    maxLength: 3000,
+    maxLength: 1000,
   })
   @Transform(({ value }) => {
     if (typeof value === 'string') {
@@ -39,6 +39,6 @@ export class CrearTableroDto {
   })
   @IsOptional()
   @IsString()
-  @MaxLength(3000)
+  @MaxLength(1000)
   descripcionTablero?: string | null;
 }

@@ -51,6 +51,12 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
 
+    if (!usuarioLogin.usuarioActivo) {
+      await this.usuariosService.reactivarUsuarioEliminado(
+        usuarioLogin.idUsuario,
+      );
+    }
+
     // payload es la información que se incluirá en el token JWT, en este caso el email y el ID del usuario autenticado
     const payload = { email: usuarioLogin.email, sub: usuarioLogin.idUsuario };
     // Generar el token JWT utilizando el servicio de JWT de NestJS, pasando el payload como argumento

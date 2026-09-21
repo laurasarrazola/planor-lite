@@ -434,6 +434,18 @@ export class UsuariosService {
     return { message: 'Usuario eliminado exitosamente' };
   }
 
+  /* =============== REACTIVAR USUARIO ELIMINADO =============== */
+  /**
+   * Reactiva un usuario eliminado lógicamente después de validar sus credenciales.
+   * @param {number} idUsuario - Identificador del usuario que recupera su cuenta.
+   * @returns {Promise<void>} - Promesa que finaliza al reactivar el usuario.
+   */
+  async reactivarUsuarioEliminado(idUsuario: number): Promise<void> {
+    await this.usuariosRepository.update(idUsuario, {
+      usuarioActivo: true,
+    });
+  }
+
   /* =============== OBTENER USUARIO POR EMAIL (PARA LOGIN) =============== */
   /**
    * Método para obtener un usuario por su email, utilizado para el proceso de login.

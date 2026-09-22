@@ -7,35 +7,43 @@ export class MoverTareaDto {
     description: 'Estado destino.',
     example: 5,
   })
-  @Transform(({ value }) => {
-    if (typeof value !== 'string') {
-      return undefined;
+  @Transform(({ value }: { value: unknown }) => {
+    if (typeof value === 'number') {
+      return value;
     }
-    const texto = value.trim();
-    if (texto === '') {
-      return undefined;
+
+    if (typeof value === 'string') {
+      const texto = value.trim();
+      if (texto !== '') {
+        return Number(texto);
+      }
     }
-    return Number(texto);
+
+    return undefined;
   })
   @IsInt()
   @Min(1)
-  idEstadoKanban?: number;
+  idEstadoKanban!: number;
 
   @ApiProperty({
     description: 'Nueva posición dentro del estado.',
     example: 2,
   })
   @Transform(({ value }: { value: unknown }) => {
-    if (typeof value !== 'string') {
-      return undefined;
+    if (typeof value === 'number') {
+      return value;
     }
-    const texto = value.trim();
-    if (texto === '') {
-      return undefined;
+
+    if (typeof value === 'string') {
+      const texto = value.trim();
+      if (texto !== '') {
+        return Number(texto);
+      }
     }
-    return Number(texto);
+
+    return undefined;
   })
   @IsInt()
   @Min(1)
-  ordenEnEstado?: number;
+  ordenEnEstado!: number;
 }

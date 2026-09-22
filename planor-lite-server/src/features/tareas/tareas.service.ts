@@ -5,7 +5,11 @@ import { CrearTareaDto } from './dto/crear-tarea.dto';
 import { EditarTareaDto } from './dto/editar-tarea.dto';
 import { EstadosKanban } from '../estados/entities/estado.entity';
 import { Tableros } from '../tableros/entities/tablero.entity';
-import { NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { RespuestaTareaDto } from './dto/respuesta-tarea.dto';
 
 @Injectable()
@@ -98,6 +102,61 @@ export class TareasService {
     }
 
     return estadoEncontrado;
+  }
+
+  /* ========== MÉTODO PARA OBTENER ESTADO PROPIO ACTIVO ========== */
+  /**
+   * Obtiene un estado activo cuyo tablero también está activo y pertenece al usuario.
+   * @param administradorTransaccion Administrador de la transacción.
+   * @param idEstadoKanban Identificador del estado solicitado.
+   * @param idSolicitante Identificador del usuario autenticado.
+   * @returns Estado activo perteneciente a un tablero propio.
+   */
+  private async obtenerEstadoActivoDelUsuario(
+    administradorTransaccion: EntityManager,
+    idEstadoKanban: number,
+    idSolicitante: number,
+  ): Promise<EstadosKanban> {
+    const repositorioEstados =
+      administradorTransaccion.getRepository(EstadosKanban);
+
+    const estadoEncontrado: EstadosKanban | null =
+      await repositorioEstados.findOne({
+        where: {
+          idEstadoKanban,
+          estadoActivo: true,
+          tablero: {
+            tableroActivo: true,
+            propietario: {
+              idUsuario: idSolicitante,
+            },
+          },
+        },
+      });
+
+    if (!estadoEncontrado) {
+      throw new NotFoundException('No se encontró el estado solicitado.');
+    }
+
+    return estadoEncontrado;
+  }
+
+  /* ========== MÉTODO PARA VALIDAR FECHA DE VENCIMIENTO ========== */
+  private validarFechaVencimientoNoPasada(
+    fechaVencimientoTarea: string | undefined,
+  ): void {
+    if (fechaVencimientoTarea === undefined) {
+      return;
+    }
+
+    const fechaVencimiento: Date = new Date(fechaVencimientoTarea);
+    const fechaActual: Date = new Date();
+
+    if (fechaVencimiento < fechaActual) {
+      throw new BadRequestException(
+        'La fecha de vencimiento no puede ser anterior a la fecha actual.',
+      );
+    }
   }
 
   /* ========== MÉTODO REUTILIZABLE PARA VALIDAR TÍTULO ÚNICO EN EL TABLERO ========== */
@@ -352,6 +411,8 @@ export class TareasService {
     idSolicitante: number,
     idTablero: number,
   ): Promise<RespuestaTareaDto> {
+    this.validarFechaVencimientoNoPasada(crearTareaDto.fechaVencimientoTarea);
+
     // se utiliza una transacción para garantizar la consistencia de los datos durante la creación de la tarea.
     return await this.dataSource.transaction(
       async (
@@ -416,14 +477,12 @@ export class TareasService {
   /**
   *@param idEstadoKanban - Identificador del estado Kanban.
   @param idSolicitante - Identificador del usuario autenticado.
-  @param idTablero - Identificador del tablero donde se encuentran las tareas.
   @returns {Promise}
 */
 
   async verTareasPorEstado(
     idEstadoKanban: number,
     idSolicitante: number,
-    idTablero: number,
   ): Promise<RespuestaTareaDto[]> {
     return await this.dataSource.transaction(
       async (
@@ -433,18 +492,11 @@ export class TareasService {
         const repositorioTareas =
           administradorTransaccion.getRepository(Tareas);
 
-        // Traer el tablero activo del propietario desde el método reutilizable obtenerTableroActivo.
-        await this.obtenerTableroActivo(
-          administradorTransaccion,
-          idSolicitante,
-          idTablero,
-        );
-
-        // Traer el estado activo desde el método reutilizable obtenerEstadoActivo.
-        const estadoEncontrado = await this.obtenerEstadoActivo(
+        // El estado permite identificar su tablero y comprobar que pertenece al usuario.
+        const estadoEncontrado = await this.obtenerEstadoActivoDelUsuario(
           administradorTransaccion,
           idEstadoKanban,
-          idTablero,
+          idSolicitante,
         );
 
         const tareas = await repositorioTareas.find({
@@ -629,6 +681,8 @@ export class TareasService {
     idTarea: number,
     idSolicitante: number,
   ): Promise<RespuestaTareaDto> {
+    this.validarFechaVencimientoNoPasada(editarTareaDto.fechaVencimientoTarea);
+
     return await this.dataSource.transaction(
       async (
         administradorTransaccion: EntityManager,
@@ -677,8 +731,9 @@ export class TareasService {
 
         // Actualizar fecha si fue enviada.
         if (editarTareaDto.fechaVencimientoTarea !== undefined) {
-          tareaEncontrada.fechaVencimientoTarea =
-            editarTareaDto.fechaVencimientoTarea as unknown as Date;
+          tareaEncontrada.fechaVencimientoTarea = new Date(
+            editarTareaDto.fechaVencimientoTarea,
+          );
         }
 
         // Obtener el estado destino.

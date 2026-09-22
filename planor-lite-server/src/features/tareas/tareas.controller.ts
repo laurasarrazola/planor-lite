@@ -101,12 +101,10 @@ export class TareasController {
   async verTareasPorEstado(
     @GetUser() usuario: Usuarios,
     @Param('idEstadoKanban') idEstadoKanban: number,
-    @Param('idTablero') idTablero: number,
   ): Promise<RespuestaTareaDto[]> {
     return await this.tareasService.verTareasPorEstado(
       idEstadoKanban,
       usuario.idUsuario,
-      idTablero,
     );
   }
 

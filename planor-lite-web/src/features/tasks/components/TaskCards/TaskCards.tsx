@@ -108,7 +108,7 @@ export function TaskCard({
     }
 
     return (
-        <article
+        <div
             ref={setNodeRef}
             style={estiloTarjeta}
             className={taskCardStyles}
@@ -198,6 +198,6 @@ export function TaskCard({
                 {/* Prioridad */}
                 {priority && <BadgePriority priority={priority} />}
             </footer>
-        </article>
+        </div>
     );
 }

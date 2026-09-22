@@ -1,0 +1,7 @@
+# Planor
+
+> Aplicación web de planificación personal mediante tableros Kanban.
+
+## Páginas públicas
+
+- [Inicio](/): información general sobre Planor y acceso al registro e inicio de sesión.

@@ -44,7 +44,7 @@ import {
     homeCtaTitleStyles,
     homeCtaDescriptionStyles,
 } from "./HomePage.styles";
-import heroImage from "@/assets/hero.png";
+import heroImage from "@/assets/hero.webp";
 import type { ElementoNavegacion } from "@/core/components/layout/Header/Header.types";
 import type { ModoPaginaInicio } from "./homePage.types";
 

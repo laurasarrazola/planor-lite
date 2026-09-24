@@ -70,6 +70,7 @@ export class UsuariosController {
     status: status.BAD_REQUEST,
     description: 'Los usuarios no pudieron ser obtenidos',
   })
+  @UseGuards(AuthGuard, RoleGuard)
   @Get()
   async obtenerUsuarios(): Promise<Usuarios[]> {
     return await this.usuariosService.obtenerUsuarios();
@@ -211,7 +212,7 @@ export class UsuariosController {
   }
 
   /* ========== ACTUALIZAR USUARIO POR ADMIN ========== */
-  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @Patch(':id')
   async actualizarUsuarioPorId(
     @Param('id') id: number,

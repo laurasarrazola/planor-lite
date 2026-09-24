@@ -81,9 +81,11 @@ export class TablerosController {
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Error al obtener los tableros',
   })
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get()
-  async obtenerTableros(): Promise<Tableros[]> {
-    return await this.tablerosService.obtenerTableros();
+  async obtenerTableros(@GetUser() usuario: Usuarios): Promise<Tableros[]> {
+    return await this.tablerosService.obtenerTablerosUsuario(usuario.idUsuario);
   }
 
   /* ========== OBTENER TABLERO POR USUARIO ========== */

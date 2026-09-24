@@ -144,6 +144,11 @@ describe('Usuarios (e2e)', () => {
       .get('/api/v1/usuarios/perfil')
       .set('Authorization', 'Bearer token-invalido')
       .expect(401);
+
+    // El listado heredado de usuarios queda reservado para administradores.
+    await request(aplicacion.getHttpServer())
+      .get('/api/v1/usuarios')
+      .expect(401);
   });
 
   // Ejecuta el flujo completo del módulo Usuarios.
@@ -209,6 +214,12 @@ describe('Usuarios (e2e)', () => {
 
     const cuerpoLogin: RespuestaJson = obtenerRespuestaJson(respuestaLogin);
     tokenSesionInicial = obtenerCadenaDeRespuesta(cuerpoLogin, 'token');
+
+    // Una cuenta con rol usuario no puede consultar la lista general de usuarios.
+    await request(aplicacion.getHttpServer())
+      .get('/api/v1/usuarios')
+      .set('Authorization', `Bearer ${tokenSesionInicial}`)
+      .expect(403);
 
     expect(obtenerCadenaDeRespuesta(cuerpoLogin, 'email')).toBe(
       correoUsuarioPrueba,

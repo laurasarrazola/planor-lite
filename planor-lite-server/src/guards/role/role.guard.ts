@@ -1,14 +1,25 @@
 import {
   CanActivate,
-  // ExecutionContext,
+  ExecutionContext,
+  ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import type { Request } from 'express';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  canActivate() // context: ExecutionContext,
-  : boolean | Promise<boolean> | Observable<boolean> {
+  canActivate(contextoEjecucion: ExecutionContext): boolean {
+    const solicitudHttp = contextoEjecucion
+      .switchToHttp()
+      .getRequest<Request>();
+    const usuarioAutenticado = solicitudHttp.user;
+
+    if (!usuarioAutenticado || usuarioAutenticado.rolSistema !== 'admin') {
+      throw new ForbiddenException(
+        'Esta operación requiere permisos de administrador',
+      );
+    }
+
     return true;
   }
 }

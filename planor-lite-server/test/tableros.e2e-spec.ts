@@ -181,6 +181,11 @@ describe('Tableros (e2e)', () => {
 
   // Verifica autenticación y validaciones antes de crear información.
   it('debe rechazar la creación sin JWT y con datos no permitidos', async (): Promise<void> => {
+    // El listado general también es privado: no debe responder sin sesión.
+    await request(aplicacion.getHttpServer())
+      .get('/api/v1/tableros')
+      .expect(401);
+
     await request(aplicacion.getHttpServer())
       .post('/api/v1/tableros')
       .send({ nombreTablero: 'Tablero sin sesión' })
@@ -266,6 +271,22 @@ describe('Tableros (e2e)', () => {
       ),
     ).toBe(true);
 
+    // La ruta general protegida conserva compatibilidad, pero solo devuelve tableros propios.
+    const respuestaListaProtegida: Response = await request(
+      aplicacion.getHttpServer(),
+    )
+      .get('/api/v1/tableros')
+      .set('Authorization', `Bearer ${tokenUsuarioPropietario}`)
+      .expect(200);
+
+    expect(
+      listaIncluyeIdentificador(
+        obtenerListaJson(respuestaListaProtegida),
+        identificadorTableroPropietario,
+      ),
+    ).toBe(true);
+    expect(respuestaListaProtegida.text).not.toContain('"contrasena"');
+
     await request(aplicacion.getHttpServer())
       .get(`/api/v1/tableros/${identificadorTableroPropietario}`)
       .set('Authorization', `Bearer ${tokenUsuarioPropietario}`)
@@ -289,6 +310,31 @@ describe('Tableros (e2e)', () => {
       cuerpoCreacionSecundaria,
       'idTablero',
     );
+
+    // El segundo usuario solo obtiene su tablero y nunca el del propietario.
+    const respuestaListaUsuarioSecundario: Response = await request(
+      aplicacion.getHttpServer(),
+    )
+      .get('/api/v1/tableros')
+      .set('Authorization', `Bearer ${tokenUsuarioSecundario}`)
+      .expect(200);
+
+    const listaUsuarioSecundario: unknown[] = obtenerListaJson(
+      respuestaListaUsuarioSecundario,
+    );
+    expect(
+      listaIncluyeIdentificador(
+        listaUsuarioSecundario,
+        identificadorTableroSecundario,
+      ),
+    ).toBe(true);
+    expect(
+      listaIncluyeIdentificador(
+        listaUsuarioSecundario,
+        identificadorTableroPropietario,
+      ),
+    ).toBe(false);
+    expect(respuestaListaUsuarioSecundario.text).not.toContain('"contrasena"');
 
     await request(aplicacion.getHttpServer())
       .get(`/api/v1/tableros/${identificadorTableroPropietario}`)

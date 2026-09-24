@@ -453,8 +453,10 @@ export class UsuariosService {
    * @returns {Promise<Usuarios>} - Promesa que se resuelve con el usuario encontrado.
    */
   async obtenerUsuarioPorEmail(email: string): Promise<Usuarios | null> {
-    return await this.usuariosRepository.findOne({
-      where: { email },
-    });
+    return await this.usuariosRepository
+      .createQueryBuilder('usuario')
+      .addSelect('usuario.contrasena')
+      .where('usuario.email = :email', { email })
+      .getOne();
   }
 }

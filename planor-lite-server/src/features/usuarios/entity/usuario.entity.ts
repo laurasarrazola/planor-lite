@@ -54,6 +54,7 @@ export class Usuarios {
     type: 'varchar',
     length: 255,
     nullable: true,
+    select: false,
   })
   contrasena?: string | null;
 
